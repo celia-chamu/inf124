@@ -1,10 +1,10 @@
-import { Button } from "../ui/button";
+import { Button } from "./ui/Button";
 
 
 export default function Header() {
     return (
-        <div className="flex justify-center pt-2 w-screen">
-            <nav className="flex h-16 w-screen items-center justify-between border bg-cyan-950">
+        <div className="flex justify-center w-screen">
+            <nav className="flex h-16 w-screen items-center justify-between bg-cyan-950">
                 <div className="flex justify-start ml-5"> 
                     <text className="text-3xl">ZotMarket</text>
                 </div>
