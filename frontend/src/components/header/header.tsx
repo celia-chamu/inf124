@@ -9,7 +9,10 @@ export default function Header() {
                     <text className="text-3xl">ZotMarket</text>
                 </div>
                 <div className="flex justify-end mr-5">
-                    <button className = "border-1 p-2 pl-5 pr-5 rounded-2xl">Login</button>
+                    <Link href="/login">
+                        <button className = "border-1 p-2 pl-5 pr-5 rounded-2xl">Login</button>
+                    </Link>
+
                 </div>
 
             </nav>
