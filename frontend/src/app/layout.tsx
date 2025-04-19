@@ -5,7 +5,6 @@ function RootLayout({children}: propTypes) {
   return (
     <html>
       <body>
-        <NavMenu/>
         {children}
       </body>
     </html>
