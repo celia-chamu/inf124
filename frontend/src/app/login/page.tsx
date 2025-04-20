@@ -3,7 +3,7 @@ import { KeyRound } from "lucide-react";
 import { Mail } from "lucide-react";
 export default function Login(){
     return(
-        <div className="flex items-center justify-center h-screen w-screen">
+        <div className="flex items-center justify-center h-full w-screen mt-46">
             <form className= "h-3/5 w-1/4">
                 <h1 className="flex justify-center items-center text-5xl p-10 order-8">Login</h1>
                 <div className="relative w-full p-2">
