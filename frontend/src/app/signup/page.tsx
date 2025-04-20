@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button"
 import { User } from 'lucide-react';
 import { KeyRound } from "lucide-react";
 import { Mail } from "lucide-react";
-export default function Login(){
+export default function Signup(){
     return(
         <div className="flex items-center justify-center h-full w-screen mt-46">
             <form className= "h-3/5 w-1/4">

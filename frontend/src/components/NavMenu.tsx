@@ -8,7 +8,7 @@ function NavMenu() {
                 <Button>Create New Listing</Button>
             </Link>
 
-            <Link className="mt-2 mb-2" href="/">
+            <Link className="mt-2 mb-2" href="/account-settings">
                 <Button>Account Settings</Button>
             </Link>
 
