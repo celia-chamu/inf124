@@ -1,23 +1,23 @@
 import Link from "next/link";
-import {Button} from "./ui/Button";
+import {Button} from "./ui/button";
 
 function NavMenu() {
     return (
-        <nav className=" ml-4 mt-4 fixed top-16 flex flex-col bg-gray-500 w-1/8 h-9/10 items-center rounded-xl">
-            <Link className="mt-16" href="/">
-                <Button className="rounded-2x1 border-1 cursor-pointer w-40">Home</Button>
+        <nav className="m-4 p-4 flex flex-col gap-4 bg-gray-500 h-9/10 items-center rounded-xl">
+            <Link className="w-full" href="/market">
+                <Button className="rounded-2x1 border-1 cursor-pointer w-full">Home</Button>
             </Link>
 
-            <Link className="mt-16" href="/">
-                <Button className="rounded-2x1 border-1 cursor-pointer w-40">Create New Listing</Button>
+            <Link className="w-full" href="/">
+                <Button className="rounded-2x1 border-1 cursor-pointer w-full">Create New Listing</Button>
             </Link>
 
-            <Link className="mt-16" href="/account-settings">
-                <Button className="rounded-2x1 border-1 cursor-pointer w-40">Account Settings</Button>
+            <Link className="w-full" href="/account-settings">
+                <Button className="rounded-2x1 border-1 cursor-pointer w-full">Account Settings</Button>
             </Link>
 
-            <Link className="mt-16" href="/inbox">
-                <Button className="rounded-2x1 border-1 cursor-pointer w-40">Inbox</Button>
+            <Link className="w-full" href="/inbox">
+                <Button className="rounded-2x1 border-1 cursor-pointer w-full">Inbox</Button>
             </Link>
         </nav>
     );

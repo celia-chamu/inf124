@@ -3,7 +3,6 @@ import NavMenu from "@/components/NavMenu"
 function AccountSettings() {
     return (
         <>
-            <NavMenu/>
             <div className="bg-white ml-82 w-340 h-50 mt-30">
                 <img className="rounded-full h-50 w-50 inline-block" src="https://dummyimage.com/150x150/000/fff"></img>
                 <p className="inline-block text-xl ml-4">First Name</p>

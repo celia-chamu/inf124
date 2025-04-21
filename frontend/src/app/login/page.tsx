@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { KeyRound } from "lucide-react";
 import { Mail } from "lucide-react";
 export default function Login(){
