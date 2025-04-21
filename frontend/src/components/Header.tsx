@@ -13,7 +13,7 @@ export default function Header() {
                 </div>
                 <div className="flex justify-end mr-5">
                     <Link href="/login">
-                        <Button className="border-1 p-2 pl-5 pr-5 rounded-2xl">Login</Button>
+                        <Button className="border-1 p-2 pl-5 pr-5 rounded-2xl cursor-pointer">Login</Button>
                     </Link>
                 </div>
             </nav>
