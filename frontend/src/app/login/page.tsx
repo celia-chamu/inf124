@@ -3,8 +3,8 @@ import { KeyRound } from "lucide-react";
 import { Mail } from "lucide-react";
 export default function Login(){
     return(
-        <div className="flex items-center justify-center h-full w-screen mt-46">
-            <form className= "h-3/5 w-1/4">
+        <div className="flex items-center justify-center h-full w-full mt-30">
+            <form className= "w-auto h-auto">
                 <h1 className="flex justify-center items-center text-5xl p-10 order-8">Login</h1>
                 <div className="relative w-full p-2">
                     <input className="flex border-2 w-full rounded-3xl h-10 pl-3 pr-7" placeholder="UCI Email" type="text" required />
@@ -16,7 +16,7 @@ export default function Login(){
                 </div>
                 <div>
                     <input className="ml-4 mr-1"type="checkbox" />
-                    <label className="mr-30">Remember Me</label>
+                    <label className="mr-5 sm:mr-30">Remember Me</label>
                     <a className="text-blue-800 underline mr-1"href="/forgot-password">Forgot password?</a>
                 </div>
                 <div className="flex justify-center items-center p-4 pb-6">

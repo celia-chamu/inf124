@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { KeyRound } from "lucide-react";
 import { Mail } from "lucide-react";
 export default function Login(){
     return(
-        <div className="flex items-center justify-center h-screen w-screen">
-            <form className= "h-3/5 w-27/100">
-                <h1 className="flex justify-center items-center text-5xl p-10 order-8">Forgot Password?</h1>
+        <div className="flex items-center justify-center h-full w-full mt-30">
+            <form className= "h-auto w-auto">
+                <h1 className="flex justify-center items-center text-3xl sm:text-5xl p-10 order-8">Forgot Password?</h1>
                 <div className="relative w-full p-2">
-                    <input className="flex border-2 w-full rounded-3xl h-10 pl-3 pr-7" placeholder="Enter UCI Email" type="text" required />
+                    <input className="flex border-2 w-full rounded-3xl h-10 pl-3 pr-7" placeholder="UCI Email" type="text" required />
                     <Mail className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5" />
                 </div>
                 <div className="flex justify-center items-center p-4 pb-6">
