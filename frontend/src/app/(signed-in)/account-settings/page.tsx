@@ -2,7 +2,7 @@ function AccountSettings() {
     return (
         <div className="pl-[20vw]">
             <div className="bg-white h-50 mt-30">
-                <img className="rounded-full h-50 inline-block" src="https://dummyimage.com/150x150/000/fff"></img>
+                <img className="rounded-full h-50 inline-block" src="https://dummyimage.com/150x150/000/fff"/>
                 <p className="inline-block text-xl ml-4">First Name</p>
             </div>
 
