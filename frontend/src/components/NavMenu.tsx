@@ -8,7 +8,7 @@ function NavMenu() {
                 <Button className="rounded-2x1 border-1 cursor-pointer w-full">Home</Button>
             </Link>
 
-            <Link className="w-full" href="/">
+            <Link className="w-full" href="/create-listing">
                 <Button className="rounded-2x1 border-1 cursor-pointer w-full">Create New Listing</Button>
             </Link>
 
