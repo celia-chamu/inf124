@@ -1,8 +1,10 @@
 import ListingCard from "@/components/ListingCard";
+import SearchBar from "@/components/searchbar";
 
 export default function Page() {
     return (
-        <div>
+        <div className="w-89/100 h-full">
+            <SearchBar></SearchBar>
             <div className="m-4">
             <ListingCard id="1" imageUrl="https://dummyimage.com/150x150/000/fff" title="Lorem Ipsum" price={1}/>
             <ListingCard id="2" imageUrl="https://dummyimage.com/150x150/000/fff" title="Lorem Ipsum" price={1}/>
