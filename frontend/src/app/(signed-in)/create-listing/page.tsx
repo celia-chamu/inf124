@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 
 function CreateListing() {
   return (
-    <div className="px-4 pt-8 md:pl-full md:pt-full">
-      <div className="bg-gray-500 w-[70vw] xs:w-[60vw] h-full xs:h-full p-6 md:p-12 rounded-lg">
+    <div className="flex px-4 pt-8 pl-0 lg:pl-[15vw]">
+      <div className="bg-gray-500 w-[100vw] lg:w-[70vw] h-full xs:h-full p-6 md:p-12 rounded-lg">
         <div className="flex flex-col md:flex-row gap-8">
           <img
             className="h-40 w-40 object-cover cursor-pointer mx-auto md:mx-0"

@@ -5,7 +5,7 @@ import "@/app/globals.css";
 function Layout({children}: propTypes) {
   return (
     <div className = "flex">
-        <NavMenu/>
+        {/* <NavMenu/> */}
         <div>
           {children}
         </div>
