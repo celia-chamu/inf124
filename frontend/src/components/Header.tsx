@@ -1,5 +1,5 @@
-import { Button } from "./ui/button";
-import Link from "next/link";
+import Link from 'next/link'
+import GoogleSignIn from '@/components/google/GoogleSignIn'
 
 export default function Header() {
     return (
@@ -10,10 +10,8 @@ export default function Header() {
                 </Link>
             </div>
             <div className="mr-5">
-                <Link href="/login">
-                    <Button className="border p-2 px-5 rounded-2xl">Login</Button>
-                </Link>
+                <GoogleSignIn />
             </div>
         </nav>
-    );
+    )
 }
