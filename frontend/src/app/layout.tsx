@@ -1,15 +1,42 @@
+"use client";
+
 import "./globals.css";
 import Header from "@/components/Header";
+import { useEffect, useState } from "react";
+import MobileHeader from "@/components/MobileHeader";
 
 export default function RootLayout({children}: propTypes) {
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    setScreenWidth(window.innerWidth);
+
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (screenWidth > 768){
+
+    return (
+      <html className="overscroll-none">
+        <body className="min-h-screen overflow-y-scroll overscroll-x-none">
+          <Header/>
+          {children}
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html className="overscroll-none">
-      <body className="min-h-screen overflow-y-scroll overscroll-x-none">
-        <Header/>
-        {children}
-      </body>
-    </html>
-  );
+        <body className="min-h-screen overflow-y-scroll overscroll-x-none">
+          <MobileHeader/>
+          {children}
+        </body>
+      </html>
+    );
 }
 
 type propTypes = {

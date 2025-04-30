@@ -1,10 +1,16 @@
+"use client";
+
 import Link from 'next/link'
 import GoogleSignIn from '@/components/google/GoogleSignIn'
+import { useEffect } from 'react';
 
 export default function Header() {
+    useEffect(() => {
+        const screenWidth = window.innerWidth;
+    })
     return (
         <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-cyan-950">
-            <div className="ml-5">
+            <div className="ml-5 justify-center">
                 <Link href="/">
                     <p className="text-3xl text-yellow-500">ZotMarket</p>
                 </Link>
