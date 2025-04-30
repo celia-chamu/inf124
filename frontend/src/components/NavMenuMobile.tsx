@@ -12,7 +12,8 @@ import {
   } from "@/components/ui/sidebar"
 
 import { Menu } from "lucide-react";
-import { handleSignIn } from "@/lib/auth";
+import { handleSignIn, handleSignOut } from "@/lib/auth";
+import { signOut, useSession } from "next-auth/react";
   // Menu items.
 const items = [
     {
@@ -32,13 +33,10 @@ const items = [
         title: "Inbox",
         url: "/inbox",
       },
-      {
-        title:"Sign In",
-        onClick: () => handleSignIn(),
-      }
   ]
 
 export default function NavMenuMobile(){
+    const {data:session} = useSession()
     return(
         <SidebarProvider>
         <div className="flex">
@@ -56,19 +54,30 @@ export default function NavMenuMobile(){
                                 {items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        {/* Conditionally render anchor or button based on whether onClick exists */}
-                                        {item.onClick ? (
-                                        <button onClick={item.onClick}>
-                                            <span>{item.title}</span>
-                                        </button>
-                                        ) : (
                                         <a href={item.url}>
                                             <span>{item.title}</span>
                                         </a>
-                                        )}
                                     </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ))}
+                                {/* Conditionally render anchor or button based on whether onClick exists */}
+                                {!session ? (
+                                    <SidebarMenuItem key="Sign In">
+                                        <SidebarMenuButton asChild>
+                                            <button onClick={handleSignIn}>
+                                                <span>Sign In</span>
+                                            </button>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ): (
+                                    <SidebarMenuItem key="Sign Out">
+                                        <SidebarMenuButton asChild>
+                                            <button onClick={() => signOut( { callbackUrl: 'http://localhost:3000' } )}>
+                                                <span>Sign Out</span>
+                                            </button>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                )}
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>

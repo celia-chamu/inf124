@@ -6,6 +6,7 @@ import NavMenuMobile from '@/components/NavMenuMobile'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
 import { useState, useEffect } from 'react'
+import { SessionProvider } from 'next-auth/react'
 
 function Layout({ children }: propTypes) {
     const [screenWidth, setScreenWidth] = useState(0)
@@ -20,10 +21,12 @@ function Layout({ children }: propTypes) {
 
     return (
         <div className="flex">
-            <SidebarProvider>
-                {screenWidth > 760 ? <NavMenu /> : <NavMenuMobile />}
-                <div>{children}</div>
-            </SidebarProvider>
+            <SessionProvider>
+                <SidebarProvider>
+                    {screenWidth > 760 ? <NavMenu /> : <NavMenuMobile />}
+                    <div>{children}</div>
+                </SidebarProvider>
+            </SessionProvider>
         </div>
     )
 }
