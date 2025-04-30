@@ -3,8 +3,13 @@
 import Link from 'next/link'
 import GoogleSignIn from '@/components/google/GoogleSignIn'
 import { useEffect } from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { Button } from './ui/button';
+import { signOut } from 'next-auth/react';
 
-export default function Header() {
+export default async function Header() {
+    const session = await getServerSession(authOptions);
     useEffect(() => {
         const screenWidth = window.innerWidth;
     })
@@ -16,7 +21,14 @@ export default function Header() {
                 </Link>
             </div>
             <div className="mr-5">
-                <GoogleSignIn />
+                {session ? (
+                    <>
+                        Signed in as {session.user!.email} <br />
+                        <Button onClick={() => signOut()}>Sign out</Button>
+                    </>
+                ) : (
+                    <GoogleSignIn />
+                )}
             </div>
         </nav>
     )
