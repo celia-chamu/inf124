@@ -1,17 +1,15 @@
-"use client";
+'use client'
 
 import Link from 'next/link'
 import GoogleSignIn from '@/components/google/GoogleSignIn'
-import { useEffect } from 'react';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { Button } from './ui/button';
-import { signOut } from 'next-auth/react';
+import { useEffect } from 'react'
+import { Button } from './ui/button'
+import { signOut, useSession } from 'next-auth/react'
 
-export default async function Header() {
-    const session = await getServerSession(authOptions);
+export default function Header() {
+    const { data: session } = useSession()
     useEffect(() => {
-        const screenWidth = window.innerWidth;
+        const screenWidth = window.innerWidth
     })
     return (
         <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-cyan-950">
@@ -22,10 +20,10 @@ export default async function Header() {
             </div>
             <div className="mr-5">
                 {session ? (
-                    <>
-                        Signed in as {session.user!.email} <br />
-                        <Button onClick={() => signOut()}>Sign out</Button>
-                    </>
+                    <div className="flex items-center justify-between gap-5">
+                        <p className='text-white'> Signed in as {session.user!.email} </p>
+                        <Button variant = "outline" onClick={() => signOut( { callbackUrl: 'http://localhost:3000' } )}>Sign out</Button>
+                    </div>
                 ) : (
                     <GoogleSignIn />
                 )}

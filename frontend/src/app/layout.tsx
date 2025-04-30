@@ -1,44 +1,35 @@
-"use client";
+'use client'
 
-import "./globals.css";
-import Header from "@/components/Header";
-import { useEffect, useState } from "react";
-import MobileHeader from "@/components/MobileHeader";
+import './globals.css'
+import Header from '@/components/Header'
+import { useEffect, useState } from 'react'
+import MobileHeader from '@/components/MobileHeader'
+import { SessionProvider } from 'next-auth/react'
 
-export default function RootLayout({children}: propTypes) {
-  const [screenWidth, setScreenWidth] = useState(0);
+export default function RootLayout({ children }: propTypes) {
+    const [screenWidth, setScreenWidth] = useState(0)
 
-  useEffect(() => {
-    setScreenWidth(window.innerWidth);
+    useEffect(() => {
+        setScreenWidth(window.innerWidth)
 
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
+        const handleResize = () => setScreenWidth(window.innerWidth)
+        window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  if (screenWidth > 768){
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     return (
-      <html className="overscroll-none">
-        <body className="min-h-screen overflow-y-scroll overscroll-x-none">
-          <Header/>
-          {children}
-        </body>
-      </html>
-    );
-  }
-
-  return (
-    <html className="overscroll-none">
-        <body className="min-h-screen overflow-y-scroll overscroll-x-none">
-          <MobileHeader/>
-          {children}
-        </body>
-      </html>
-    );
+        <html className="overscroll-none">
+            <body className="min-h-screen overflow-y-scroll overscroll-x-none">
+                <SessionProvider>
+                    {screenWidth > 760 ? <Header /> : <MobileHeader />}
+                </SessionProvider>
+                {children}
+            </body>
+        </html>
+    )
 }
 
 type propTypes = {
-  children: React.ReactNode
-};
+    children: React.ReactNode
+}
