@@ -20,11 +20,13 @@ function Layout({ children }: propTypes) {
     }, [])
 
     return (
-        <div className="flex">
+        <div>
             <SessionProvider>
                 <SidebarProvider>
                     {screenWidth > 760 ? <NavMenu /> : <NavMenuMobile />}
-                    <div>{children}</div>
+                    <div className="flex justify-center grow m-4">
+                        {children}
+                    </div>
                 </SidebarProvider>
             </SessionProvider>
         </div>
