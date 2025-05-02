@@ -3,18 +3,18 @@ import { Button } from "@/components/ui/button";
 function CreateListing() {
   return (
     <div className="flex px-4 pt-8 pl-0 lg:pl-[5vw]">
-      <div className="bg-gray-500 w-[100vw] lg:w-[70vw] h-full xs:h-full p-6 md:p-12 rounded-lg">
+      <div className="bg-gray-500 w-[100vw] lg:w-[50vw] h-full xs:h-full p-6 md:p-12 rounded-lg">
         <div className="flex flex-col md:flex-row gap-8">
           <img
-            className="h-40 w-40 object-cover cursor-pointer mx-auto md:mx-0"
+            className="h-80 object-cover cursor-pointer mx-auto md:mx-0"
             src="https://dummyimage.com/150x150/000/fff"
             alt="Preview"
           />
-          <div className="flex flex-col gap-4 md:gap-12">
+          <div className="flex flex-col gap-4 md:gap-12 w-[25vw]">
             <input
               type="text"
               placeholder="Title"
-              className="bg-white w-full rounded-lg border border-black text-xl md:text-xl pl-2"
+              className="bg-white rounded-lg border border-black text-xl md:text-2xl pl-2"
             />
             <input
               type="text"
