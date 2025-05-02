@@ -1,6 +1,6 @@
 function AccountSettings() {
     return (
-        <div>
+        <div className="w-full ml-[22vw]">
             <div className="bg-white h-50 mt-20">
                 <img className="rounded-full h-50 inline-block" src="https://dummyimage.com/150x150/000/fff"/>
                 <p className="inline-block text-xl ml-4">First Name</p>

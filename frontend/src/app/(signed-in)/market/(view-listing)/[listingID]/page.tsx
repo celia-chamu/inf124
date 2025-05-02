@@ -1,7 +1,13 @@
-export default function Page() {
+interface paramTypes {
+    params: {
+        listingID: string
+    };
+};
+
+export default async function Page({params}: paramTypes) {
     return (
-        <div>
-            Displays A Specific Listing based on ListingID
-        </div>
+        <>
+            Viewing Listing of ID: {params.listingID}
+        </>
     );
 }
