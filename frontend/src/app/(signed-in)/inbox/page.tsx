@@ -9,7 +9,7 @@ function Inbox() {
                 <Button className="rounded-2x1 border-1 cursor-pointer">Sellers</Button>
             </div>
 
-            <div className="bg-gray-500 mt-4 p-8">
+            <div className="bg-gray-500 mt-4 p-8 h-180">
                 <Message username="Username" textMessage="Text Message"/>
                 <Message username="Username" textMessage="Text Message"/>
             </div>
