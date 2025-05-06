@@ -12,7 +12,7 @@ export default function Header() {
         const screenWidth = window.innerWidth
     })
     return (
-        <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-cyan-950">
+        <nav className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-primary">
             <div className="ml-5 justify-center">
                 <Link href="/">
                     <p className="text-3xl text-yellow-500">ZotMarket</p>
@@ -22,7 +22,7 @@ export default function Header() {
                 {session ? (
                     <div className="flex items-center justify-between gap-5">
                         <p className='text-white'> Signed in as {session.user!.email} </p>
-                        <Button variant = "outline" onClick={() => signOut( { callbackUrl: 'http://localhost:3000' } )}>Sign out</Button>
+                        <Button onClick={() => signOut( { callbackUrl: 'http://localhost:3000' } )}>Sign out</Button>
                     </div>
                 ) : (
                     <GoogleSignIn />

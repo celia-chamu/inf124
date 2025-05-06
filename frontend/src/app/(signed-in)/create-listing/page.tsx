@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/searchbar";
 
 function CreateListing() {
   return (

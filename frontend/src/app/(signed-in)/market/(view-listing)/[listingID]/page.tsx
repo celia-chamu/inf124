@@ -23,9 +23,9 @@ export default function Page({params}: paramTypes) {
                     <div className="bg-gray-500 h-140 w-[55vw]"/>
                     <div className="bg-gray-500 h-30 w-[55vw]"/>
                     <div className="flex gap-4">
-                        <Button className="text-xl border-1 cursor-pointer h-8 w-[8vw]">Save</Button>
-                        <Button className="text-xl border-1 cursor-pointer h-8 w-[8vw]">Report</Button>
-                        <Button className="text-xl border-1 cursor-pointer h-8 w-[8vw]">Share</Button>
+                        <Button className="text-xl cursor-pointer h-8 w-[8vw]">Save</Button>
+                        <Button className="text-xl cursor-pointer h-8 w-[8vw]">Report</Button>
+                        <Button className="text-xl cursor-pointer h-8 w-[8vw]">Share</Button>
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@ export default function Page({params}: paramTypes) {
                     </div>
 
                     <Link href="/inbox">
-                        <Button className="text-2xl border-1 cursor-pointer h-16 w-full font-bold">Message</Button>
+                        <Button className="text-2xl cursor-pointer h-16 w-full font-bold">Message</Button>
                     </Link>
                 </div>
             </div>

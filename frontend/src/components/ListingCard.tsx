@@ -2,7 +2,7 @@ function ListingCard({ id, imageUrl, title, price }: propTypes) {
     return (
         <div
             // onClick={handleClick}
-            className="cursor-pointer rounded-2xl border border-gray-200 shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden inline-block"
+            className="cursor-pointer rounded-2xl shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden inline-block"
         >
             <img
                 src={imageUrl}
