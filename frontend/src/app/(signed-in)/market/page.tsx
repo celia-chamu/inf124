@@ -1,6 +1,6 @@
 import Link from "next/link"
 import ListingCard from "@/components/ListingCard";
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/searchbar";
 
 export default function Page() {
     const listings = [
@@ -12,7 +12,8 @@ export default function Page() {
         {id: "6", imageUrl: "https://dummyimage.com/150x150/000/fff", title: "Lorem Ipsum", price: 1},
         {id: "7", imageUrl: "https://dummyimage.com/150x150/000/fff", title: "Lorem Ipsum", price: 1},
         {id: "8", imageUrl: "https://dummyimage.com/150x150/000/fff", title: "Lorem Ipsum", price: 1},
-        {id: "9", imageUrl: "https://dummyimage.com/150x150/000/fff", title: "Lorem Ipsum", price: 1}
+        {id: "9", imageUrl: "https://dummyimage.com/150x150/000/fff", title: "Lorem Ipsum", price: 1},
+        {id: "10", imageUrl: "https://dummyimage.com/150x150/000/fff", title: "Lorem Ipsum", price: 1}
     ];
 
     return (
