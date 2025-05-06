@@ -1,6 +1,6 @@
 "use client"
 
-import SearchBar from "@/components/SearchBar"
+import SearchBar from "@/components/searchbar"
 import ListingCard from "@/components/ListingCard"
 import {Button} from "@/components/ui/button"
 import Link from "next/link"
