@@ -2,7 +2,7 @@ function ListingCard({ id, imageUrl, title, price }: propTypes) {
     return (
         <div
             // onClick={handleClick}
-            className="cursor-pointer rounded-2xl shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden inline-block w-full"
+            className="cursor-pointer rounded-2xl shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden inline-block w-full h-full"
         >
             <img
                 src={imageUrl}
@@ -10,7 +10,7 @@ function ListingCard({ id, imageUrl, title, price }: propTypes) {
                 className="h-auto w-full object-cover"
             />
             <div className="flex flex-col items-center">
-                <p className="text-lg font-semibold text-center">{title}</p>
+                <p className="text-lg font-semibold text-center line-clamp-2">{title}</p>
                 <p className="text-gray-600 mt-1">${price.toFixed(2)}</p>
             </div>
         </div>
