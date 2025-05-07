@@ -1,24 +1,20 @@
 "use client"
 
-import SearchBar from "@/components/searchbar"
 import ListingCard from "@/components/ListingCard"
 import {Button} from "@/components/ui/button"
 import Link from "next/link"
 import {useState} from "react"
+import { fetchListing } from "@/mockDatabase"
+import { useParams } from 'next/navigation'
 
-interface paramTypes {
-    params: {
-        listingID: string
-    };
-};
-
-export default function Page({params}: paramTypes) {
+export default function Page() {
     const [viewSeller, setViewSeller] = useState(false);
+    const pageparams = useParams<{listingID: string}>();
+    const listing = fetchListing(pageparams.listingID);
 
     return (
         <div className="w-full">
-            <SearchBar/>
-            <div className="flex mt-4">
+            <div className="flex">
                 <div className="flex flex-col gap-4">
                     <div className="bg-gray-500 h-140 w-[55vw]"/>
                     <div className="bg-gray-500 h-30 w-[55vw]"/>
@@ -31,8 +27,8 @@ export default function Page({params}: paramTypes) {
 
                 <div className="bg-gray-500 ml-8 p-8 h-197 w-full flex flex-col gap-10">
                     <div className="flex flex-col gap-2">
-                        <h1 className="text-2xl font-bold">Item Name</h1>
-                        <p className="text-2xl font-bold">$$$</p>
+                        <h1 className="text-2xl font-bold">{listing?.title}</h1>
+                        <p className="text-2xl font-bold">${listing?.price}</p>
                         <p className="text-2xl">Posted 1 hr ago</p>
                     </div>
 
@@ -44,7 +40,7 @@ export default function Page({params}: paramTypes) {
                             Lorem Ipsum
                         </div>
                         <p className="text-2xl font-bold">Seller</p>
-                        <p className="text-2xl text-blue-500 underline cursor-pointer w-fit" onClick={() => setViewSeller(true)}>Seller Name</p>
+                        <p className="text-2xl text-blue-500 underline cursor-pointer w-fit" onClick={() => setViewSeller(true)}>{listing?.owner}</p>
 
                         {viewSeller && (
                             <div className="fixed inset-0 flex items-center justify-center">
