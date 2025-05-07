@@ -41,7 +41,7 @@ export default function NavMenuMobile(){
         <SidebarProvider>
         <div className="flex">
             {/* Sidebar Trigger Button */}
-            <SidebarTrigger className="fixed top-0 left-0 z-50 p-8 w-12 h-12 text-2xl bg-blue-500 ">
+            <SidebarTrigger className="fixed top-0 left-0 z-50 p-8 w-12 h-12 text-2xl">
                 <Menu className="text-2xl"/>
             </SidebarTrigger>
                 
