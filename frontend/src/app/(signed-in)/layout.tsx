@@ -23,7 +23,7 @@ function Layout({ children }: propTypes) {
         <div>
             <SessionProvider>
                 <SidebarProvider>
-                    {screenWidth > 760 ? <NavMenu /> : <NavMenuMobile />}
+                    {screenWidth >= 768 ? <NavMenu /> : <NavMenuMobile />}
                     <div className="flex justify-center grow m-4">
                         {children}
                     </div>

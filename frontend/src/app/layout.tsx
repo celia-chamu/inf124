@@ -22,7 +22,7 @@ export default function RootLayout({ children }: propTypes) {
         <html className="overscroll-none">
             <body className="min-h-screen overflow-y-scroll overscroll-x-none">
                 <SessionProvider>
-                    {screenWidth > 760 ? <Header /> : <MobileHeader />}
+                    {screenWidth >= 768 ? <Header /> : <MobileHeader />}
                 </SessionProvider>
                 {children}
             </body>
