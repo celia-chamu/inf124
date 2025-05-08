@@ -4,15 +4,15 @@ import { Filter } from 'lucide-react'
 
 export default function SearchBar() {
     return (
-        <div className='flex content-center'>
+        <div className="flex content-center m-5">
             <div className="relative w-full">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                    className="pl-10 rounded-xl h-auto w-full"
-                    placeholder="Search"
+                    className="pl-10 rounded-lg h-auto w-full"
+                    placeholder="Search ZotMarket"
                 />
             </div>
-            <Filter className='h-full w-6'/>
+            <Filter className="h-full w-6 ml-5 text-gray-600" />
         </div>
     )
 }
