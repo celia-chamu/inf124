@@ -1,13 +1,23 @@
-import Link from "next/link"
-import {Button} from "@/components/ui/button"
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
-  return (
-      <div className="flex flex-col items-center">
-        Welcome to ZotMarket. Click Login above to continue.
-        <Link href="/market">
-          <Button className="p-2 px-5 rounded-2xl">Login as Guest</Button> {/* Temporary way to access rest of the website. */}
-        </Link>
-      </div>
-  );
+    return (
+        <div className="flex min-h-screen items-center justify-center bg-background">
+            <div className="rounded-xl border border-border bg-white shadow-xl p-10 max-w-md w-full text-center">
+                <h1 className="text-2xl font-bold text-[#004AAD] mb-4">
+                    Welcome to ZotMarket!
+                </h1>
+                <p className="mb-5 text-black">
+                    This is the unofficial UCI marketplace for students to sell,
+                    trade or give away their old stuff <br />
+                    <br />
+                    Sign into google above to continue, or explore as a guest.
+                </p>
+                <Link href="/market">
+                    <Button variant="zot">Continue as Guest</Button>
+                </Link>
+            </div>
+        </div>
+    )
 }

@@ -19,6 +19,7 @@ export const authOptions: NextAuthOptions = {
         },
     },
 }
-
+console.log('Google ID:', process.env.GOOGLE_CLIENT_ID)
+console.log('Google Secret:', process.env.GOOGLE_CLIENT_SECRET)
 const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
