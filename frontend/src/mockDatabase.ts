@@ -1,4 +1,4 @@
-interface listingType {
+export interface listingType {
     id: string
     imageUrl: string
     title: string

@@ -6,13 +6,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { fetchListing } from '@/mockDatabase'
 import { useParams } from 'next/navigation'
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from '@/components/ui/carousel'
+import ListingCarousel from '@/components/ListingCarousel'
 
 export default function Page() {
     const [viewSeller, setViewSeller] = useState(false)
@@ -23,20 +17,8 @@ export default function Page() {
         <div className="w-full">
             <div className="flex gap-8">
                 <div className="flex flex-col gap-4">
-                    <div className="bg-gray-500 max-h-140 h-auto w-[55vw] p-20 flex">
-                        <Carousel className='w-full'>
-                            <CarouselContent>
-                                <CarouselItem>
-                                    <img
-                                        src={listing?.imageUrl}
-                                    />
-                                </CarouselItem>
-                            </CarouselContent>
-                            <CarouselPrevious />
-                            <CarouselNext />
-                        </Carousel>
-                    </div>
-                    <div className="bg-gray-500 h-30 w-[55vw]" />
+                    <ListingCarousel listing={listing!} />
+                    <div className="bg-gray-500 h-30 w-[50vw]" />
                     <div className="flex gap-4">
                         <Button className="text-xl cursor-pointer h-8 w-[8vw]">
                             Save
