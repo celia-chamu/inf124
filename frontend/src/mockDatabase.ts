@@ -26,6 +26,9 @@ export interface image {
     url: string
 }
 
+
+const filters = ["Cars", "Chicken", "Desks", "Lab", "Coke"]
+
 const listings = [
     {
         id: '1',
@@ -188,6 +191,10 @@ const owners = [
 
 export function fetchListings() {
     return listings
+}
+
+export function fetchFilters(){
+    return filters
 }
 
 export function fetchListing(id: string): listingType | undefined {
