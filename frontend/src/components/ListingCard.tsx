@@ -10,8 +10,8 @@ function ListingCard({ id, imageUrl, title, price }: propTypes) {
                 className="h-auto w-full object-cover"
             />
             <div className="flex flex-col m-2">
-                <p className="text-lg font-semibold line-clamp-2">{title}</p>
-                <p className="text-black mt-1">${price.toFixed(2)}</p>
+                <p className="text-lg font-semibold line-clamp-2 text-center">{title}</p>
+                <p className="text-black mt-1 text-center">${price.toFixed(2)}</p>
             </div>
         </div>
     )
