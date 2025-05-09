@@ -8,18 +8,18 @@ import { fetchListing } from '@/mockDatabase'
 import { useParams } from 'next/navigation'
 import ListingCarousel from '@/components/ListingCarousel'
 import SellerInfo from '@/components/SellerInfo'
+import ThumbnailCarousel from '@/components/ThumbnailCarousel'
 
 export default function Page() {
-    const [viewSeller, setViewSeller] = useState(false)
     const pageparams = useParams<{ listingID: string }>()
     const listing = fetchListing(pageparams.listingID)
 
     return (
         <div className="w-full">
             <div className="flex gap-8">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 w-full">
                     <ListingCarousel listingImages={listing?.images!} />
-                    <div className="bg-gray-500 h-30 w-[50vw]" />
+                    <ThumbnailCarousel listingImages={listing?.images!} />
                     <div className="flex gap-4">
                         <Button className="text-xl cursor-pointer h-8 w-[8vw]">
                             Save
@@ -33,7 +33,7 @@ export default function Page() {
                     </div>
                 </div>
 
-                <div className="bg-gray-500 p-8 h-197 w-full flex flex-col gap-10">
+                <div className="bg-gray-500 p-8 h-197 w-1/3 flex flex-col gap-10">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">{listing?.title}</h1>
                         <p className="text-2xl font-bold">${listing?.price}</p>

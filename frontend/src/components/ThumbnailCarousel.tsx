@@ -12,13 +12,13 @@ interface CarouselProps {
     listingImages: any
 }
 
-export default function ListingCarousel({ listingImages }: CarouselProps) {
+export default function ThumbnailCarousel({ listingImages }: CarouselProps) {
     return (
-        <Carousel className="mx-15" opts={{ loop: true }}>
+        <Carousel className="mx-15 shrink flex justify-center" opts={{ loop: true }}>
             <CarouselContent>
                 {listingImages.map((image: image, index: number) => (
-                    <CarouselItem key={index}>
-                        <div className="h-140 max-w-[55vw] overflow-hidden flex justify-center">
+                    <CarouselItem key={index} className='relative basis-1/2'>
+                        <div className="h-30 overflow-hidden flex aspect-square justify-center">
                             <img
                                 src={image.url}
                                 className="h-full w-auto object-contain"
@@ -27,8 +27,6 @@ export default function ListingCarousel({ listingImages }: CarouselProps) {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
         </Carousel>
     )
 }
