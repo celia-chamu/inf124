@@ -12,13 +12,17 @@ export default function SearchBar() {
 
     const filters = fetchFilters()
 
+    // Check to see if the filter has been clicked
     const handleFilterClick = () => {
         console.log('Set filter')
         setFilterClick(!filterClick)
     }
     console.log(filters)
+
+    // Check mobile size
     const isMobile = useIsMobile()
 
+    // Lock scrolling when popup for mobile appears
     useEffect(() => {
         if (filterClick && isMobile) {
             document.body.style.overflow = 'hidden';
@@ -49,7 +53,8 @@ export default function SearchBar() {
             </div>
             {filterClick ? (
                 isMobile ? (
-                    <div className="fixed inset-0 z-50 flex justify-center items-center backdrop-blur-sm bg-white/30">
+                    // Mobile filter popup
+                    <div className="fixed inset-0 z-50 flex justify-center items-start pt-20 backdrop-blur-sm bg-white/30">
                         <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-sm">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-lg font-semibold">
