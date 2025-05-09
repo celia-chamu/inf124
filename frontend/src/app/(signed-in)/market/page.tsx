@@ -12,7 +12,7 @@ export default function Page() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                 {listings.map((listing) => (
                     <Link key={listing.id} href={`/market/${listing.id}`} className="hover:cursor-pointer">
-                        <ListingCard id={listing.id} imageUrl={listing.imageUrl} title={listing.title} price={listing.price}/>
+                        <ListingCard id={listing.id} imageUrl={listing.images[0].url} title={listing.title} price={listing.price}/>
                     </Link>
                 ))}
             </div>

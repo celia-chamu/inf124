@@ -17,7 +17,7 @@ export default function Page() {
         <div className="w-full">
             <div className="flex gap-8">
                 <div className="flex flex-col gap-4">
-                    <ListingCarousel listing={listing!} />
+                    <ListingCarousel listingImages={listing?.images!} />
                     <div className="bg-gray-500 h-30 w-[50vw]" />
                     <div className="flex gap-4">
                         <Button className="text-xl cursor-pointer h-8 w-[8vw]">
