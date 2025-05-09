@@ -19,7 +19,7 @@ export default function SellerInfo() {
             <DialogTrigger asChild>
                 <Button>View Seller</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="min-w-1/2">
                 <DialogHeader>
                     <DialogTitle>Seller Info</DialogTitle>
                 </DialogHeader>
@@ -37,11 +37,9 @@ export default function SellerInfo() {
                             </div>
                         </div>
 
-                        <p className="text-2xl font-bold mt-4 mb-4">
-                            Other Posts
-                        </p>
+                        <p className="text-2xl font-bold my-4">Other Posts</p>
 
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid md:grid-cols-6 gap-4 overflow-y-auto">
                             <Link
                                 key="1"
                                 href="/market/1"
@@ -109,6 +107,18 @@ export default function SellerInfo() {
                             >
                                 <ListingCard
                                     id="6"
+                                    imageUrl="https://dummyimage.com/150x150/000/fff"
+                                    title="Lorem Ipsum"
+                                    price={1}
+                                />
+                            </Link>
+                            <Link
+                                key="7"
+                                href="/market/7"
+                                className="hover:cursor-pointer"
+                            >
+                                <ListingCard
+                                    id="7"
                                     imageUrl="https://dummyimage.com/150x150/000/fff"
                                     title="Lorem Ipsum"
                                     price={1}

@@ -52,14 +52,9 @@ export default function Page() {
                             {listing?.description}
                         </div>
                         <p className="text-2xl font-bold">Seller</p>
-                        <p
-                            className="text-2xl text-blue-500 underline cursor-pointer w-fit"
-                            onClick={() => setViewSeller(true)}
-                        >
-                            {listing?.owner}
-                        </p>
+                        <p>{listing?.owner}</p>
 
-                        {viewSeller && <SellerInfo/>}
+                        <SellerInfo />
                     </div>
                     <Link href="/inbox">
                         <Button className="text-2xl cursor-pointer h-16 w-full font-bold">
