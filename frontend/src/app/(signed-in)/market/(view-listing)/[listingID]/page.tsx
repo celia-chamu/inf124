@@ -41,10 +41,14 @@ export default function Page() {
 
                     <div className="flex flex-col gap-2">
                         <p className="text-2xl font-bold">Details</p>
-                        <p className="text-2xl">Category: Lorem Ipsum</p>
-                        <p className="text-2xl">Condition: New</p>
+                        <p className="text-2xl">
+                            Category: {listing?.category}
+                        </p>
+                        <p className="text-2xl">
+                            Condition: {listing?.condition}
+                        </p>
                         <div className="bg-gray-300 rounded-lg text-2xl pl-2 h-60 w-full mt-2 mb-2">
-                            Lorem Ipsum
+                            {listing?.description}
                         </div>
                         <p className="text-2xl font-bold">Seller</p>
                         <p
