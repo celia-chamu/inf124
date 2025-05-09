@@ -43,8 +43,8 @@ export default function Page() {
                         <p className="text-2xl text-blue-500 underline cursor-pointer w-fit" onClick={() => setViewSeller(true)}>{listing?.owner}</p>
 
                         {viewSeller && (
-                            <div className="fixed inset-0 flex items-center justify-center">
-                                <div className="bg-white h-[45vw] w-[51vw] border-2 border-black p-4">
+                            <div className="fixed inset-0 flex items-center justify-center mt-14">
+                                <div className="bg-white h-[48vw] w-[51vw] border-2 border-black p-4">
                                     <p className="text-red-500 text-2xl font-bold ml-202 cursor-pointer" onClick={() => setViewSeller(false)}>X</p>
 
                                     <div className="flex items-center gap-4">

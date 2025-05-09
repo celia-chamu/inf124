@@ -5,15 +5,15 @@ function CreateListing() {
   return (
     <div className="w-full flex flex-col">
       <SearchBar/>
-      <div className="flex px-4 pt-8 pl-0 lg:pl-[5vw] lg:ml-[6vw]">
-        <div className="bg-gray-500 w-full md:w-[70vw] lg:w-[60vw] xl:w-[70vw]h-full xs:h-full p-6 md:p-12 rounded-lg">
+      <div className="flex px-4 pl-0 lg:pl-[5vw] lg:ml-[6vw]">
+        <div className="bg-gray-500 w-full md:w-[70vw] lg:w-[60vw] xl:w-[65vw] h-186 xs:h-full p-6 md:p-12 rounded-lg">
           <div className="flex flex-col md:flex-row gap-8">
             <img
               className="h-80 object-cover cursor-pointer mx-auto md:mx-0"
               src="https://dummyimage.com/150x150/000/fff"
               alt="Preview"
             />
-            <div className="flex flex-col gap-4 md:gap-12 w-[25vw]">
+            <div className="flex flex-col gap-4 md:gap-12 w-full">
               <input
                 type="text"
                 placeholder="Title"
