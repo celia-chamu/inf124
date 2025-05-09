@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { fetchListing } from '@/mockDatabase'
 import { useParams } from 'next/navigation'
 import ListingCarousel from '@/components/ListingCarousel'
+import SellerInfo from '@/components/SellerInfo'
 
 export default function Page() {
     const [viewSeller, setViewSeller] = useState(false)
@@ -58,111 +59,8 @@ export default function Page() {
                             {listing?.owner}
                         </p>
 
-                        {viewSeller && (
-                            <div className="fixed inset-0 flex items-center justify-center mt-14">
-                                <div className="bg-white h-[48vw] w-[51vw] border-2 border-black p-4">
-                                    <p
-                                        className="text-red-500 text-2xl font-bold ml-202 cursor-pointer"
-                                        onClick={() => setViewSeller(false)}
-                                    >
-                                        X
-                                    </p>
-
-                                    <div className="flex items-center gap-4">
-                                        <img
-                                            className="rounded-full h-50 inline-block"
-                                            src="https://dummyimage.com/150x150/000/fff"
-                                        />
-                                        <div className="flex flex-col text-2xl">
-                                            <p>First Name</p>
-                                            <p>Joined Apr 20XX</p>
-                                            <p>XX Confirmed Transactions</p>
-                                        </div>
-                                    </div>
-
-                                    <p className="text-2xl font-bold mt-4 mb-4">
-                                        Other Posts
-                                    </p>
-
-                                    <div className="flex flex-wrap gap-4">
-                                        <Link
-                                            key="1"
-                                            href="/market/1"
-                                            className="hover:cursor-pointer"
-                                        >
-                                            <ListingCard
-                                                id="1"
-                                                imageUrl="https://dummyimage.com/150x150/000/fff"
-                                                title="Lorem Ipsum"
-                                                price={1}
-                                            />
-                                        </Link>
-                                        <Link
-                                            key="2"
-                                            href="/market/2"
-                                            className="hover:cursor-pointer"
-                                        >
-                                            <ListingCard
-                                                id="2"
-                                                imageUrl="https://dummyimage.com/150x150/000/fff"
-                                                title="Lorem Ipsum"
-                                                price={1}
-                                            />
-                                        </Link>
-                                        <Link
-                                            key="3"
-                                            href="/market/3"
-                                            className="hover:cursor-pointer"
-                                        >
-                                            <ListingCard
-                                                id="3"
-                                                imageUrl="https://dummyimage.com/150x150/000/fff"
-                                                title="Lorem Ipsum"
-                                                price={1}
-                                            />
-                                        </Link>
-                                        <Link
-                                            key="4"
-                                            href="/market/4"
-                                            className="hover:cursor-pointer"
-                                        >
-                                            <ListingCard
-                                                id="4"
-                                                imageUrl="https://dummyimage.com/150x150/000/fff"
-                                                title="Lorem Ipsum"
-                                                price={1}
-                                            />
-                                        </Link>
-                                        <Link
-                                            key="5"
-                                            href="/market/5"
-                                            className="hover:cursor-pointer"
-                                        >
-                                            <ListingCard
-                                                id="5"
-                                                imageUrl="https://dummyimage.com/150x150/000/fff"
-                                                title="Lorem Ipsum"
-                                                price={1}
-                                            />
-                                        </Link>
-                                        <Link
-                                            key="6"
-                                            href="/market/6"
-                                            className="hover:cursor-pointer"
-                                        >
-                                            <ListingCard
-                                                id="6"
-                                                imageUrl="https://dummyimage.com/150x150/000/fff"
-                                                title="Lorem Ipsum"
-                                                price={1}
-                                            />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                        {viewSeller && <SellerInfo/>}
                     </div>
-
                     <Link href="/inbox">
                         <Button className="text-2xl cursor-pointer h-16 w-full font-bold">
                             Message
