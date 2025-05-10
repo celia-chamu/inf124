@@ -8,7 +8,7 @@ import Link from 'next/link'
 function Inbox() {
     const [view, setView] = useState('buyers')
     const { data: session } = useSession()
-
+    console.log(session!.user!.email!)
     const messages = useMemo(() => {
         if (!session) {
             return <div />
@@ -16,7 +16,8 @@ function Inbox() {
 
         return view === 'buyers'
             ? fetchBuyers(session!.user!.email!).map((message, index) => (
-                  <Message
+                <Link key={message.messageId} href={`/message/buyer/${message.messageId}`}>
+                    <Message
                       key={index}
                       username={message.receiver}
                       textMessage={
@@ -25,9 +26,11 @@ function Inbox() {
                           message.messages[0].text
                       }
                   />
+                </Link>
               ))
             : fetchSellers(session!.user!.email!).map((message, index) => (
-                  <Message
+                <Link key={message.messageId} href={`/message/seller/${message.messageId}`}>
+                    <Message
                       key={index}
                       username={message.receiver}
                       textMessage={
@@ -36,6 +39,7 @@ function Inbox() {
                           message.messages[0].text
                       }
                   />
+                </Link>
               ))
     }, [view, session])
 

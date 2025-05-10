@@ -6,16 +6,22 @@ import { useParams } from 'next/navigation'
 import { fetchMessages, addToMessages } from '@/mockDatabase'
 import Message from '@/components/Message'
 import MessageInput from '@/components/messageInput'
+import { useSession } from "next-auth/react"
+
 
 export default function InboxMessage() {
     const params = useParams()
     const messageId = parseInt(params.messageId as string)
-
+    console.log(messageId)
+    const { data: session } = useSession()
     // Initialize state to hold the messages for the current conversation
     const [messages, setMessages] = useState(fetchMessages(messageId)?.messages || [])
     
     const receiver = fetchMessages(messageId)?.receiver
     const sender = fetchMessages(messageId)?.sender
+
+    console.log(receiver)
+    console.log(sender)
 
     const handleSendMessage = (newMessage: string) => {
         const newMessageObject = {

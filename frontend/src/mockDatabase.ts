@@ -1,3 +1,6 @@
+
+
+
 enum categories {
     furniture = 'Furniture',
     school = 'School',
@@ -32,6 +35,8 @@ export interface ownerType {
 export interface image {
     url: string
 }
+
+
 
 const filters = ['Cars', 'Chicken', 'Desks', 'Lab', 'Coke']
 
@@ -277,6 +282,7 @@ export function fetchMessages(mID: number){
 }
 
 export function addToMessages(messageId:number, message:{reciever:string, sender:string, text:string}){
+
      const messageIndex = messages.findIndex(msg => msg.messageId === messageId);
      if (messageIndex != -1){
         messages[messageIndex].messages.push({
@@ -294,6 +300,7 @@ export function addToMessages(messageId:number, message:{reciever:string, sender
         };
         messages.push(newMessage)
      }
+     console.log(messages[messageIndex].messages)
      
 }
 
