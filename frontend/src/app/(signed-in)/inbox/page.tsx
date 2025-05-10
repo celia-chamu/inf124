@@ -15,13 +15,13 @@ function Inbox() {
                 ? fetchBuyers(session!.user!.email!).map((message, index) => (
                       <Message key={index}
                           username={message.receiver}
-                          textMessage={message.messages[0].text}
+                          textMessage={message.messages[0].sender + ": " + message.messages[0].text}
                       />
                   ))
                 : fetchSellers(session!.user!.email!).map((message, index) => (
                       <Message key={index}
                           username={message.receiver}
-                          textMessage={message.messages[0].text}
+                          textMessage={message.messages[0].sender + ": " + message.messages[0].text}
                       />
                   )),
         [view]
