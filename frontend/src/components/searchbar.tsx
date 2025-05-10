@@ -36,7 +36,7 @@ export default function SearchBar() {
         }, [filterClick, isMobile]);
 
     return (
-        <div className="flex flex-col items-center m-5">
+        <div className="flex flex-col items-center">
             {/* Search bar and filter button */}
             <div className="relative w-full flex items-center">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />

@@ -9,23 +9,35 @@ function Inbox() {
     const [view, setView] = useState('buyers')
     const { data: session } = useSession()
 
-    const messages = useMemo(
-        () =>
-            view === 'buyers'
-                ? fetchBuyers(session!.user!.email!).map((message, index) => (
-                      <Message key={index}
-                          username={message.receiver}
-                          textMessage={message.messages[0].sender + ": " + message.messages[0].text}
-                      />
-                  ))
-                : fetchSellers(session!.user!.email!).map((message, index) => (
-                      <Message key={index}
-                          username={message.receiver}
-                          textMessage={message.messages[0].sender + ": " + message.messages[0].text}
-                      />
-                  )),
-        [view]
-    )
+    const messages = useMemo(() => {
+        if (!session) {
+            return <div />
+        }
+
+        return view === 'buyers'
+            ? fetchBuyers(session!.user!.email!).map((message, index) => (
+                  <Message
+                      key={index}
+                      username={message.receiver}
+                      textMessage={
+                          message.messages[0].sender +
+                          ': ' +
+                          message.messages[0].text
+                      }
+                  />
+              ))
+            : fetchSellers(session!.user!.email!).map((message, index) => (
+                  <Message
+                      key={index}
+                      username={message.receiver}
+                      textMessage={
+                          message.messages[0].sender +
+                          ': ' +
+                          message.messages[0].text
+                      }
+                  />
+              ))
+    }, [view, session])
 
     return (
         <div className="flex flex-col w-full">
@@ -33,20 +45,20 @@ function Inbox() {
                 <Button
                     className="rounded-2x1 cursor-pointer"
                     onClick={() => setView('buyers')}
+                    variant="ListingZot"
                 >
                     Buyers
                 </Button>
                 <Button
                     className="rounded-2x1 cursor-pointer"
                     onClick={() => setView('sellers')}
+                    variant="ListingZot"
                 >
                     Sellers
                 </Button>
             </div>
 
-            <div className="bg-gray-500 mt-4 p-8 h-180">
-                {messages}
-            </div>
+            <div className="bg-gray-500 mt-4 p-8 h-180">{messages}</div>
         </div>
     )
 }
