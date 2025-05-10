@@ -45,6 +45,12 @@ const listings = [
             {
                 url: 'https://www.ikea.com/us/en/images/products/gullaberg-6-drawer-dresser-white-anchor-unlock-function__1403696_pe969671_s5.jpg?f=xl',
             },
+            {
+                url: 'https://www.ikea.com/us/en/images/products/gullaberg-6-drawer-dresser-white-anchor-unlock-function__1348204_pe951175_s5.jpg?f=xl',
+            },
+            {
+                url: 'https://www.ikea.com/us/en/images/products/gullaberg-6-drawer-dresser-white-anchor-unlock-function__1348205_pe951174_s5.jpg?f=xl',
+            },
         ],
         title: 'GULLABERG 6-drawer dresser',
         price: 4.49,
@@ -226,29 +232,35 @@ const owners = [
 
 const messages = [
     {
-        sender: "iquon@uci.edu",
-        receiver: "ewtruong@uci.edu",
-        messages: [{
-            sender: "iquon@uci.edu" ,
-            text: "Hi im interested",
-        }]
-    }, 
+        sender: 'iquon@uci.edu',
+        receiver: 'ewtruong@uci.edu',
+        messages: [
+            {
+                sender: 'iquon@uci.edu',
+                text: 'Hi im interested',
+            },
+        ],
+    },
     {
-        sender: "iquon@uci.edu",
-        receiver: "rudyx@uci.edu",
-        messages: [{
-            sender: "iquon@uci.edu" ,
-            text: "Hi im interested",
-        }]
-    }, 
+        sender: 'iquon@uci.edu',
+        receiver: 'rudyx@uci.edu',
+        messages: [
+            {
+                sender: 'iquon@uci.edu',
+                text: 'Hi im interested',
+            },
+        ],
+    },
     {
-        sender: "rudyx@uci.edu",
-        receiver: "iquon@uci.edu",
-        messages: [{
-            sender: "rudyx@uci.edu" ,
-            text: "Hi im interested",
-        }]
-    }, 
+        sender: 'rudyx@uci.edu',
+        receiver: 'iquon@uci.edu',
+        messages: [
+            {
+                sender: 'rudyx@uci.edu',
+                text: 'Hi im interested',
+            },
+        ],
+    },
 ]
 
 export function fetchListings() {
