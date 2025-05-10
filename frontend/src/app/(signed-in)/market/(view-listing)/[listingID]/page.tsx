@@ -15,52 +15,57 @@ export default function Page() {
     const listing = fetchListing(pageparams.listingID)
 
     return (
-        <div className="w-full">
-            <div className="flex gap-8">
-                <div className="flex flex-col gap-4 w-full">
+        <div className="w-full m-0 bg-white shadow-lg rounded-md">
+            <div className="flex gap-10">
+                <div className="flex flex-col gap-5 w-full">
                     <ListingCarousel listingImages={listing?.images!} />
                     <ThumbnailCarousel listingImages={listing?.images!} />
-                    <div className="flex gap-4">
-                        <Button className="text-xl cursor-pointer h-8 w-[8vw]">
+                    <div className="p-5 flex gap-5">
+                        <Button variant="ListingZot" className="w-[8vw]">
                             Save
                         </Button>
-                        <Button className="text-xl cursor-pointer h-8 w-[8vw]">
+                        <Button variant="ListingZot" className="w-[8vw]">
                             Report
                         </Button>
-                        <Button className="text-xl cursor-pointer h-8 w-[8vw]">
+                        <Button variant="ListingZot" className="w-[8vw]">
                             Share
                         </Button>
                     </div>
                 </div>
 
-                <div className="bg-gray-500 p-8 h-197 w-1/3 flex flex-col gap-10">
+                <div className="bg-(--sidebar-button-background) rounded-sm p-10 pb-25 h-full w-4/10 flex flex-col gap-2">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">{listing?.title}</h1>
-                        <p className="text-2xl font-bold">${listing?.price}</p>
-                        <p className="text-2xl">Posted 1 hr ago</p>
+                        <p className="text-xl">${listing?.price}</p>
+                        <p className="text-md">Posted 1 hr ago</p>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                        <p className="text-2xl font-bold">Details</p>
-                        <p className="text-2xl">
-                            Category: {listing?.category}
+                    <div className="flex flex-col gap-2 mb-5">
+                        <p className="text-xl font-bold">Details</p>
+
+                        <p className="text-lg">
+                            <b> Category: </b> {listing?.category}
                         </p>
-                        <p className="text-2xl">
-                            Condition: {listing?.condition}
+                        <p className="text-lg">
+                            <b> Condition: </b> {listing?.condition}
                         </p>
-                        <div className="bg-gray-300 rounded-lg text-2xl pl-2 h-60 w-full mt-2 mb-2">
+
+                        <div className="bg-white rounded-sm text-md pl-2 h-50 w-full mt-2 mb-2">
                             {listing?.description}
                         </div>
-                        <p className="text-2xl font-bold">Seller</p>
-                        <p>{listing?.owner}</p>
-
-                        <SellerInfo />
+                        <Link href="/inbox">
+                            <Button variant="ListingZot" className="w-full">
+                                Message
+                            </Button>
+                        </Link>
                     </div>
-                    <Link href="/inbox">
-                        <Button className="text-2xl cursor-pointer h-16 w-full font-bold">
-                            Message
-                        </Button>
-                    </Link>
+                    <div className="pb-5 flex flex-col gap-5">
+                        <div className="line"></div>
+                        <p className="text-lg">
+                            <b> Seller: </b> {listing?.owner}
+                        </p>
+                        {listing && <SellerInfo email={listing.owner} />}
+                    </div>
                 </div>
             </div>
         </div>

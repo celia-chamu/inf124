@@ -19,9 +19,11 @@ const buttonVariants = cva(
                     'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 cursor-pointer',
                 ghost: 'hover:bg-accent hover:text-[#e07800] dark:hover:bg-accent/50 cursor-pointer text-[#004AAD]',
                 link: 'text-primary underline-offset-4 hover:underline',
-                zot: 'bg-white text-[#004AAD] font-bold shadow-md border-2 hover:bg-[#00368a] hover:text-[#e07800] transition duration-200',
+                zot: 'bg-white text-[#004AAD] cursor-pointer font-bold shadow-md border-2 hover:bg-[#00368a] hover:text-[#e07800] transition duration-200',
                 Menuzot:
-                    'bg-[#8098ca] text-white font-bold border-[#6f86b8] shadow-md border-1 hover:bg-[#00368a] hover:text-[#e07800] transition duration-200',
+                    'bg-[#6d85bd] text-white font-bold border-[#6f86b8] shadow-md border-2 hover:bg-[#00368a] hover:text-[#e07800] transition duration-200',
+                ListingZot:
+                    'bg-[#00368a] text-lg cursor-pointer text-white font-bold border-(--sidebar-button-background) shadow-md border-2 hover:bg-(--sidebar-background) hover:text-[#00368a] hover:border-[#00368a] transition duration-200',
             },
             size: {
                 default: 'h-9 px-4 py-2 has-[>svg]:px-3',

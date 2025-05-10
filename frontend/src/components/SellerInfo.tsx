@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import ListingCard from './ListingCard'
+import { fetchListingsByOwner, fetchOwnerByEmail } from '@/mockDatabase'
 
 import {
     Dialog,
@@ -13,11 +14,28 @@ import {
 import { Button } from './ui/button'
 import { DialogClose } from '@radix-ui/react-dialog'
 
-export default function SellerInfo() {
+interface SellerInfoProps {
+    email: string
+}
+
+export function formatMonthYear(dateString: string | undefined): string {
+    const date = dateString ? new Date(dateString) : new Date()
+    return date.toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+    })
+}
+
+export default function SellerInfo({ email }: SellerInfoProps) {
+    const sellerListings = fetchListingsByOwner(email)
+    const seller = fetchOwnerByEmail(email)
+
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>View Seller</Button>
+                <Button variant="ListingZot" className="w-[8vw]">
+                    View Seller
+                </Button>
             </DialogTrigger>
             <DialogContent className="min-w-1/2">
                 <DialogHeader>
@@ -30,100 +48,35 @@ export default function SellerInfo() {
                                 className="rounded-full inline-block"
                                 src="https://dummyimage.com/150x150/000/fff"
                             />
-                            <div className="flex flex-col text-2xl">
-                                <p>First Name</p>
-                                <p>Joined Apr 20XX</p>
-                                <p>XX Confirmed Transactions</p>
+                            <div className="flex flex-col">
+                                <p className=" text-2xl">{seller?.name}</p>
+                                <p className="text-lg">
+                                    {formatMonthYear(seller?.joined)}
+                                </p>
+                                <p className="text-md">
+                                    {' '}
+                                    <b>Items Sold:</b> {sellerListings.length}
+                                </p>
                             </div>
                         </div>
 
                         <p className="text-2xl font-bold my-4">Other Posts</p>
 
-                        <div className="grid md:grid-cols-6 gap-4 overflow-y-auto">
-                            <Link
-                                key="1"
-                                href="/market/1"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="1"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
-                            <Link
-                                key="2"
-                                href="/market/2"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="2"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
-                            <Link
-                                key="3"
-                                href="/market/3"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="3"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
-                            <Link
-                                key="4"
-                                href="/market/4"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="4"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
-                            <Link
-                                key="5"
-                                href="/market/5"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="5"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
-                            <Link
-                                key="6"
-                                href="/market/6"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="6"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
-                            <Link
-                                key="7"
-                                href="/market/7"
-                                className="hover:cursor-pointer"
-                            >
-                                <ListingCard
-                                    id="7"
-                                    imageUrl="https://dummyimage.com/150x150/000/fff"
-                                    title="Lorem Ipsum"
-                                    price={1}
-                                />
-                            </Link>
+                        <div className="grid md:grid-cols-6 gap-4 overflow-y-auto max-h-[50vh]">
+                            {sellerListings.map((sellerListings) => (
+                                <Link
+                                    key={sellerListings.id}
+                                    href={`/market/${sellerListings.id}`}
+                                    className="hover:cursor-pointer"
+                                >
+                                    <ListingCard
+                                        id={sellerListings.id}
+                                        imageUrl={sellerListings.images[0].url}
+                                        title={sellerListings.title}
+                                        price={sellerListings.price}
+                                    />
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>

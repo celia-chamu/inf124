@@ -13,7 +13,7 @@ export default function Header() {
         const screenWidth = window.innerWidth
     })
     return (
-        <nav className="sticky top-0 z-50 flex h-20 w-full items-center justify-between bg-primary">
+        <nav className="sticky top-0 z-50 flex h-20 inset-x-0 items-center justify-between bg-primary">
             <div className="ml-5 justify-center">
                 <Link href="/">
                     <Image
@@ -32,7 +32,8 @@ export default function Header() {
                             {' '}
                             Signed in as {session.user!.email}{' '}
                         </p>
-                        <Button variant = 'zot'
+                        <Button
+                            variant="zot"
                             onClick={() =>
                                 signOut({
                                     callbackUrl: 'http://localhost:3000',
