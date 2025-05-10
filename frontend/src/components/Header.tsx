@@ -29,8 +29,7 @@ export default function Header() {
                 {session ? (
                     <div className="flex items-center justify-between gap-5">
                         <p className="text-white">
-                            {' '}
-                            Signed in as {session.user!.email}{' '}
+                            Signed in as {session.user!.email}
                         </p>
                         <Button
                             variant="zot"

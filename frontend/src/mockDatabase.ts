@@ -204,6 +204,33 @@ const owners = [
     },
 ]
 
+const messages = [
+    {
+        sender: "iquon@uci.edu",
+        receiver: "ewtruong@uci.edu",
+        messages: [{
+            sender: "iquon@uci.edu" ,
+            text: "Hi im interested",
+        }]
+    }, 
+    {
+        sender: "iquon@uci.edu",
+        receiver: "rudyx@uci.edu",
+        messages: [{
+            sender: "iquon@uci.edu" ,
+            text: "Hi im interested",
+        }]
+    }, 
+    {
+        sender: "rudyx@uci.edu",
+        receiver: "iquon@uci.edu",
+        messages: [{
+            sender: "rudyx@uci.edu" ,
+            text: "Hi im interested",
+        }]
+    }, 
+]
+
 export function fetchListings() {
     return listings
 }
@@ -218,7 +245,6 @@ export function fetchOwnerByEmail(email: string): ownerType | undefined {
 }
 export function fetchFilters(){
     return filters
-
 }
 
 export function fetchListing(id: string): listingType | undefined {
@@ -227,4 +253,12 @@ export function fetchListing(id: string): listingType | undefined {
             return item
         }
     }
+}
+
+export function fetchBuyers(email: string) {
+    return messages.filter((chat) => chat.receiver === email)
+}
+
+export function fetchSellers(email: string) {
+    return messages.filter((chat) => chat.sender === email)
 }
