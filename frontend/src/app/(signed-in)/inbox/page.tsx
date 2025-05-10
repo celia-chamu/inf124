@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { fetchBuyers, fetchSellers } from '@/mockDatabase'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo, useState } from 'react'
-
+import Link from 'next/link'
 function Inbox() {
     const [view, setView] = useState('buyers')
     const { data: session } = useSession()
@@ -13,19 +13,23 @@ function Inbox() {
         () =>
             view === 'buyers'
                 ? fetchBuyers(session!.user!.email!).map((message, index) => (
-                      <Message key={index}
-                          username={message.receiver}
-                          textMessage={message.messages[0].sender + ": " + message.messages[0].text}
-                      />
+                    <Link href={`/message/${message.messageId}`}>
+                        <Message key={index}
+                            username={message.receiver}
+                            textMessage={message.messages[0].text}
+                        />
+                    </Link>
+
                   ))
                 : fetchSellers(session!.user!.email!).map((message, index) => (
                       <Message key={index}
                           username={message.receiver}
-                          textMessage={message.messages[0].sender + ": " + message.messages[0].text}
+                          textMessage={message.messages[0].text}
                       />
                   )),
         [view]
     )
+
 
     return (
         <div className="flex flex-col w-full">

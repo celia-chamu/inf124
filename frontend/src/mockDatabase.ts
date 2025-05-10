@@ -231,7 +231,8 @@ const messages = [
         messages: [{
             sender: "iquon@uci.edu" ,
             text: "Hi im interested",
-        }]
+        }],
+        messageId: 1
     }, 
     {
         sender: "iquon@uci.edu",
@@ -239,17 +240,56 @@ const messages = [
         messages: [{
             sender: "iquon@uci.edu" ,
             text: "Hi im interested",
-        }]
+            },
+            {
+                sender: "rudyx@uci.edu",
+                text:"Not for sale buddy"
+            }
+        ],
+        messageId: 2
     }, 
     {
         sender: "rudyx@uci.edu",
         receiver: "iquon@uci.edu",
-        messages: [{
-            sender: "rudyx@uci.edu" ,
-            text: "Hi im interested",
-        }]
+        messages: 
+        [
+            {
+                sender: "rudyx@uci.edu" ,
+                text: "Hi im interested",
+            },
+            {
+                sender: "iquon@uci.edu",
+                text:"Not for sale buddy"
+            }
+        ],
+        messageId: 3
     }, 
 ]
+
+export function fetchMessages(mID: number){
+    return messages.find(msg => msg.messageId === mID)
+}
+
+export function addToMessages(messageId:number, message:{reciever:string, sender:string, text:string}){
+     const messageIndex = messages.findIndex(msg => msg.messageId === messageId);
+     if (messageIndex != -1){
+        messages[messageIndex].messages.push({
+            sender: message.sender,
+            text :message.text
+        }
+        )
+     }
+     else{
+        const newMessage = {
+            sender: message.sender,
+            receiver:message.reciever,
+            messages: [{ sender: message.sender, text: message.text }],
+            messageId,
+        };
+        messages.push(newMessage)
+     }
+     
+}
 
 export function fetchListings() {
     return listings
