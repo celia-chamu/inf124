@@ -12,7 +12,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
-import { DialogClose } from '@radix-ui/react-dialog'
+
 
 interface SellerInfoProps {
     email: string
@@ -44,10 +44,12 @@ export default function SellerInfo({ email }: SellerInfoProps) {
                 <div className="flex items-center space-x-2">
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-4">
-                            <img
-                                className="rounded-full inline-block"
-                                src="https://dummyimage.com/150x150/000/fff"
-                            />
+                            <div className="rounded-full w-25 h-25 border border-gray-300 overflow-hidden">
+                                <img
+                                    className="w-full h-full object-cover inline-block"
+                                    src={seller?.images[0].url}
+                                />
+                            </div>
                             <div className="flex flex-col">
                                 <p className=" text-2xl">{seller?.name}</p>
                                 <p className="text-lg">

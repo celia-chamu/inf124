@@ -23,6 +23,7 @@ export interface listingType {
 }
 
 export interface ownerType {
+    images: image[]
     name: string
     email: string
     joined: string
@@ -32,8 +33,7 @@ export interface image {
     url: string
 }
 
-
-const filters = ["Cars", "Chicken", "Desks", "Lab", "Coke"]
+const filters = ['Cars', 'Chicken', 'Desks', 'Lab', 'Coke']
 
 const listings = [
     {
@@ -183,21 +183,41 @@ const listings = [
 
 const owners = [
     {
+        images: [
+            {
+                url: 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg',
+            },
+        ],
         name: 'Ivan Quon',
         email: 'iquon@uci.edu',
         joined: '2023-10-01',
     },
     {
+        images: [
+            {
+                url: 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg',
+            },
+        ],
         name: 'Celia Chamu',
         email: 'cchamuma@uci.edu',
         joined: '2022-10-01',
     },
     {
+        images: [
+            {
+                url: 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg',
+            },
+        ],
         name: 'Eric Truong',
         email: 'ewtruong@uci.edu',
         joined: '2024-10-01',
     },
     {
+        images: [
+            {
+                url: 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg',
+            },
+        ],
         name: 'Rudy Xie',
         email: 'rudyx@uci.edu',
         joined: '2025-10-01',
@@ -235,7 +255,6 @@ export function fetchListings() {
     return listings
 }
 
-
 export function fetchListingsByOwner(email: string): listingType[] {
     return listings.filter((listing) => listing.owner === email)
 }
@@ -243,7 +262,7 @@ export function fetchListingsByOwner(email: string): listingType[] {
 export function fetchOwnerByEmail(email: string): ownerType | undefined {
     return owners.find((owner) => owner.email === email)
 }
-export function fetchFilters(){
+export function fetchFilters() {
     return filters
 }
 
