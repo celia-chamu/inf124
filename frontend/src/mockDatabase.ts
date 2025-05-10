@@ -32,6 +32,9 @@ export interface image {
     url: string
 }
 
+
+const filters = ["Cars", "Chicken", "Desks", "Lab", "Coke"]
+
 const listings = [
     {
         id: '1',
@@ -205,12 +208,17 @@ export function fetchListings() {
     return listings
 }
 
+
 export function fetchListingsByOwner(email: string): listingType[] {
     return listings.filter((listing) => listing.owner === email)
 }
 
 export function fetchOwnerByEmail(email: string): ownerType | undefined {
     return owners.find((owner) => owner.email === email)
+
+export function fetchFilters(){
+    return filters
+
 }
 
 export function fetchListing(id: string): listingType | undefined {
