@@ -1,14 +1,14 @@
 enum categories {
-    furniture = "Furniture",
-    school = "School",
-    tech = "Tech",
-    other = "Other",
+    furniture = 'Furniture',
+    school = 'School',
+    tech = 'Tech',
+    other = 'Other',
 }
 
 enum condition {
-    preowned = "Pre-Owned",
-    likenew = "Like New",
-    new = "New",
+    preowned = 'Pre-Owned',
+    likenew = 'Like New',
+    new = 'New',
 }
 
 export interface listingType {
@@ -22,6 +22,12 @@ export interface listingType {
     description: string
 }
 
+export interface ownerType {
+    name: string
+    email: string
+    joined: string
+}
+
 export interface image {
     url: string
 }
@@ -32,16 +38,17 @@ const listings = [
         images: [
             {
                 url: 'https://www.ikea.com/us/en/images/products/gullaberg-6-drawer-dresser-white-anchor-unlock-function__1283779_pe932633_s5.jpg?f=xl',
-            },{
+            },
+            {
                 url: 'https://www.ikea.com/us/en/images/products/gullaberg-6-drawer-dresser-white-anchor-unlock-function__1403696_pe969671_s5.jpg?f=xl',
-            }, 
+            },
         ],
         title: 'GULLABERG 6-drawer dresser',
         price: 4.49,
         owner: 'iquon@uci.edu',
         category: categories.furniture,
         condition: condition.likenew,
-        description: "Description 1",
+        description: 'Description 1',
     },
     {
         id: '2',
@@ -55,7 +62,7 @@ const listings = [
         owner: 'iquon@uci.edu',
         category: categories.furniture,
         condition: condition.new,
-        description: "Description 2",
+        description: 'Description 2',
     },
     {
         id: '3',
@@ -69,7 +76,7 @@ const listings = [
         owner: 'iquon@uci.edu',
         category: categories.furniture,
         condition: condition.likenew,
-        description: "Description 3",
+        description: 'Description 3',
     },
     {
         id: '4',
@@ -83,7 +90,7 @@ const listings = [
         owner: 'cchamuma@uci.edu',
         category: categories.furniture,
         condition: condition.preowned,
-        description: "Description 4",
+        description: 'Description 4',
     },
     {
         id: '5',
@@ -97,7 +104,7 @@ const listings = [
         owner: 'cchamuma@uci.edu',
         category: categories.furniture,
         condition: condition.likenew,
-        description: "Description 5",
+        description: 'Description 5',
     },
     {
         id: '6',
@@ -111,7 +118,7 @@ const listings = [
         owner: 'ewtruong@uci.edu',
         category: categories.furniture,
         condition: condition.preowned,
-        description: "Description 6",
+        description: 'Description 6',
     },
     {
         id: '7',
@@ -125,7 +132,7 @@ const listings = [
         owner: 'ewtruong@uci.edu',
         category: categories.furniture,
         condition: condition.likenew,
-        description: "Description 7",
+        description: 'Description 7',
     },
     {
         id: '8',
@@ -139,7 +146,7 @@ const listings = [
         owner: 'ewtruong@uci.edu',
         category: categories.furniture,
         condition: condition.likenew,
-        description: "Description 8",
+        description: 'Description 8',
     },
     {
         id: '9',
@@ -153,7 +160,7 @@ const listings = [
         owner: 'rudyx@uci.edu',
         category: categories.other,
         condition: condition.new,
-        description: "Description 9",
+        description: 'Description 9',
     },
     {
         id: '10',
@@ -167,27 +174,43 @@ const listings = [
         owner: 'rudyx@uci.edu',
         category: categories.furniture,
         condition: condition.likenew,
-        description: "Description 10",
+        description: 'Description 10',
     },
 ]
 
 const owners = [
     {
+        name: 'Ivan Quon',
         email: 'iquon@uci.edu',
+        joined: '2023-10-01',
     },
     {
+        name: 'Celia Chamu',
         email: 'cchamuma@uci.edu',
+        joined: '2022-10-01',
     },
     {
+        name: 'Eric Truong',
         email: 'ewtruong@uci.edu',
+        joined: '2024-10-01',
     },
     {
+        name: 'Rudy Xie',
         email: 'rudyx@uci.edu',
+        joined: '2025-10-01',
     },
 ]
 
 export function fetchListings() {
     return listings
+}
+
+export function fetchListingsByOwner(email: string): listingType[] {
+    return listings.filter((listing) => listing.owner === email)
+}
+
+export function fetchOwnerByEmail(email: string): ownerType | undefined {
+    return owners.find((owner) => owner.email === email)
 }
 
 export function fetchListing(id: string): listingType | undefined {
