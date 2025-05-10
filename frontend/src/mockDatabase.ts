@@ -215,7 +215,7 @@ export function fetchListingsByOwner(email: string): listingType[] {
 
 export function fetchOwnerByEmail(email: string): ownerType | undefined {
     return owners.find((owner) => owner.email === email)
-
+}
 export function fetchFilters(){
     return filters
 
