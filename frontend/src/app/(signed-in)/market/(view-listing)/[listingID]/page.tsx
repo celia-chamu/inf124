@@ -3,23 +3,67 @@
 import ListingCard from '@/components/ListingCard'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchListing } from '@/mockDatabase'
 import { useParams } from 'next/navigation'
 import ListingCarousel from '@/components/ListingCarousel'
 import SellerInfo from '@/components/SellerInfo'
 import ThumbnailCarousel from '@/components/ThumbnailCarousel'
+import { CarouselApi } from '@/components/ui/carousel'
 
 export default function Page() {
     const pageparams = useParams<{ listingID: string }>()
     const listing = fetchListing(pageparams.listingID)
+    const [mainApi, setMainApi] = useState<CarouselApi>()
+    const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>()
+    const [current, setCurrent] = useState(0)
+
+    useEffect(() => {
+        if (!mainApi || !thumbnailApi) {
+            return
+        }
+
+        const handleTopSelect = () => {
+            const selected = mainApi.selectedScrollSnap()
+            setCurrent(selected)
+            thumbnailApi.scrollTo(selected)
+        }
+
+        const handleBottomSelect = () => {
+            const selected = thumbnailApi.selectedScrollSnap()
+            setCurrent(selected)
+            mainApi.scrollTo(selected)
+        }
+
+        mainApi.on('select', handleTopSelect)
+        thumbnailApi.on('select', handleBottomSelect)
+
+        return () => {
+            mainApi.off('select', handleTopSelect)
+            thumbnailApi.off('select', handleBottomSelect)
+        }
+    }, [mainApi, thumbnailApi])
+
+    const handleClick = (index: number) => {
+        if (!mainApi || !thumbnailApi) {
+            return
+        }
+        thumbnailApi.scrollTo(index)
+        mainApi.scrollTo(index)
+        setCurrent(index)
+    }
 
     return (
         <div className="w-full m-0 bg-white shadow-lg rounded-md">
             <div className="flex gap-10">
                 <div className="flex flex-col gap-5 w-full">
-                    <ListingCarousel listingImages={listing?.images!} />
-                    <ThumbnailCarousel listingImages={listing?.images!} />
+                    <ListingCarousel listingImages={listing?.images!} setApi={setMainApi} />
+                    <ThumbnailCarousel
+                        listingImages={listing?.images!}
+                        current={current}
+                        handleClick={handleClick}
+                        setApi={setThumbnailApi}
+                    />
                     <div className="p-5 flex gap-5">
                         <Button variant="ListingZot" className="w-[8vw]">
                             Save
