@@ -1,6 +1,5 @@
 'use client'
 
-import ListingCard from '@/components/ListingCard'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -17,10 +16,18 @@ export default function Page() {
     const [mainApi, setMainApi] = useState<CarouselApi>()
     const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
+    const [index, setIndex] = useState<number>()
 
     useEffect(() => {
         if (!mainApi || !thumbnailApi) {
             return
+        }
+
+        if (index) {
+            thumbnailApi.scrollTo(index)
+            mainApi.scrollTo(index)
+            setCurrent(index)
+            setIndex(undefined)
         }
 
         const handleTopSelect = () => {
@@ -42,10 +49,12 @@ export default function Page() {
             mainApi.off('select', handleTopSelect)
             thumbnailApi.off('select', handleBottomSelect)
         }
-    }, [mainApi, thumbnailApi])
+    }, [mainApi, thumbnailApi, index])
 
     const handleClick = (index: number) => {
         if (!mainApi || !thumbnailApi) {
+            setIndex(index)
+            setCurrent(index)
             return
         }
         thumbnailApi.scrollTo(index)
@@ -57,7 +66,10 @@ export default function Page() {
         <div className="w-full m-0 bg-white shadow-lg rounded-md">
             <div className="flex gap-10">
                 <div className="flex flex-col gap-5 w-full">
-                    <ListingCarousel listingImages={listing?.images!} setApi={setMainApi} />
+                    <ListingCarousel
+                        listingImages={listing?.images!}
+                        setApi={setMainApi}
+                    />
                     <ThumbnailCarousel
                         listingImages={listing?.images!}
                         current={current}

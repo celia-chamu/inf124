@@ -26,7 +26,7 @@ export default function ThumbnailCarousel({
             listingImages.map((image: image, index: number) => (
                 <CarouselItem
                     key={index}
-                    className="relative basis-1/2"
+                    className="relative basis-1/4 shrink"
                     onClick={() => handleClick(index)}
                 >
                     <div className="h-30 overflow-hidden flex aspect-square justify-center">
@@ -37,6 +37,7 @@ export default function ThumbnailCarousel({
                                     : 'h-full w-auto object-contain'
                             }`}
                             src={image.url}
+                            alt={`Thumbnail ${index + 1}`}
                         />
                     </div>
                 </CarouselItem>
