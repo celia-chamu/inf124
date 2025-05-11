@@ -5,6 +5,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { Menu } from "lucide-react"
 
+
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -266,7 +267,7 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={cn("size-7 [&_svg]:size-99", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -278,7 +279,6 @@ function SidebarTrigger({
     </Button>
   )
 }
-
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar()
 
