@@ -51,15 +51,7 @@ export default function NavMenuMobile(){
                         <SidebarGroupLabel>ZotMarket</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                {items.map((item) => (
-                                    <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
+
                                 {/* Conditionally render anchor or button based on whether onClick exists */}
                                 {!session ? (
                                     <SidebarMenuItem key="Sign In">
@@ -70,6 +62,16 @@ export default function NavMenuMobile(){
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ): (
+                                    <>
+                                    {items.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton asChild>
+                                            <a href={item.url}>
+                                                <span>{item.title}</span>
+                                            </a>
+                                        </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
                                     <SidebarMenuItem key="Sign Out">
                                         <SidebarMenuButton asChild>
                                             <button onClick={() => signOut( { callbackUrl: 'http://localhost:3000' } )}>
@@ -77,6 +79,7 @@ export default function NavMenuMobile(){
                                             </button>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
+                                    </>
                                 )}
                             </SidebarMenu>
                         </SidebarGroupContent>
