@@ -63,7 +63,7 @@ export default function AccountSettings() {
                             className="border-b-2 border-gray-400 text-lg w-full mr-4"
                         />
                     ) : (
-                        <p className="text-lg border-b-2 border-gray-400 text-lg w-full mr-4">
+                        <p className="text-lg border-b-2 border-gray-400 w-full mr-4">
                             {seller?.name}
                         </p>
                     )}
@@ -83,7 +83,7 @@ export default function AccountSettings() {
                             className="border-b-2 border-gray-400 text-lg w-full mr-4"
                         />
                     ) : (
-                        <p className="text-lg border-b-2 border-gray-400 text-lg w-full mr-4 ">
+                        <p className="text-lg border-b-2 border-gray-400 w-full mr-4 ">
                             {seller?.email}{' '}
                         </p>
                     )}

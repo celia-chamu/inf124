@@ -49,14 +49,14 @@ function CreateListing() {
                             <input
                                 type="text"
                                 placeholder="Title"
-                                className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full border-black text-xl md:text-xl pl-2"
+                                className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2"
                             />
                             <input
                                 type="text"
                                 placeholder="Price"
-                                className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full border-black text-xl md:text-xl pl-2"
+                                className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2"
                             />
-                            <select className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full border-gray-400 text-xl md:text-xl pl-2">
+                            <select className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2">
                                 <option value="">Category</option>
                                 <option value="Furniture">Furniture</option>
                                 <option value="Clothing">Clothing</option>
@@ -72,7 +72,7 @@ function CreateListing() {
                                 <option value="Beauty">Beauty</option>
                                 <option value="Other">Other</option>
                             </select>
-                            <select className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full border-gray-400 text-xl md:text-xl pl-2">
+                            <select className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2">
                                 <option value="">Condition</option>
                                 <option value="pre-owned">Pre-Owned</option>
                                 <option value="like-new">Like New</option>
