@@ -33,7 +33,7 @@ export default function SellerInfo({ email }: SellerInfoProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="ListingZot" className="w-[8vw]">
+                <Button variant="ListingZot" className="sm:w-[8vw]">
                     View Seller
                 </Button>
             </DialogTrigger>

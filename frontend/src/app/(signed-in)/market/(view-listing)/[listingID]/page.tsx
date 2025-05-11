@@ -64,32 +64,34 @@ export default function Page() {
 
     return (
         <div className="w-full m-0 bg-white shadow-lg rounded-md">
-            <div className="flex gap-10">
+            <div className="flex lg:flex-row flex-col gap-10">
                 <div className="flex flex-col gap-5 w-full">
                     <ListingCarousel
                         listingImages={listing?.images!}
                         setApi={setMainApi}
                     />
-                    <ThumbnailCarousel
-                        listingImages={listing?.images!}
-                        current={current}
-                        handleClick={handleClick}
-                        setApi={setThumbnailApi}
-                    />
+                    <div className="hidden lg:block">
+                        <ThumbnailCarousel
+                            listingImages={listing?.images!}
+                            current={current}
+                            handleClick={handleClick}
+                            setApi={setThumbnailApi}
+                        />
+                    </div>
                     <div className="p-5 flex gap-5">
-                        <Button variant="ListingZot" className="w-[8vw]">
+                        <Button variant="ListingZot" className="lg:w-[8vw] w-[24vw]">
                             Save
                         </Button>
-                        <Button variant="ListingZot" className="w-[8vw]">
+                        <Button variant="ListingZot" className="lg:w-[8vw] w-[24vw]">
                             Report
                         </Button>
-                        <Button variant="ListingZot" className="w-[8vw]">
+                        <Button variant="ListingZot" className="lg:w-[8vw] w-[24vw]">
                             Share
                         </Button>
                     </div>
                 </div>
 
-                <div className="bg-(--sidebar-button-background) rounded-sm p-10 pb-25 h-full w-4/10 flex flex-col gap-2">
+                <div className="bg-(--sidebar-button-background) rounded-sm p-10 pb-25 h-full lg:w-4/10 w-full flex flex-col gap-2">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">{listing?.title}</h1>
                         <p className="text-xl">${listing?.price}</p>
