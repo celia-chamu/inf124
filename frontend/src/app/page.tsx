@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 
 export default function Home() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-200 flex items-center justify-center bg-background">
             <div className="rounded-xl border border-border bg-white shadow-xl p-10 max-w-md w-full text-center">
                 <h1 className="text-2xl font-bold text-[#004AAD] mb-4">
                     Welcome to ZotMarket!
