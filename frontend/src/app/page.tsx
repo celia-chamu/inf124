@@ -12,11 +12,8 @@ export default function Home() {
                     This is the unofficial UCI marketplace for students to sell,
                     trade or give away their old stuff <br />
                     <br />
-                    Sign into google above to continue, or explore as a guest.
+                    Sign into google above to continue
                 </p>
-                <Link href="/market">
-                    <Button variant="zot">Continue as Guest</Button>
-                </Link>
             </div>
         </div>
     )
