@@ -1,6 +1,3 @@
-
-
-
 enum categories {
     furniture = 'Furniture',
     school = 'School',
@@ -35,8 +32,6 @@ export interface ownerType {
 export interface image {
     url: string
 }
-
-
 
 const filters = ['Cars', 'Chicken', 'Desks', 'Lab', 'Coke']
 
@@ -237,71 +232,100 @@ const owners = [
 
 const messages = [
     {
-        sender: "iquon@uci.edu",
-        receiver: "ewtruong@uci.edu",
-        messages: [{
-            sender: "iquon@uci.edu" ,
-            text: "Hi im interested",
-        }],
-        messageId: 1
-    }, 
+        sender: 'iquon@uci.edu',
+        receiver: 'ewtruong@uci.edu',
+        messages: [
+            {
+                sender: 'iquon@uci.edu',
+                text: 'Hi im interested',
+            },
+        ],
+        messageId: 1,
+    },
     {
-        sender: "iquon@uci.edu",
-        receiver: "rudyx@uci.edu",
-        messages: [{
-            sender: "iquon@uci.edu" ,
-            text: "Hi im interested",
+        sender: 'iquon@uci.edu',
+        receiver: 'rudyx@uci.edu',
+        messages: [
+            {
+                sender: 'iquon@uci.edu',
+                text: 'Hi im interested',
             },
             {
-                sender: "rudyx@uci.edu",
-                text:"Not for sale buddy"
-            }
+                sender: 'rudyx@uci.edu',
+                text: 'Not for sale buddy',
+            },
         ],
-        messageId: 2
-    }, 
+        messageId: 2,
+    },
     {
-        sender: "rudyx@uci.edu",
-        receiver: "iquon@uci.edu",
-        messages: 
-        [
+        sender: 'rudyx@uci.edu',
+        receiver: 'iquon@uci.edu',
+        messages: [
             {
-                sender: "rudyx@uci.edu" ,
-                text: "Hi im interested",
+                sender: 'rudyx@uci.edu',
+                text: 'Hi im interested',
             },
             {
-                sender: "iquon@uci.edu",
-                text:"Not for sale buddy"
-            }
+                sender: 'iquon@uci.edu',
+                text: 'Not for sale buddy',
+            },
         ],
-        messageId: 3
-    }, 
+        messageId: 3,
+    },
+    {
+        sender: 'cchamuma@uci.edu',
+        receiver: 'rudyx@uci.edu',
+        messages: [
+            {
+                sender: 'cchamuma@uci.edu',
+                text: 'Hey, still available?',
+            },
+        ],
+        messageId: 4,
+    },
+    {
+        sender: 'rudyx@uci.edu',
+        receiver: 'cchamuma@uci.edu',
+        messages: [
+            {
+                sender: 'rudyx@uci.edu',
+                text: 'Yes, still up for grabs!',
+            },
+            {
+                sender: 'cchamuma@uci.edu',
+                text: "Sweet. I'll take it.",
+            },
+        ],
+        messageId: 5,
+    },
 ]
 
-export function fetchMessages(mID: number){
-    return messages.find(msg => msg.messageId === mID)
+export function fetchMessages(mID: number) {
+    return messages.find((msg) => msg.messageId === mID)
 }
 
-export function addToMessages(messageId:number, message:{reciever:string, sender:string, text:string}){
-
-     const messageIndex = messages.findIndex(msg => msg.messageId === messageId);
-     if (messageIndex != -1){
+export function addToMessages(
+    messageId: number,
+    message: { reciever: string; sender: string; text: string }
+) {
+    const messageIndex = messages.findIndex(
+        (msg) => msg.messageId === messageId
+    )
+    if (messageIndex != -1) {
         messages[messageIndex].messages.push({
             sender: message.sender,
-            text :message.text
-        }
-        )
-     }
-     else{
+            text: message.text,
+        })
+    } else {
         const newMessage = {
             sender: message.sender,
-            receiver:message.reciever,
+            receiver: message.reciever,
             messages: [{ sender: message.sender, text: message.text }],
             messageId,
-        };
+        }
         messages.push(newMessage)
-     }
-     console.log(messages[messageIndex].messages)
-     
+    }
+    console.log(messages[messageIndex].messages)
 }
 
 export function fetchListings() {
