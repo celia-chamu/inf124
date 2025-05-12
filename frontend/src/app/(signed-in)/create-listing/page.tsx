@@ -18,7 +18,7 @@ function CreateListing() {
     return (
         <div className="w-full flex flex-col">
             <div className="flex px-4 pl-0 lg:pl-[5vw] lg:ml-[6vw]">
-                <div className="bg-(--sidebar-background) shadow-lg w-full md:w-[70vw] lg:w-[60vw] xl:w-[65vw] p-6 md:p-12 rounded-md">
+                <div className="bg-(--sidebar-background) shadow-lg w-[91vw] md:w-[70vw] lg:w-[60vw] xl:w-[65vw] p-6 md:p-12 rounded-md">
                     <div className="flex flex-col md:flex-row gap-8">
                         <div className="flex flex-col items-center justify-center gap-2 w-full md:w-auto">
                             {preview ? (
@@ -45,7 +45,7 @@ function CreateListing() {
                                 />
                             </label>
                         </div>
-                        <div className="flex flex-col gap-4 md:gap-12 w-full">
+                        <div className="flex flex-col items-center gap-4 md:gap-12 w-full">
                             <input
                                 type="text"
                                 placeholder="Title"
@@ -85,7 +85,7 @@ function CreateListing() {
                         placeholder="Description"
                         className="bg-white rounded-lg border border-gray-400 text-xl md:text-xl pl-2 mt-8 w-full h-[20vw] md:h-[10vw]"
                     />
-                    <div className="flex justify-end">
+                    <div className="flex justify-center lg:justify-end">
                         <Link href="/market">
                             <Button
                                 variant="ListingZot"
