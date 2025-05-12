@@ -3,7 +3,6 @@
 import './globals.css'
 import Header from '@/components/Header'
 import { useEffect, useState } from 'react'
-import MobileHeader from '@/components/MobileHeader'
 import { SessionProvider } from 'next-auth/react'
 
 export default function RootLayout({ children }: propTypes) {
@@ -22,7 +21,7 @@ export default function RootLayout({ children }: propTypes) {
         <html className="overscroll-none">
             <body className="min-h-screen overflow-y-scroll overscroll-x-none">
                 <SessionProvider>
-                    {screenWidth >= 768 ? <Header /> : <MobileHeader />}
+                    <Header />
                 </SessionProvider>
                 {children}
             </body>

@@ -2,7 +2,6 @@
 
 import NavMenu from '@/components/NavMenu'
 import '@/app/globals.css'
-import NavMenuMobile from '@/components/NavMenuMobile'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
 import { useState, useEffect } from 'react'
@@ -23,7 +22,7 @@ function Layout({ children }: propTypes) {
         <div>
             <SessionProvider>
                 <SidebarProvider>
-                    {screenWidth >= 768 ? <NavMenu /> : <NavMenuMobile />}
+                    <NavMenu />
                     <div className="flex justify-center grow m-4">
                         {children}
                     </div>

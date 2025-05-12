@@ -8,7 +8,6 @@ import Link from 'next/link'
 function Inbox() {
     const [view, setView] = useState('buyers')
     const { data: session } = useSession()
-
     const messages = useMemo(() => {
         if (!session) {
             return <div />

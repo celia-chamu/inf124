@@ -23,7 +23,7 @@ export default function ListingCarousel({
         () =>
             listingImages.map((image: image, index: number) => (
                 <CarouselItem key={index}>
-                    <div className="h-140 max-w-[55vw] overflow-hidden flex justify-center">
+                    <div className="md:h-140 max-w-[55vw] overflow-hidden flex justify-center">
                         <img
                             src={image.url}
                             className="h-full w-auto object-contain"
