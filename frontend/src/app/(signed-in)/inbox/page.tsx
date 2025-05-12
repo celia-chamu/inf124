@@ -50,7 +50,7 @@ function Inbox() {
 
     return (
         <div className="flex flex-col w-full">
-            <div className="bg-gray-500 mt-4 p-4 gap-8 flex items-center">
+            <div className="bg-(--sidebar-button-background) rounded-sm mt-4 p-4 gap-8 flex items-center">
                 <Button
                     className="rounded-2x1 cursor-pointer"
                     onClick={() => setView('buyers')}
@@ -67,7 +67,9 @@ function Inbox() {
                 </Button>
             </div>
 
-            <div className="bg-gray-500 mt-4 p-8 h-180">{messages}</div>
+            <div className="bg-(--sidebar-button-background) rounded-sm mt-4 p-8 h-180">
+                {messages}
+            </div>
         </div>
     )
 }
