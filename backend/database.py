@@ -1,6 +1,5 @@
 import datetime
 import mysql.connector
-import json
 
 def db_connection():
     return mysql.connector.connect(
@@ -12,7 +11,7 @@ def db_connection():
     )
 
 
-def add_user(uci_net_id: str,reputation: float,join_date: datetime.datetime,first_name: str,last_name: str,profile_pic: bytes) -> bool:
+def add_user(uci_net_id: str,reputation: float,join_date: datetime.datetime,first_name: str,last_name: str,profile_pic: str) -> bool:
 
     #Connect to database
     conn = db_connection()
@@ -27,7 +26,7 @@ def add_user(uci_net_id: str,reputation: float,join_date: datetime.datetime,firs
     values = (
         uci_net_id,
         reputation,
-        join_date.timestamp(),  # converts datetime to float
+        join_date,  # converts datetime to float
         first_name,
         last_name,
         profile_pic
@@ -47,15 +46,15 @@ def add_user(uci_net_id: str,reputation: float,join_date: datetime.datetime,firs
         conn.close()
 
 
-def add_listing(id: int,seller: str,title: str,price: float,category: str,item_condition: str,item_description: str,created_at: datetime.datetime, item_picture:str) -> bool:
+def add_listing(seller: str,title: str,price: float,category: str,item_condition: str,item_description: str,created_at: datetime.datetime, item_picture:str) -> bool:
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-        INSERT INTO listings(id, seller, title, price, category, item_condition, item_description, create_at, item_picture)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO listings(seller, title, price, category, item_condition, item_description, create_at, item_picture)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
-    values = (id, seller, title, price, category, item_condition, item_description, created_at.timestamp(), item_picture)
+    values = ( seller, title, price, category, item_condition, item_description, created_at, item_picture)
 
     try:
         cursor.execute(statement, values)

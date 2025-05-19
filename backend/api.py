@@ -13,6 +13,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class User(BaseModel):
+    uci_net_id:str
+    reputation:float
+    join_date:datetime
+    first_name:str
+    last_name:str
+    profile_pic:str
+
 class Listing(BaseModel):
     seller:str
     title:str
@@ -29,5 +37,6 @@ async def read_root():
 
 @app.post("/create-listing", response_model=Listing)
 def create_listing(listing:Listing):
+    print(listing)
     database.add_listing(listing.seller, listing.title, listing.price, listing.category, listing.item_condition, listing.item_description, listing.created_at, listing.item_picture)
-    return {"content":listing}
+    return listing
