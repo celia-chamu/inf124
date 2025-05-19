@@ -2,3 +2,5 @@ fastapi
 uvicorn
 pydantic
 mysql
+axios
+fastapi[standard]

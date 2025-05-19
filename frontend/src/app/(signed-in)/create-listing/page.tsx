@@ -5,6 +5,11 @@ import { use, useState } from 'react'
 
 function CreateListing() {
     const [preview, setPreview] = useState<string | null>(null)
+    const [title, setTitle] = useState("")
+    const [price, setPrice] = useState("")
+    const [category, setCategory] = useState("")
+    const [condition, setCondition] = useState("")
+    const [description, setDescription] = useState("")
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -14,6 +19,16 @@ function CreateListing() {
             reader.readAsDataURL(file)
         }
     }
+
+    const handlePriceChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        if (/^\d*\.?\d{0,2}$/.test(value)) {
+            setPrice(value)
+        }
+    }
+
+
+    
 
     return (
         <div className="w-full flex flex-col">
@@ -49,15 +64,27 @@ function CreateListing() {
                             <input
                                 type="text"
                                 placeholder="Title"
+                                required
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                                 className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2"
                             />
                             <input
                                 type="text"
+                                inputMode='decimal'
+                                required
+                                step="0.01"
                                 placeholder="Price"
+                                value={price}
+                                onChange={handlePriceChange}
                                 className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2"
                             />
-                            <select className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2">
-                                <option value="">Category</option>
+                            <select 
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                required
+                                className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2">
+                                <option value="Category">Category</option>
                                 <option value="Furniture">Furniture</option>
                                 <option value="Clothing">Clothing</option>
                                 <option value="Shoes">Shoes</option>
@@ -72,7 +99,10 @@ function CreateListing() {
                                 <option value="Beauty">Beauty</option>
                                 <option value="Other">Other</option>
                             </select>
-                            <select className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2">
+                            <select 
+                                value={condition}
+                                onChange={(e) => setCondition(e.target.value)}
+                                className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2">
                                 <option value="">Condition</option>
                                 <option value="pre-owned">Pre-Owned</option>
                                 <option value="like-new">Like New</option>
@@ -82,6 +112,8 @@ function CreateListing() {
                     </div>
                     {/* Change vw if you want description box bigger ex. h-[20vw] -> h-[25vw]*/}
                     <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                         placeholder="Description"
                         className="bg-white rounded-lg border border-gray-400 text-xl md:text-xl pl-2 mt-8 w-full h-[20vw] md:h-[10vw]"
                     />
