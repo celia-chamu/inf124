@@ -1,6 +1,7 @@
 import datetime
 import mysql.connector
 
+
 def db_connection():
     return mysql.connector.connect(
         host='zotmarket-database.mysql.database.azure.com',
