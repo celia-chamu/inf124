@@ -101,12 +101,34 @@ def add_conversation(conversation_id:int, user1_net_id:str, user2_net_id:str, st
     values = (conversation_id, user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
 
     try:
-        cursor.execute(statement,values)
+        cursor.execute(statement, values)
         conn.commit()
         return True
     except mysql.connector.Error as err:
         print(f"Error {err}")
         return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_user(uci_net_id:str):
+    conn = db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    statement = """
+                SELECT *
+                FROM users
+                WHERE uci_net_id = %s
+    """
+    
+    try:
+        cursor.execute(statement, (uci_net_id, ))
+        user = cursor.fetchone()
+        return user
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
     finally:
         cursor.close()
         conn.close()
