@@ -1,3 +1,6 @@
+# uvicorn api:app --reload
+# http://127.0.0.1:8000/docs#/
+
 from fastapi import FastAPI
 import database
 from pydantic import BaseModel
@@ -7,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000"],  # React dev server, for example
+    allow_origins=["http://localhost:8000"], # React dev server, for example
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -31,12 +34,47 @@ class Listing(BaseModel):
     created_at:datetime
     item_picture:str
 
+class Message(BaseModel):
+    message_id:int
+    conversation_id:int
+    sender:str
+    content:str
+    sent_at:datetime
+    has_read:bool
+
+class Conversation(BaseModel):
+    conversation_id:int
+    user1_net_id:str
+    user2_net_id:str
+    start_at:datetime
+    last_message_at:datetime
+    last_message_preview:datetime
+    inbox_type:str
+
 @app.get("/")
 async def read_root():
     return {"message": "Hello, world!"}
+
+@app.post("/create-user", response_model=User)
+def create_user(user:User):
+    print(user)
+    database.add_user(user.uci_net_id, user.reputation, user.join_date, user.first_name, user.last_name, user.profile_pic)
+    return user
 
 @app.post("/create-listing", response_model=Listing)
 def create_listing(listing:Listing):
     print(listing)
     database.add_listing(listing.seller, listing.title, listing.price, listing.category, listing.item_condition, listing.item_description, listing.created_at, listing.item_picture)
     return listing
+
+@app.post("/create-message", response_model=Message)
+def create_message(message:Message):
+    print(message)
+    database.add_message(message.message_id, message.conversation_id, message.sender, message.content, message.sent_at, message.has_read)
+    return message
+
+@app.post("/create-conversation", response_model=Conversation)
+def create_conversation(conversation:Conversation):
+    print(conversation)
+    database.add_conversation(conversation.conversation_id, conversation.user1_net_id, conversation.user2_net_id, conversation.start_at, conversation.last_message_at, conversation.last_message_preview, conversation.inbox_type)
+    return conversation
