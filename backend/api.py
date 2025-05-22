@@ -1,7 +1,8 @@
 # uvicorn api:app --reload
 # http://127.0.0.1:8000/docs#/
 
-from fastapi import FastAPI, HTTPException
+from typing import Optional
+from fastapi import FastAPI, HTTPException, Query
 import database
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -86,3 +87,19 @@ def read_user(uci_net_id:str):
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+
+@app.get("/fetch-listings", response_model=list[Listing])
+def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing in categories
+    listings = database.fetch_listings()
+    results = [Listing(
+        id = row[0],
+        seller = row[1],
+        title= row[2],
+        price= row[3],
+        category= row[4],
+        item_condition= row[5],
+        item_description= row[6],
+        created_at= row[7],
+        item_picture= row[8],
+    ) for row in listings]
+    return results
