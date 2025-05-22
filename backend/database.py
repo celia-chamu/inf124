@@ -68,15 +68,15 @@ def add_listing(seller:str, title:str, price:float, category:str, item_condition
         conn.close()
 
 
-def add_message(message_id:int, conversation_id:int, sender:str, content:str, sent_at:datetime, has_read:bool) -> bool:
+def add_message(conversation_id:int, sender:str, content:str, sent_at:datetime, has_read:bool) -> bool:
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-        INSERT INTO messages(message_id, conversation_id, sender, content, sent_at, has_read)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO messages(conversation_id, sender, content, sent_at, has_read)
+        VALUES (%s, %s, %s, %s, %s)
     """
-    values = (message_id, conversation_id, sender, content, sent_at, has_read)
+    values = (conversation_id, sender, content, sent_at, has_read)
 
     try:
         cursor.execute(statement, values)
@@ -90,15 +90,15 @@ def add_message(message_id:int, conversation_id:int, sender:str, content:str, se
         conn.close()
 
 
-def add_conversation(conversation_id:int, user1_net_id:str, user2_net_id:str, start_at:datetime, last_message_at:datetime, last_message_preview:datetime, inbox_type:str):
+def add_conversation(user1_net_id:str, user2_net_id:str, start_at:datetime, last_message_at:datetime, last_message_preview:datetime, inbox_type:str):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-                INSERT INTO conversations(conversation_id, user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO conversations(user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
+                VALUES (%s, %s, %s, %s, %s, %s)
     """
-    values = (conversation_id, user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
+    values = (user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
 
     try:
         cursor.execute(statement, values)
