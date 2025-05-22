@@ -51,7 +51,7 @@ def add_listing(seller:str, title:str, price:float, category:str, item_condition
     cursor = conn.cursor()
 
     statement = """
-        INSERT INTO listings(seller, title, price, category, item_condition, item_description, create_at, item_picture)
+        INSERT INTO listings(seller, title, price, category, item_condition, item_description, created_at, item_picture)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = ( seller, title, price, category, item_condition, item_description, created_at, item_picture)
@@ -126,6 +126,47 @@ def get_user(uci_net_id:str):
         cursor.execute(statement, (uci_net_id, ))
         user = cursor.fetchone()
         return user
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_listings():
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+                SELECT *
+                FROM listings
+    """
+
+    try:
+        cursor.execute(statement) 
+        listings = cursor.fetchall()
+        return listings
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_listings_matching(categories:list[str]):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+                SELECT *
+                FROM listings
+                WHERE category = %s
+    """
+
+    try:
+        cursor.execute(statement, categories) 
+        listings = cursor.fetchall()
+        return listings
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return None
