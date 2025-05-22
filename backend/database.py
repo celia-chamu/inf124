@@ -152,3 +152,24 @@ def fetch_listings():
     finally:
         cursor.close()
         conn.close()
+
+def fetch_listings_matching(categories:list[str]):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+                SELECT *
+                FROM listings
+                WHERE category = %s
+    """
+
+    try:
+        cursor.execute(statement, categories) 
+        listings = cursor.fetchall()
+        return listings
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
+    finally:
+        cursor.close()
+        conn.close()
