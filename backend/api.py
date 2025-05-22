@@ -2,7 +2,7 @@
 # http://127.0.0.1:8000/docs#/
 
 from typing import Optional
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 import database
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,7 +11,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000"], # React dev server, for example
+    allow_origins=["http://localhost:3000"], # React dev server, for example
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -62,6 +62,13 @@ def create_user(user:User):
     database.add_user(user.uci_net_id, user.reputation, user.join_date, user.first_name, user.last_name, user.profile_pic)
     return user
 
+# @app.post("/create-user")
+# async def create_user(user: User, request: Request):
+#     body = await request.json()
+#     print("Raw request JSON:", body)
+#     print(user)
+#     return user
+
 @app.post("/create-listing", response_model=Listing)
 def create_listing(listing:Listing):
     print(listing)
@@ -88,6 +95,7 @@ def read_user(uci_net_id:str):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+
 @app.get("/fetch-listings", response_model=list[Listing])
 def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing in categories
     listings = database.fetch_listings()
@@ -103,6 +111,8 @@ def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing
         item_picture= row[8],
     ) for row in listings]
     return results
+
+
 
 @app.get("/fetch-listings-matching", response_model=list[Listing])
 def fetch_listings(categories:Optional[list[str]] = Query(None)):

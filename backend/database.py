@@ -133,6 +133,7 @@ def get_user(uci_net_id:str):
         cursor.close()
         conn.close()
 
+
 def fetch_listings():
     conn = db_connection()
     cursor = conn.cursor()
