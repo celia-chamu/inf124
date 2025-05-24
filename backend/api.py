@@ -36,7 +36,6 @@ class Listing(BaseModel):
     item_picture:str
 
 class Message(BaseModel):
-    message_id:int
     conversation_id:int
     sender:str
     content:str
@@ -44,13 +43,11 @@ class Message(BaseModel):
     has_read:bool
 
 class Conversation(BaseModel):
-    conversation_id:int
-    user1_net_id:str
-    user2_net_id:str
-    start_at:datetime
-    last_message_at:datetime
-    last_message_preview:datetime
-    inbox_type:str
+    seller:str
+    buyer:str
+    started_at:datetime
+    last_message_at:Optional[datetime]
+    last_message_preview:Optional[datetime]
 
 @app.get("/")
 async def read_root():
@@ -62,13 +59,6 @@ def create_user(user:User):
     database.add_user(user.uci_net_id, user.reputation, user.join_date, user.first_name, user.last_name, user.profile_pic)
     return user
 
-# @app.post("/create-user")
-# async def create_user(user: User, request: Request):
-#     body = await request.json()
-#     print("Raw request JSON:", body)
-#     print(user)
-#     return user
-
 @app.post("/create-listing", response_model=Listing)
 def create_listing(listing:Listing):
     print(listing)
@@ -78,13 +68,13 @@ def create_listing(listing:Listing):
 @app.post("/create-message", response_model=Message)
 def create_message(message:Message):
     print(message)
-    database.add_message(message.message_id, message.conversation_id, message.sender, message.content, message.sent_at, message.has_read)
+    database.add_message(message.conversation_id, message.sender, message.content, message.sent_at, message.has_read)
     return message
 
 @app.post("/create-conversation", response_model=Conversation)
 def create_conversation(conversation:Conversation):
     print(conversation)
-    database.add_conversation(conversation.conversation_id, conversation.user1_net_id, conversation.user2_net_id, conversation.start_at, conversation.last_message_at, conversation.last_message_preview, conversation.inbox_type)
+    database.add_conversation(conversation.seller, conversation.buyer, conversation.started_at, conversation.last_message_at, conversation.last_message_preview)
     return conversation
 
 @app.get("/read-user", response_model=User)
@@ -95,6 +85,12 @@ def read_user(uci_net_id:str):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@app.get("/conversation-exist")
+def conversation_exist(seller:str, buyer:str):
+    conversation = database.get_conversation(seller, buyer)
+    if not conversation:
+        raise HTTPException(status_code=404, detail="Conversation not Found")
+    return conversation
 
 @app.get("/fetch-listings", response_model=list[Listing])
 def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing in categories

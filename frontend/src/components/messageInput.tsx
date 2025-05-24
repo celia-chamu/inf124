@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from './ui/button'
-
+import api from '@/app/api/api'
 interface MessageInputProps {
     handleSendMessage: (newMessage: string) => void
 }
@@ -18,6 +18,11 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
         if (text.trim() === '') return // Don't send empty messages
 
         console.log('Message Sent: ', text)
+
+        // await api.get("/conversation-exist", {
+        //     params:{user1: }
+        // })
+
 
         // Call the parent function passed as a prop
         handleSendMessage(text)

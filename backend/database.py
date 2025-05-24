@@ -90,15 +90,15 @@ def add_message(conversation_id:int, sender:str, content:str, sent_at:datetime, 
         conn.close()
 
 
-def add_conversation(user1_net_id:str, user2_net_id:str, start_at:datetime, last_message_at:datetime, last_message_preview:datetime, inbox_type:str):
+def add_conversation(seller:str, buyer:str, started_at:datetime, last_message_at:datetime, last_message_preview:datetime):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-                INSERT INTO conversations(user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO conversations(seller, buyer, started_at, last_message_at, last_message_preview)
+                VALUES (%s, %s, %s, %s, %s)
     """
-    values = (user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
+    values = (seller, buyer, started_at, last_message_at, last_message_preview)
 
     try:
         cursor.execute(statement, values)
@@ -111,6 +111,27 @@ def add_conversation(user1_net_id:str, user2_net_id:str, start_at:datetime, last
         cursor.close()
         conn.close()
 
+def get_conversation(seller:str, buyer:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+                SELECT *
+                FROM conversation
+                WHERE (seller = %s and buyer = %s)
+                OR (seller = %s and buyer = %s) 
+    """
+
+    values = (seller, buyer, buyer, seller)
+    try:
+        cursor.execute(statement, values)
+        conn.commit()
+    except mysql.connector.Error as err:
+        print(f"Error{err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
 
 def get_user(uci_net_id:str):
     conn = db_connection()
