@@ -93,35 +93,20 @@ def conversation_exist(seller:str, buyer:str):
     return conversation
 
 @app.get("/fetch-listings", response_model=list[Listing])
-def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing in categories
-    listings = database.fetch_listings()
-    results = [Listing(
-        id = row[0],
-        seller = row[1],
-        title= row[2],
-        price= row[3],
-        category= row[4],
-        item_condition= row[5],
-        item_description= row[6],
-        created_at= row[7],
-        item_picture= row[8],
-    ) for row in listings]
-    return results
-
-
-
-@app.get("/fetch-listings-matching", response_model=list[Listing])
-def fetch_listings(categories:Optional[list[str]] = Query(None)):
-    listings = database.fetch_listings_matching(categories)
-    results = [Listing(
-        id = row[0],
-        seller = row[1],
-        title= row[2],
-        price= row[3],
-        category= row[4],
-        item_condition= row[5],
-        item_description= row[6],
-        created_at= row[7],
-        item_picture= row[8],
-    ) for row in listings]
+def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] = Query(None)): # categories:Optional[list[str]] = Query(None) For passing in categories
+    listings = database.fetch_listings(search, category)
+    if listings:
+        results = [Listing(
+            id = row[0],
+            seller = row[1],
+            title= row[2],
+            price= row[3],
+            category= row[4],
+            item_condition= row[5],
+            item_description= row[6],
+            created_at= row[7],
+            item_picture= row[8],
+        ) for row in listings]
+    else:
+        results = []
     return results

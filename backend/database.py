@@ -154,39 +154,28 @@ def get_user(uci_net_id:str):
         cursor.close()
         conn.close()
 
-
-def fetch_listings():
+def fetch_listings(search: str | None, category: str | None):
     conn = db_connection()
     cursor = conn.cursor()
 
+    conditions = {"search": "title LIKE %s", "category": "category = %s"}
+    clauses = {"search": "%%%s%%" % (search), "category": category}
+    
     statement = """
                 SELECT *
                 FROM listings
     """
+    if (search or category):
+        statement += " WHERE "
+        if (search and category):
+            statement += conditions["search"] + " AND " + conditions["category"]
+        else:
+            statement += conditions["search"] if search else conditions["category"]
+
+    filters = tuple(clauses[x] for (x, y) in [("search", search), ("category", category)] if y)
 
     try:
-        cursor.execute(statement) 
-        listings = cursor.fetchall()
-        return listings
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        return None
-    finally:
-        cursor.close()
-        conn.close()
-
-def fetch_listings_matching(categories:list[str]):
-    conn = db_connection()
-    cursor = conn.cursor()
-
-    statement = """
-                SELECT *
-                FROM listings
-                WHERE category = %s
-    """
-
-    try:
-        cursor.execute(statement, categories) 
+        cursor.execute(statement, filters) 
         listings = cursor.fetchall()
         return listings
     except mysql.connector.Error as err:
