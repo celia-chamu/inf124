@@ -43,11 +43,12 @@ class Message(BaseModel):
     has_read:bool
 
 class Conversation(BaseModel):
+    conversation_id:int
     seller:str
     buyer:str
     started_at:datetime
     last_message_at:Optional[datetime]
-    last_message_preview:Optional[datetime]
+    last_message_preview:Optional[str]
 
 @app.get("/")
 async def read_root():
@@ -91,6 +92,21 @@ def conversation_exist(seller:str, buyer:str):
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not Found")
     return conversation
+
+@app.get("/fetch-conversations", response_model=list[Conversation])
+def fetch_conversations(user:str, type:str):
+    conversation = database.find_all_conversation(user, type)
+    results = [Conversation(
+        conversation_id = row[0],
+        seller = row[1],
+        buyer = row[2],
+        started_at = row[3],
+        last_message_at = row[4],
+        last_message_preview = row[5]
+    ) for row in conversation]
+    if not results:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return results
 
 @app.get("/fetch-listings", response_model=list[Listing])
 def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing in categories

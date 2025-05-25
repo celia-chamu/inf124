@@ -111,21 +111,55 @@ def add_conversation(seller:str, buyer:str, started_at:datetime, last_message_at
         cursor.close()
         conn.close()
 
+def find_all_conversation(user:str, type:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    if type == "buyer":
+        statement = """
+                    SELECT *
+                    FROM conversations
+                    WHERE (buyer = %s)
+                    ORDER BY last_message_at DESC
+        """
+    else:
+        statement = """
+                    SELECT *
+                    FROM conversations
+                    WHERE (seller = %s)
+                    ORDER BY last_message_at DESC
+        """
+    values = (user,)
+    print(values)
+
+    try:
+        cursor.execute(statement,values)
+        conversations = cursor.fetchall()
+        return conversations
+    except mysql.connector.Error as error:
+        print(f"Error:{error}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
 def get_conversation(seller:str, buyer:str):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
                 SELECT *
-                FROM conversation
-                WHERE (seller = %s and buyer = %s)
-                OR (seller = %s and buyer = %s) 
+                FROM conversations
+                WHERE ((seller = %s and buyer = %s)
+                OR (seller = %s and buyer = %s))
     """
 
     values = (seller, buyer, buyer, seller)
     try:
         cursor.execute(statement, values)
-        conn.commit()
+        conversation = cursor.fetchall()
+        return conversation
     except mysql.connector.Error as err:
         print(f"Error{err}")
         return False
