@@ -87,7 +87,7 @@ def create_conversation(conversation:Conversation):
     database.add_conversation(conversation.conversation_id, conversation.user1_net_id, conversation.user2_net_id, conversation.start_at, conversation.last_message_at, conversation.last_message_preview, conversation.inbox_type)
     return conversation
 
-@app.get("/read-user", response_model=User)
+@app.get("/check-user", response_model=User)
 def read_user(uci_net_id:str):
     print(uci_net_id)
     user = database.get_user(uci_net_id)
