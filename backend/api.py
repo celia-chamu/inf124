@@ -36,7 +36,6 @@ class Listing(BaseModel):
     item_picture:str
 
 class Message(BaseModel):
-    message_id:int
     conversation_id:int
     sender:str
     content:str
@@ -45,12 +44,11 @@ class Message(BaseModel):
 
 class Conversation(BaseModel):
     conversation_id:int
-    user1_net_id:str
-    user2_net_id:str
-    start_at:datetime
-    last_message_at:datetime
-    last_message_preview:datetime
-    inbox_type:str
+    seller:str
+    buyer:str
+    started_at:datetime
+    last_message_at:Optional[datetime]
+    last_message_preview:Optional[str]
 
 @app.get("/")
 async def read_root():
@@ -62,13 +60,6 @@ def create_user(user:User):
     database.add_user(user.uci_net_id, user.reputation, user.join_date, user.first_name, user.last_name, user.profile_pic)
     return user
 
-# @app.post("/create-user")
-# async def create_user(user: User, request: Request):
-#     body = await request.json()
-#     print("Raw request JSON:", body)
-#     print(user)
-#     return user
-
 @app.post("/create-listing", response_model=Listing)
 def create_listing(listing:Listing):
     print(listing)
@@ -78,13 +69,13 @@ def create_listing(listing:Listing):
 @app.post("/create-message", response_model=Message)
 def create_message(message:Message):
     print(message)
-    database.add_message(message.message_id, message.conversation_id, message.sender, message.content, message.sent_at, message.has_read)
+    database.add_message(message.conversation_id, message.sender, message.content, message.sent_at, message.has_read)
     return message
 
 @app.post("/create-conversation", response_model=Conversation)
 def create_conversation(conversation:Conversation):
     print(conversation)
-    database.add_conversation(conversation.conversation_id, conversation.user1_net_id, conversation.user2_net_id, conversation.start_at, conversation.last_message_at, conversation.last_message_preview, conversation.inbox_type)
+    database.add_conversation(conversation.seller, conversation.buyer, conversation.started_at, conversation.last_message_at, conversation.last_message_preview)
     return conversation
 
 @app.get("/check-user", response_model=User)
@@ -95,37 +86,50 @@ def read_user(uci_net_id:str):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@app.get("/conversation-exist")
+def conversation_exist(seller:str, buyer:str):
+    conversation = database.get_conversation(seller, buyer)
+    if not conversation:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return conversation
+
+@app.get("/fetch-conversations", response_model=list[Conversation])
+def fetch_conversations(user:str, type:str):
+    conversation = database.find_all_conversation(user, type)
+    results = [Conversation(
+        conversation_id = row[0],
+        seller = row[1],
+        buyer = row[2],
+        started_at = row[3],
+        last_message_at = row[4],
+        last_message_preview = row[5]
+    ) for row in conversation]
+    if not results:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return results
 
 @app.get("/fetch-listings", response_model=list[Listing])
-def fetch_listings(): # categories:Optional[list[str]] = Query(None) For passing in categories
-    listings = database.fetch_listings()
-    results = [Listing(
-        id = row[0],
-        seller = row[1],
-        title= row[2],
-        price= row[3],
-        category= row[4],
-        item_condition= row[5],
-        item_description= row[6],
-        created_at= row[7],
-        item_picture= row[8],
-    ) for row in listings]
+def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] = Query(None)): # categories:Optional[list[str]] = Query(None) For passing in categories
+    listings = database.fetch_listings(search, category)
+    if listings:
+        results = [Listing(
+            id = row[0],
+            seller = row[1],
+            title = row[2],
+            price = row[3],
+            category = row[4],
+            item_condition = row[5],
+            item_description = row[6],
+            created_at = row[7],
+            item_picture = row[8],
+        ) for row in listings]
+    else:
+        results = []
     return results
 
-
-
-@app.get("/fetch-listings-matching", response_model=list[Listing])
-def fetch_listings(categories:Optional[list[str]] = Query(None)):
-    listings = database.fetch_listings_matching(categories)
-    results = [Listing(
-        id = row[0],
-        seller = row[1],
-        title= row[2],
-        price= row[3],
-        category= row[4],
-        item_condition= row[5],
-        item_description= row[6],
-        created_at= row[7],
-        item_picture= row[8],
-    ) for row in listings]
-    return results
+@app.delete("/delete-listing/{listing_id}", response_model=bool)
+def delete_listing(listing_id: int):
+    success = database.delete_listing(listing_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    return True

@@ -9,7 +9,8 @@ import ListingCarousel from '@/components/ListingCarousel'
 import SellerInfo from '@/components/SellerInfo'
 import ThumbnailCarousel from '@/components/ThumbnailCarousel'
 import { CarouselApi } from '@/components/ui/carousel'
-
+import api from '@/app/api/api'
+import { useSession } from 'next-auth/react'
 export default function Page() {
     const pageparams = useParams<{ listingID: string }>()
     const listing = fetchListing(pageparams.listingID)
@@ -17,7 +18,7 @@ export default function Page() {
     const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [index, setIndex] = useState<number>()
-
+    const {data: session} = useSession()
     useEffect(() => {
         if (!mainApi || !thumbnailApi) {
             return
@@ -62,6 +63,34 @@ export default function Page() {
         setCurrent(index)
     }
 
+    const handleCheck = async () => {
+    try {
+        const response = await api.get('/conversation-exist', {
+            params: {
+                seller: listing?.owner,
+                buyer: session?.user?.email
+            }
+        })
+
+        console.log('Conversation exists:', response.data)
+    } catch (error:any) {
+        if (error.response.status === 404){
+            try{
+            await api.post("/create-conversation", {
+                seller: listing?.owner,
+                buyer: session?.user?.email,
+                started_at: new Date(),
+                last_message_at: null,
+                last_message_preview: null
+            }
+            )
+        }
+        catch (creationError) {
+            console.error("User creation failed:", creationError);
+        }
+        }
+    }
+}
     return (
         <div className="w-full m-0 bg-white shadow-lg rounded-md">
             <div className="flex lg:flex-row flex-col gap-10">
@@ -112,7 +141,7 @@ export default function Page() {
                             {listing?.description}
                         </div>
                         <Link href="/inbox">
-                            <Button variant="ListingZot" className="w-full">
+                            <Button variant="ListingZot" className="w-full" onClick={handleCheck}>
                                 Message
                             </Button>
                         </Link>

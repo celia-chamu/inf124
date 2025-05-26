@@ -90,15 +90,15 @@ def add_message(conversation_id:int, sender:str, content:str, sent_at:datetime, 
         conn.close()
 
 
-def add_conversation(user1_net_id:str, user2_net_id:str, start_at:datetime, last_message_at:datetime, last_message_preview:datetime, inbox_type:str):
+def add_conversation(seller:str, buyer:str, started_at:datetime, last_message_at:datetime, last_message_preview:datetime):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-                INSERT INTO conversations(user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO conversations(seller, buyer, started_at, last_message_at, last_message_preview)
+                VALUES (%s, %s, %s, %s, %s)
     """
-    values = (user1_net_id, user2_net_id, start_at, last_message_at, last_message_preview, inbox_type)
+    values = (seller, buyer, started_at, last_message_at, last_message_preview)
 
     try:
         cursor.execute(statement, values)
@@ -106,6 +106,63 @@ def add_conversation(user1_net_id:str, user2_net_id:str, start_at:datetime, last
         return True
     except mysql.connector.Error as err:
         print(f"Error {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def find_all_conversation(user:str, type:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    if type == "buyer":
+        statement = """
+                    SELECT *
+                    FROM conversations
+                    WHERE (buyer = %s)
+                    ORDER BY last_message_at DESC
+        """
+    else:
+        statement = """
+                    SELECT *
+                    FROM conversations
+                    WHERE (seller = %s)
+                    ORDER BY last_message_at DESC
+        """
+    values = (user,)
+    print(values)
+
+    try:
+        cursor.execute(statement,values)
+        conversations = cursor.fetchall()
+        return conversations
+    except mysql.connector.Error as error:
+        print(f"Error:{error}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_conversation(seller:str, buyer:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+                SELECT *
+                FROM conversations
+                WHERE ((seller = %s and buyer = %s)
+                OR (seller = %s and buyer = %s))
+    """
+
+    values = (seller, buyer, buyer, seller)
+    try:
+        cursor.execute(statement, values)
+        conversation = cursor.fetchall()
+        return conversation
+    except mysql.connector.Error as err:
+        print(f"Error{err}")
         return False
     finally:
         cursor.close()
@@ -134,17 +191,28 @@ def get_user(uci_net_id:str):
         conn.close()
 
 
-def fetch_listings():
+def fetch_listings(search: str | None, category: str | None):
     conn = db_connection()
     cursor = conn.cursor()
 
+    conditions = {"search": "title LIKE %s", "category": "category = %s"}
+    clauses = {"search": "%%%s%%" % (search), "category": category}
+    
     statement = """
                 SELECT *
                 FROM listings
     """
+    if (search or category):
+        statement += " WHERE "
+        if (search and category):
+            statement += conditions["search"] + " AND " + conditions["category"]
+        else:
+            statement += conditions["search"] if search else conditions["category"]
+
+    filters = tuple(clauses[x] for (x, y) in [("search", search), ("category", category)] if y)
 
     try:
-        cursor.execute(statement) 
+        cursor.execute(statement, filters) 
         listings = cursor.fetchall()
         return listings
     except mysql.connector.Error as err:
@@ -154,23 +222,24 @@ def fetch_listings():
         cursor.close()
         conn.close()
 
-def fetch_listings_matching(categories:list[str]):
+
+def delete_listing(listing_id: int):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-                SELECT *
-                FROM listings
-                WHERE category = %s
+        DELETE FROM listings
+        WHERE id = %s
     """
+    values = (listing_id, )
 
     try:
-        cursor.execute(statement, categories) 
-        listings = cursor.fetchall()
-        return listings
+        cursor.execute(statement, values)
+        conn.commit()
+        return cursor.rowcount > 0 # True if something was deleted
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        return None
+        return False
     finally:
         cursor.close()
         conn.close()
