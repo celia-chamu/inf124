@@ -7,22 +7,47 @@ import { fetchMessages, addToMessages } from '@/mockDatabase'
 import Message from '@/components/Message'
 import MessageInput from '@/components/messageInput'
 import { useSession } from 'next-auth/react'
+import api from '@/app/api/api'
 
 export default function InboxMessage() {
-    const params = useParams()
-    const messageId = parseInt(params.messageId as string)
-    console.log(messageId)
+    const query = useParams()
+
     const { data: session } = useSession()
     // Initialize state to hold the messages for the current conversation
-    const [messages, setMessages] = useState(
-        fetchMessages(messageId)?.messages || []
-    )
 
-    const receiver = fetchMessages(messageId)?.receiver
-    const sender = fetchMessages(messageId)?.sender
+    const conversationID = async () => {
+        try {
+        const response = await api.get("/get_conversations", {
+            params: {
+                seller: query.user,
+                buyer: session?.user?.email
+            }
+        });
 
-    console.log(receiver)
-    console.log(sender)
+        // Adjust this based on your API's response structure
+        return response.data.conversation_id;
+    } catch (error: any) {
+        if (error.response?.status === 404) {
+            return -1;
+        }
+
+    }
+    }
+
+    useEffect(() => {
+        const fetchMessages = async() => {
+            try {
+                const messages = await api.get("/fetch-messages", {
+                    params:{
+
+                    }
+                })
+            } catch (error:any){
+
+            }
+        }
+    })
+
 
     const handleSendMessage = (newMessage: string) => {
         const newMessageObject = {

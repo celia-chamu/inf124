@@ -50,7 +50,7 @@ function Inbox() {
                     });
                     setConversations(response.data.flat());
                 } catch (error) {
-                    console.error("Error fetching caddawonversations:", error);
+                    console.error("Error fetching conversations:", error);
                 }
             }
             setLoading(false)
@@ -60,7 +60,15 @@ function Inbox() {
         }, [view, session?.user?.email]);
 
     const messages = useMemo(() => {
-        return conversations.map((convo) => (
+        return conversations.map((convo) => view === "buyers" ? (
+            <Link key={convo.conversation_id} href={`/message/${convo.seller}`}>
+            <Message
+                key={convo.seller}
+                username={view === 'buyers' ? convo.seller : convo.buyer}
+                textMessage={convo.last_message_preview ?? ''}
+            />
+            </Link>
+        ): (
             <Link key={convo.conversation_id} href={`/message/${convo.buyer}`}>
             <Message
                 key={convo.seller}
@@ -68,7 +76,7 @@ function Inbox() {
                 textMessage={convo.last_message_preview ?? ''}
             />
             </Link>
-        ));
+        ))
     }, [conversations, view]);
 
     return (

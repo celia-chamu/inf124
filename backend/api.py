@@ -108,6 +108,17 @@ def fetch_conversations(user:str, type:str):
         raise HTTPException(status_code=404, detail="Conversation not found")
     return results
 
+@app.get("fetch-messages", response_model=list[Message])
+def fetch_messages(conversation_id:int):
+    messages = database.fetch_message(conversation_id)
+    results = [Message(
+        conversation_id = row[0],
+        sender = row[1],
+        content = row[2],
+        sent_at = row[3],
+        has_read = row[4]
+        ) for row in messages]
+
 @app.get("/fetch-listings", response_model=list[Listing])
 def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] = Query(None)): # categories:Optional[list[str]] = Query(None) For passing in categories
     listings = database.fetch_listings(search, category)

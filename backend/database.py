@@ -89,6 +89,26 @@ def add_message(conversation_id:int, sender:str, content:str, sent_at:datetime, 
         cursor.close()
         conn.close()
 
+def fetch_message(conversation_id:int):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        SELECT * FROM messages
+        WHERE conversation_id = %s
+        ORDER BY sent_at DESC
+    """
+
+    try:
+        cursor.execute(statement, (conversation_id,))
+        messages = cursor.fetchall()
+        return messages
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
 
 def add_conversation(seller:str, buyer:str, started_at:datetime, last_message_at:datetime, last_message_preview:datetime):
     conn = db_connection()
