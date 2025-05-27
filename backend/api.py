@@ -118,6 +118,7 @@ def fetch_messages(conversation_id:int):
         sent_at = row[3],
         has_read = row[4]
         ) for row in messages]
+    return results
 
 @app.get("/fetch-listings", response_model=list[Listing])
 def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] = Query(None)): # categories:Optional[list[str]] = Query(None) For passing in categories

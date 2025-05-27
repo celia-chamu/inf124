@@ -39,7 +39,7 @@ export default function InboxMessage() {
             try {
                 const messages = await api.get("/fetch-messages", {
                     params:{
-
+                        conversation_id: conversationID
                     }
                 })
             } catch (error:any){
