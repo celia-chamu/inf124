@@ -131,6 +131,7 @@ def add_conversation(seller:str, buyer:str, started_at:datetime, last_message_at
         cursor.close()
         conn.close()
 
+
 def find_all_conversation(user:str, type:str):
     conn = db_connection()
     cursor = conn.cursor()
@@ -187,6 +188,7 @@ def get_conversation(seller:str, buyer:str):
         cursor.close()
         conn.close()
 
+
 def get_user(uci_net_id:str):
     conn = db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -207,6 +209,7 @@ def get_user(uci_net_id:str):
     finally:
         cursor.close()
         conn.close()
+
 
 def fetch_listings(search: str | None, category: str | None):
     conn = db_connection()
@@ -235,6 +238,28 @@ def fetch_listings(search: str | None, category: str | None):
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return None
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def delete_listing(listing_id: int):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        DELETE FROM listings
+        WHERE id = %s
+    """
+    values = (listing_id, )
+
+    try:
+        cursor.execute(statement, values)
+        conn.commit()
+        return cursor.rowcount > 0 # True if something was deleted
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
     finally:
         cursor.close()
         conn.close()

@@ -78,7 +78,7 @@ def create_conversation(conversation:Conversation):
     database.add_conversation(conversation.seller, conversation.buyer, conversation.started_at, conversation.last_message_at, conversation.last_message_preview)
     return conversation
 
-@app.get("/read-user", response_model=User)
+@app.get("/check-user", response_model=User)
 def read_user(uci_net_id:str):
     print(uci_net_id)
     user = database.get_user(uci_net_id)
@@ -90,7 +90,7 @@ def read_user(uci_net_id:str):
 def conversation_exist(seller:str, buyer:str):
     conversation = database.get_conversation(seller, buyer)
     if not conversation:
-        raise HTTPException(status_code=404, detail="Conversation not Found")
+        raise HTTPException(status_code=404, detail="Conversation not found")
     return conversation
 
 @app.get("/fetch-conversations", response_model=list[Conversation])
@@ -126,14 +126,21 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
         results = [Listing(
             id = row[0],
             seller = row[1],
-            title= row[2],
-            price= row[3],
-            category= row[4],
-            item_condition= row[5],
-            item_description= row[6],
-            created_at= row[7],
-            item_picture= row[8],
+            title = row[2],
+            price = row[3],
+            category = row[4],
+            item_condition = row[5],
+            item_description = row[6],
+            created_at = row[7],
+            item_picture = row[8],
         ) for row in listings]
     else:
         results = []
     return results
+
+@app.delete("/delete-listing/{listing_id}", response_model=bool)
+def delete_listing(listing_id: int):
+    success = database.delete_listing(listing_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    return True
