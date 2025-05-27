@@ -96,11 +96,11 @@ def fetch_message(conversation_id:int):
     statement = """
         SELECT * FROM messages
         WHERE conversation_id = %s
-        ORDER BY sent_at DESC
+        ORDER BY sent_at ASC
     """
-
+    values = (conversation_id, )
     try:
-        cursor.execute(statement, (conversation_id,))
+        cursor.execute(statement, values)
         messages = cursor.fetchall()
         return messages
     except mysql.connector.Error as err:
@@ -151,7 +151,6 @@ def find_all_conversation(user:str, type:str):
                     ORDER BY last_message_at DESC
         """
     values = (user,)
-    print(values)
 
     try:
         cursor.execute(statement,values)

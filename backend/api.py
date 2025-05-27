@@ -11,7 +11,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], # React dev server, for example
+    allow_origins=["http://localhost:3000"],  # or ["*"] for all origins (dev only)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,6 +36,7 @@ class Listing(BaseModel):
     item_picture:str
 
 class Message(BaseModel):
+    message_id:int
     conversation_id:int
     sender:str
     content:str
@@ -108,15 +109,17 @@ def fetch_conversations(user:str, type:str):
         raise HTTPException(status_code=404, detail="Conversation not found")
     return results
 
-@app.get("fetch-messages", response_model=list[Message])
+@app.get("/fetch-messages", response_model=list[Message])
 def fetch_messages(conversation_id:int):
     messages = database.fetch_message(conversation_id)
+    print(messages)
     results = [Message(
-        conversation_id = row[0],
-        sender = row[1],
-        content = row[2],
-        sent_at = row[3],
-        has_read = row[4]
+        message_id = row[0],
+        conversation_id = row[1],
+        sender = row[2],
+        content = row[3],
+        sent_at = row[4],
+        has_read = row[5]
         ) for row in messages]
     return results
 

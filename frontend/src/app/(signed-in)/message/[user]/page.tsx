@@ -9,69 +9,90 @@ import MessageInput from '@/components/messageInput'
 import { useSession } from 'next-auth/react'
 import api from '@/app/api/api'
 
+export interface Message {
+    message_id: number;
+    conversation_id: number;
+    sender: string;
+    content: string;
+    sent_at: Date;
+    has_read: boolean;
+}
+
 export default function InboxMessage() {
     const query = useParams()
-
+    const [messages, setMessages] = useState<Message[]>([])
+    const [conversationID, setConversationId] = useState(0)
     const { data: session } = useSession()
     // Initialize state to hold the messages for the current conversation
-
-    const conversationID = async () => {
+useEffect(() => {
+    const fetchConversationID = async () => {
+        console.log(query.user);
+        console.log(session?.user?.email);
         try {
-        const response = await api.get("/get_conversations", {
-            params: {
-                seller: query.user,
-                buyer: session?.user?.email
+            const response = await api.get("/conversation-exist", {
+                params: {
+                    seller: query.user + "@uci.edu",
+                    buyer: session?.user?.email,
+                },
+            });
+            console.log(response.data[0][0]);
+            setConversationId(response.data[0][0]);
+        } catch (error: any) {
+            if (error.response?.status === 404) {
+                return -1;
+            } else {
+                console.error("Failed to fetch conversation ID:", error);
             }
-        });
-
-        // Adjust this based on your API's response structure
-        return response.data.conversation_id;
-    } catch (error: any) {
-        if (error.response?.status === 404) {
-            return -1;
         }
+    };
 
-    }
-    }
+    fetchConversationID();
+    }, []);
 
     useEffect(() => {
-        const fetchMessages = async() => {
+        if (conversationID !== 0) {  // only fetch if conversationID is valid
+            fetchMessages();
+        }
+    }, [conversationID]);
+
+    const fetchMessages = async() => {
             try {
+                console.log("THIS IS FETCH MESSAGES" + conversationID)
                 const messages = await api.get("/fetch-messages", {
                     params:{
                         conversation_id: conversationID
                     }
-                })
+                }
+                )
+                setMessages(messages.data.flat())
             } catch (error:any){
-
+                console.error("Error fetching message:", error);
             }
         }
-    })
 
 
-    const handleSendMessage = (newMessage: string) => {
-        const newMessageObject = {
-            reciever: sender ?? 'Null',
-            sender: receiver ?? 'Null',
-            text: newMessage ?? 'Null',
+
+    
+
+    const handleSendMessage = async(newMessage: string) => {
+        try{
+            console.log(conversationID)
+            console.log(query.user + "@uci.edu")
+            console.log(newMessage)
+            await api.post("/create-message", {
+                message_id: 0,
+                conversation_id: conversationID,
+                sender: session?.user?.email,
+                content: newMessage,
+                sent_at: new Date(),
+                has_read: false
+            })
+            await fetchMessages()
+        } catch(error:any){
+            console.error("Message creation failed", error)
         }
-
-        console.log(receiver)
-
-        // Add the new message to the messages state
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            newMessageObject, // Add the new message to the end
-        ])
-
-        // Simulate adding the message to the "database"
-        addToMessages(messageId, newMessageObject)
     }
 
-    useEffect(() => {
-        // Re-fetch messages if they change (or other state management can trigger re-fetching)
-        setMessages(fetchMessages(messageId)?.messages || [])
-    }, [messageId])
 
     return (
         <div className="flex flex-col w-full">
@@ -81,7 +102,7 @@ export default function InboxMessage() {
                     <div
                         key={index}
                         className={`flex ${
-                            message.sender === sender
+                            message.sender != session?.user?.email
                                 ? 'justify-end'
                                 : 'justify-start'
                         } mb-4`}
@@ -89,11 +110,9 @@ export default function InboxMessage() {
                         <Message
                             key={index}
                             username={
-                                message.sender === sender
-                                    ? sender ?? 'Unable'
-                                    : receiver ?? 'Unable'
+                                message.sender
                             }
-                            textMessage={message.text}
+                            textMessage={message.content}
                         />
                     </div>
                 ))}

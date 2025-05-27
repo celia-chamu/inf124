@@ -19,15 +19,9 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
 
         console.log('Message Sent: ', text)
 
-        // await api.get("/conversation-exist", {
-        //     params:{user1: }
-        // })
 
-
-        // Call the parent function passed as a prop
         handleSendMessage(text)
 
-        // Clear the text input after sending
         setText('')
     }
 

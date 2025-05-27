@@ -61,19 +61,19 @@ function Inbox() {
 
     const messages = useMemo(() => {
         return conversations.map((convo) => view === "buyers" ? (
-            <Link key={convo.conversation_id} href={`/message/${convo.seller}`}>
+            <Link key={convo.conversation_id} href={`/message/${convo.seller.split('@')[0]}`}>
             <Message
                 key={convo.seller}
                 username={view === 'buyers' ? convo.seller : convo.buyer}
-                textMessage={convo.last_message_preview ?? ''}
+                textMessage={convo.last_message_preview ?? ""}
             />
             </Link>
         ): (
-            <Link key={convo.conversation_id} href={`/message/${convo.buyer}`}>
+            <Link key={convo.conversation_id} href={`/message/${convo.buyer.split('@')[0]}`}>
             <Message
                 key={convo.seller}
                 username={view === 'buyers' ? convo.seller : convo.buyer}
-                textMessage={convo.last_message_preview ?? ''}
+                textMessage={convo.last_message_preview ?? ""}
             />
             </Link>
         ))
