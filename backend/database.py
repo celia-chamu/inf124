@@ -45,16 +45,35 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, firs
         cursor.close()
         conn.close()
 
-
-def add_listing(seller:str, title:str, price:float, category:str, item_condition:str, item_description:str, created_at:datetime.datetime, item_picture:str) -> bool:
+def add_itemPictures(id:int, item_picture:str):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-        INSERT INTO listings(seller, title, price, category, item_condition, item_description, created_at, item_picture)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO itemPictures(id, item_picture)
+        VALUES( %s, %s)
     """
-    values = ( seller, title, price, category, item_condition, item_description, created_at, item_picture)
+    values = (id, item_picture)
+    try:
+        cursor.execute(statement, values)
+        conn.commit()
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+def add_listing(seller:str, title:str, price:float, category:str, item_condition:str, item_description:str, created_at:datetime.datetime) -> bool:
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        INSERT INTO listings(seller, title, price, category, item_condition, item_description, created_at)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+    values = ( seller, title, price, category, item_condition, item_description, created_at)
 
     try:
         cursor.execute(statement, values)

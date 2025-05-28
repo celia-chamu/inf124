@@ -33,6 +33,9 @@ class Listing(BaseModel):
     item_condition:str
     item_description:str
     created_at:datetime
+
+class ItemPicture(BaseModel):
+    id:int
     item_picture:str
 
 class Message(BaseModel):
@@ -64,7 +67,7 @@ def create_user(user:User):
 @app.post("/create-listing", response_model=Listing)
 def create_listing(listing:Listing):
     print(listing)
-    database.add_listing(listing.seller, listing.title, listing.price, listing.category, listing.item_condition, listing.item_description, listing.created_at, listing.item_picture)
+    database.add_listing(listing.seller, listing.title, listing.price, listing.category, listing.item_condition, listing.item_description, listing.created_at)
     return listing
 
 @app.post("/create-message", response_model=Message)
@@ -78,6 +81,12 @@ def create_conversation(conversation:Conversation):
     print(conversation)
     database.add_conversation(conversation.seller, conversation.buyer, conversation.started_at, conversation.last_message_at, conversation.last_message_preview)
     return conversation
+
+@app.post("/add-picture")
+def add_picture(itemPicture: ItemPicture):
+    print(itemPicture)
+    database.add_itemPictures(itemPicture.id, itemPicture.item_picture)
+    return itemPicture
 
 @app.get("/check-user", response_model=User)
 def read_user(uci_net_id:str):
@@ -135,8 +144,7 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
             category = row[4],
             item_condition = row[5],
             item_description = row[6],
-            created_at = row[7],
-            item_picture = "",
+            created_at = row[7]
         ) for row in listings]
     else:
         results = []

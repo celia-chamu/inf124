@@ -1,7 +1,14 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
+import { authOptions } from './api/auth/[...nextauth]/route'
 
-export default function Home() {
+export default async function Home() {
+    const session = await getServerSession(authOptions)
+    
+    if (session) {
+        redirect('/market')
+    }
+
     return (
         <div className="h-200 flex items-center justify-center bg-background">
             <div className="rounded-xl border border-border bg-white shadow-xl p-10 max-w-md w-full text-center">
