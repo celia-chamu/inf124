@@ -7,15 +7,37 @@ import { useState } from 'react'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { fetchFilters } from '@/mockDatabase'
 import { useEffect } from 'react'
-export default function SearchBar() {
+
+interface Props {
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+    setCategory: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function SearchBar({setSearch, setCategory} : Props) {
     const [filterClick, setFilterClick] = useState(false)
 
-    const filters = fetchFilters()
+    const filters = [
+        "Category",
+        "Furniture",
+        "Clothing",
+        "Shoes",
+        "Vehicles",
+        "Electronics",
+        "Textbooks",
+        "Appliances",
+        "Services",
+        "Art",
+        "Meme",
+        "Collectors",
+        "Beauty",
+        "Other"
+    ]
 
     // Check to see if the filter has been clicked
     const handleFilterClick = () => {
         console.log('Set filter')
         setFilterClick(!filterClick)
+        setCategory("")
     }
     console.log(filters)
 
@@ -43,6 +65,7 @@ export default function SearchBar() {
                 <Input
                     className="pl-10 pr-10 rounded-lg h-auto w-full"
                     placeholder="Search ZotMarket"
+                    onChange={search => setSearch(search.target.value)}
                 />
                 <button
                     className="ml-2 text-gray-600"
