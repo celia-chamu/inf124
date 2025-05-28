@@ -39,7 +39,6 @@ export default function SearchBar({setSearch, setCategory} : Props) {
         setFilterClick(!filterClick)
         setCategory("")
     }
-    console.log(filters)
 
     // Check mobile size
     const isMobile = useIsMobile()
