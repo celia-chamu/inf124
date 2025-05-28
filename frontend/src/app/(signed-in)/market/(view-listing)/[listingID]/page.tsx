@@ -77,6 +77,7 @@ export default function Page() {
         if (error.response.status === 404){
             try{
             await api.post("/create-conversation", {
+                conversation_id: 0,
                 seller: listing?.owner,
                 buyer: session?.user?.email,
                 started_at: new Date(),
