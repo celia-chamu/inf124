@@ -136,7 +136,7 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
             item_condition = row[5],
             item_description = row[6],
             created_at = row[7],
-            item_picture = row[8],
+            item_picture = "",
         ) for row in listings]
     else:
         results = []
