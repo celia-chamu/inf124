@@ -1,4 +1,4 @@
-# uvicorn api:app --reload
+# fastapi dev api.py
 # http://127.0.0.1:8000/docs#/
 
 from typing import Optional
@@ -150,9 +150,9 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
         results = []
     return results
 
-@app.delete("/delete-listing/{listing_id}", response_model=bool)
-def delete_listing(listing_id: int):
-    success = database.delete_listing(listing_id)
+@app.delete("/delete-message/{conversation_id}/{message_id}", response_model=bool)
+def delete_message(conversation_id: int, message_id: int):
+    success = database.delete_message(conversation_id, message_id)
     if not success:
-        raise HTTPException(status_code=404, detail="Listing not found")
+        raise HTTPException(status_code=404, detail="Message not found in given conversation")
     return True

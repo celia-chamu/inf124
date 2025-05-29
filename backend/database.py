@@ -261,18 +261,17 @@ def fetch_listings(search: str | None, category: str | None):
         conn.close()
 
 
-def delete_listing(listing_id: int):
+def delete_message(conversation_id: int, message_id: int):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-        DELETE FROM listings
-        WHERE id = %s
+        DELETE FROM messages
+        WHERE id = %s AND conversation_id = %s
     """
-    values = (listing_id, )
 
     try:
-        cursor.execute(statement, values)
+        cursor.execute(statement, (message_id, conversation_id))
         conn.commit()
         return cursor.rowcount > 0 # True if something was deleted
     except mysql.connector.Error as err:
