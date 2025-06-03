@@ -44,28 +44,7 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full
         cursor.close()
         conn.close()
 
-def update_firstName(uci_net_id:str, full_name:str):
-    conn = db_connection()
-    cursor = conn.cursor()
 
-    statement = """
-        UPDATE users
-        SET full_name = %s
-        WHERE uci_net_id = %s
-    """
-
-    values = (full_name, uci_net_id)
-
-    try:
-        cursor.execute(statement, values)
-        conn.commit()
-        return True
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-        return False
-    finally:
-        cursor.close()
-        conn.close()
         
 
 def add_itemPictures(id:int, item_picture:str):
@@ -297,6 +276,50 @@ def delete_message(conversation_id: int, message_id: int):
         cursor.execute(statement, (message_id, conversation_id))
         conn.commit()
         return cursor.rowcount > 0 # True if something was deleted
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+def update_profileImage(uci_net_id:str, image:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        UPDATE users
+        SET profile_pic = %s
+        WHERE uci_net_id = %s
+    """
+    values = (image, uci_net_id)
+
+    try:
+        cursor.execute(statement, values)
+        conn.commit()
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_profileImage(uci_net_id:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        SELECT profile_pic from users
+        WHERE uci_net_id = %s
+    """
+
+    values = (uci_net_id,)
+
+    try:
+        cursor.execute(statement,values)
+        image = cursor.fetchall()
+        return image
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return False

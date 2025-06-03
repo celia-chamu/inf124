@@ -17,6 +17,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+class ProfileImageUpdate(BaseModel):
+    uci_net_id: str
+    image: str
+
 class User(BaseModel):
     uci_net_id:str
     reputation:float
@@ -95,6 +100,20 @@ def read_user(uci_net_id:str):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@app.put("/update-profileImage")
+def update_profileImage(update: ProfileImageUpdate):
+    success = database.update_profileImage(update.uci_net_id, update.image)
+    if not success:
+        raise HTTPException(status_code=404, detail="Profile change failed")
+    return success
+
+@app.get("/fetch-profileImage")
+def fetch_profileImage(uci_net_id:str):
+    image = database.fetch_profileImage(uci_net_id)
+    if not image:
+        raise HTTPException(status_code=404, detail="User not found")
+    return image
+
 @app.get("/conversation-exist")
 def conversation_exist(seller:str, buyer:str):
     conversation = database.get_conversation(seller, buyer)
@@ -156,9 +175,3 @@ def delete_message(conversation_id: int, message_id: int):
         raise HTTPException(status_code=404, detail="Message not found in given conversation")
     return True
 
-@app.put("/update-firstName")
-def update_firstName(uci_net_id:str, first_name:str):
-    success = database.update_firstName(uci_net_id, first_name)
-    if not success:
-        raise HTTPException(status_code=404, detail="User does not exist")
-    return True
