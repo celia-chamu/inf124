@@ -40,6 +40,15 @@ export default function InboxMessage() {
                     content: message,
                     sent_at: new Date(),
                     has_read: false,
+                    
+                })
+                await api.put('/update-last-message', {
+                    conversation_id: conversationID,
+                    seller: query.user + '@uci.edu',
+                    buyer: session?.user?.email,
+                    started_at: new Date(),
+                    last_message_at: new Date(),
+                    last_message_preview: message
                 })
                 await fetchMessages()
                 } catch (error: any) {
