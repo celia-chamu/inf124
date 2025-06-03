@@ -326,3 +326,26 @@ def fetch_profileImage(uci_net_id:str):
     finally:
         cursor.close()
         conn.close()
+
+def update_lastMessage(convo_id:int, last_message:str, last_message_time: datetime):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        UPDATE conversations
+        SET last_message_preview = %s, last_message_at = %s
+        WHERE conversation_id = %s
+    """
+
+    values = (last_message, last_message_time, convo_id)
+
+    try:
+        cursor.execute(statement, values)
+        conn.commit()
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()

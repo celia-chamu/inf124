@@ -114,6 +114,13 @@ def fetch_profileImage(uci_net_id:str):
         raise HTTPException(status_code=404, detail="User not found")
     return image
 
+@app.put("/update-last-message")
+def update_lastMessage(convo:Conversation):
+    success= database.update_lastMessage(convo.conversation_id, convo.last_message_preview, convo.last_message_at)
+    if not success:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return success
+
 @app.get("/conversation-exist")
 def conversation_exist(seller:str, buyer:str):
     conversation = database.get_conversation(seller, buyer)
