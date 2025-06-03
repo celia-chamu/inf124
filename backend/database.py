@@ -12,23 +12,22 @@ def db_connection():
     )
 
 
-def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, first_name:str, last_name:str, profile_pic:str) -> bool:
+def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full_name:str, profile_pic:str) -> bool:
     #Connect to database
     conn = db_connection()
     cursor = conn.cursor()
 
     #MySQL Statement
     statement = """
-        INSERT INTO users(uci_net_id, reputation, join_date, first_name, last_name, profile_pic)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO users(uci_net_id, reputation, join_date, full_name, profile_pic)
+        VALUES (%s, %s, %s, %s, %s)
     """
 
     values = (
         uci_net_id,
         reputation,
         join_date,  # converts datetime to float
-        first_name,
-        last_name,
+        full_name,
         profile_pic
     )
 
@@ -44,6 +43,30 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, firs
         #Close connection to database
         cursor.close()
         conn.close()
+
+def update_firstName(uci_net_id:str, full_name:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        UPDATE users
+        SET full_name = %s
+        WHERE uci_net_id = %s
+    """
+
+    values = (full_name, uci_net_id)
+
+    try:
+        cursor.execute(statement, values)
+        conn.commit()
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+        
 
 def add_itemPictures(id:int, item_picture:str):
     conn = db_connection()

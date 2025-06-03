@@ -39,10 +39,6 @@ export const authOptions: NextAuthOptions = {
           // If not found, create the user
           if (error.response?.status === 404) {
             try {
-              const fullName = profile.name || '';
-              const nameParts = fullName.trim().split(' ');
-              const firstName = nameParts[0] || '';
-              const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
               //Try to get the image from the url
               let base64Image = "";
               try {
@@ -55,8 +51,7 @@ export const authOptions: NextAuthOptions = {
                 uci_net_id: profile.email,
                 reputation: 0.0,
                 join_date: new Date(),
-                first_name: firstName,
-                last_name: lastName,
+                full_name: profile.name,
                 profile_pic: base64Image,
               })
             } catch (creationError) {

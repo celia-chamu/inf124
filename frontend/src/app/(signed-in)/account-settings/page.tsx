@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { fetchOwnerByEmail } from '@/mockDatabase'
 import { useSession } from 'next-auth/react'
-
+import api from '@/app/api/api'
 export default function AccountSettings() {
     const { data: session } = useSession()
     const UserEmail = session?.user?.email
@@ -12,6 +12,17 @@ export default function AccountSettings() {
     const [emailEdit, setEmailEdit] = useState(false)
     const [name, setName] = useState(seller?.name ?? '')
     const [email, setEmail] = useState(seller?.email ?? '')
+
+    const handleNameChange = async(first_name:string) => {
+        try{
+            await api.put("/update-firstName", {
+                uci_net_id: session?.user?.email,
+                first_name: first_name
+            })
+        } catch (err: any){
+            console.log("Error with changing first name")
+        }
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -55,6 +66,7 @@ export default function AccountSettings() {
 
             <h1 className="text-2xl font-bold pt-8 mb-8">Account</h1>
             <div className="flex flex-col gap-6 w-full max-w-xl">
+
                 <div className="flex items-center justify-between">
                     {nameEdit ? (
                         <input
@@ -87,12 +99,6 @@ export default function AccountSettings() {
                             {seller?.email}{' '}
                         </p>
                     )}
-                    <button
-                        onClick={() => setEmailEdit((prev) => !prev)}
-                        className="text-sm font-bold text-blue-600"
-                    >
-                        {emailEdit ? 'Save' : 'Edit'}
-                    </button>
                 </div>
             </div>
 
