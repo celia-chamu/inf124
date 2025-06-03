@@ -1,23 +1,48 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { fetchOwnerByEmail } from '@/mockDatabase'
 import { useSession } from 'next-auth/react'
-
+import api from '@/app/api/api'
 export default function AccountSettings() {
     const { data: session } = useSession()
     const UserEmail = session?.user?.email
     const seller = UserEmail ? fetchOwnerByEmail(UserEmail) : null
     const [preview, setPreview] = useState<string | null>(null)
-    const [nameEdit, setNameEdit] = useState(false)
-    const [emailEdit, setEmailEdit] = useState(false)
-    const [name, setName] = useState(seller?.name ?? '')
-    const [email, setEmail] = useState(seller?.email ?? '')
+    
+    
+    useEffect(() => {
+        const getPic = async() => {
+            try{
+                const response = await api.get("/fetch-profileImage", { 
+                    params:{
+                     uci_net_id: session?.user?.email
+                    }
+                })
+                setPreview(response.data)
+            } catch(err:any){
+                console.log("Error fetching image")
+            }
+        }
+        getPic()
+    },[])
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
             const reader = new FileReader()
-            reader.onloadend = () => setPreview(reader.result as string)
+            reader.onloadend = async () => {
+                const base64Image = reader.result as string
+                setPreview(base64Image)
+
+                try {
+                    await api.put("/update-profileImage", {
+                        uci_net_id: session?.user?.email,
+                        image: base64Image, // ✅ send base64 string to backend
+                    })
+                } catch (err: any) {
+                    console.log("Error changing image", err)
+                }
+            }
             reader.readAsDataURL(file)
         }
     }
@@ -55,44 +80,13 @@ export default function AccountSettings() {
 
             <h1 className="text-2xl font-bold pt-8 mb-8">Account</h1>
             <div className="flex flex-col gap-6 w-full max-w-xl">
+
                 <div className="flex items-center justify-between">
-                    {nameEdit ? (
-                        <input
-                            value={seller?.name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="border-b-2 border-gray-400 text-lg w-full mr-4"
-                        />
-                    ) : (
-                        <p className="text-lg border-b-2 border-gray-400 w-full mr-4">
-                            {seller?.name}
-                        </p>
-                    )}
-                    <button
-                        onClick={() => setNameEdit((prev) => !prev)}
-                        className="text-sm font-bold text-blue-600"
-                    >
-                        {nameEdit ? 'Save' : 'Edit'}
-                    </button>
+                    <input value={session?.user?.name || ""} className="border-b-2 border-gray-400 text-lg w-full mr-4"></input>
                 </div>
 
                 <div className="flex items-center justify-between">
-                    {emailEdit ? (
-                        <input
-                            value={seller?.email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="border-b-2 border-gray-400 text-lg w-full mr-4"
-                        />
-                    ) : (
-                        <p className="text-lg border-b-2 border-gray-400 w-full mr-4 ">
-                            {seller?.email}{' '}
-                        </p>
-                    )}
-                    <button
-                        onClick={() => setEmailEdit((prev) => !prev)}
-                        className="text-sm font-bold text-blue-600"
-                    >
-                        {emailEdit ? 'Save' : 'Edit'}
-                    </button>
+                    <input value={session?.user?.email || ""} className="border-b-2 border-gray-400 text-lg w-full mr-4"></input>
                 </div>
             </div>
 

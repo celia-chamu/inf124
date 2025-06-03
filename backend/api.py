@@ -1,4 +1,4 @@
-# uvicorn api:app --reload
+# fastapi dev api.py
 # http://127.0.0.1:8000/docs#/
 
 from typing import Optional
@@ -17,12 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+class ProfileImageUpdate(BaseModel):
+    uci_net_id: str
+    image: str
+
 class User(BaseModel):
     uci_net_id:str
     reputation:float
     join_date:datetime
-    first_name:str
-    last_name:str
+    full_name:str
     profile_pic:str
 
 class Listing(BaseModel):
@@ -61,7 +65,7 @@ async def read_root():
 @app.post("/create-user", response_model=User)
 def create_user(user:User):
     print(user)
-    database.add_user(user.uci_net_id, user.reputation, user.join_date, user.first_name, user.last_name, user.profile_pic)
+    database.add_user(user.uci_net_id, user.reputation, user.join_date, user.full_name, user.profile_pic)
     return user
 
 @app.post("/create-listing", response_model=Listing)
@@ -95,6 +99,20 @@ def read_user(uci_net_id:str):
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+
+@app.put("/update-profileImage")
+def update_profileImage(update: ProfileImageUpdate):
+    success = database.update_profileImage(update.uci_net_id, update.image)
+    if not success:
+        raise HTTPException(status_code=404, detail="Profile change failed")
+    return success
+
+@app.get("/fetch-profileImage")
+def fetch_profileImage(uci_net_id:str):
+    image = database.fetch_profileImage(uci_net_id)
+    if not image:
+        raise HTTPException(status_code=404, detail="User not found")
+    return image
 
 @app.get("/conversation-exist")
 def conversation_exist(seller:str, buyer:str):
@@ -150,9 +168,10 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
         results = []
     return results
 
-@app.delete("/delete-listing/{listing_id}", response_model=bool)
-def delete_listing(listing_id: int):
-    success = database.delete_listing(listing_id)
+@app.delete("/delete-message/{conversation_id}/{message_id}", response_model=bool)
+def delete_message(conversation_id: int, message_id: int):
+    success = database.delete_message(conversation_id, message_id)
     if not success:
-        raise HTTPException(status_code=404, detail="Listing not found")
+        raise HTTPException(status_code=404, detail="Message not found in given conversation")
     return True
+

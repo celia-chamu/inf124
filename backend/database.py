@@ -12,23 +12,22 @@ def db_connection():
     )
 
 
-def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, first_name:str, last_name:str, profile_pic:str) -> bool:
+def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full_name:str, profile_pic:str) -> bool:
     #Connect to database
     conn = db_connection()
     cursor = conn.cursor()
 
     #MySQL Statement
     statement = """
-        INSERT INTO users(uci_net_id, reputation, join_date, first_name, last_name, profile_pic)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO users(uci_net_id, reputation, join_date, full_name, profile_pic)
+        VALUES (%s, %s, %s, %s, %s)
     """
 
     values = (
         uci_net_id,
         reputation,
         join_date,  # converts datetime to float
-        first_name,
-        last_name,
+        full_name,
         profile_pic
     )
 
@@ -44,6 +43,9 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, firs
         #Close connection to database
         cursor.close()
         conn.close()
+
+
+        
 
 def add_itemPictures(id:int, item_picture:str):
     conn = db_connection()
@@ -261,20 +263,63 @@ def fetch_listings(search: str | None, category: str | None):
         conn.close()
 
 
-def delete_listing(listing_id: int):
+def delete_message(conversation_id: int, message_id: int):
     conn = db_connection()
     cursor = conn.cursor()
 
     statement = """
-        DELETE FROM listings
-        WHERE id = %s
+        DELETE FROM messages
+        WHERE id = %s AND conversation_id = %s
     """
-    values = (listing_id, )
+
+    try:
+        cursor.execute(statement, (message_id, conversation_id))
+        conn.commit()
+        return cursor.rowcount > 0 # True if something was deleted
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+def update_profileImage(uci_net_id:str, image:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        UPDATE users
+        SET profile_pic = %s
+        WHERE uci_net_id = %s
+    """
+    values = (image, uci_net_id)
 
     try:
         cursor.execute(statement, values)
         conn.commit()
-        return cursor.rowcount > 0 # True if something was deleted
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_profileImage(uci_net_id:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        SELECT profile_pic from users
+        WHERE uci_net_id = %s
+    """
+
+    values = (uci_net_id,)
+
+    try:
+        cursor.execute(statement,values)
+        image = cursor.fetchall()
+        return image
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return False
