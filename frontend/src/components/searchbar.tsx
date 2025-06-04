@@ -5,39 +5,43 @@ import { SearchIcon } from 'lucide-react'
 import { Filter } from 'lucide-react'
 import { useState } from 'react'
 import { useIsMobile } from '@/hooks/use-mobile'
-import { fetchFilters } from '@/mockDatabase'
 import { useEffect } from 'react'
 
 interface Props {
-    setSearch: React.Dispatch<React.SetStateAction<string>>;
-    setCategory: React.Dispatch<React.SetStateAction<string>>;
+    setSearch: React.Dispatch<React.SetStateAction<string>>
+    setCategory: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function SearchBar({setSearch, setCategory} : Props) {
+export default function SearchBar({ setSearch, setCategory }: Props) {
     const [filterClick, setFilterClick] = useState(false)
 
     const filters = [
-        "Category",
-        "Furniture",
-        "Clothing",
-        "Shoes",
-        "Vehicles",
-        "Electronics",
-        "Textbooks",
-        "Appliances",
-        "Services",
-        "Art",
-        "Meme",
-        "Collectors",
-        "Beauty",
-        "Other"
+        'Category',
+        'Furniture',
+        'Clothing',
+        'Shoes',
+        'Vehicles',
+        'Electronics',
+        'Textbooks',
+        'Appliances',
+        'Services',
+        'Art',
+        'Meme',
+        'Collectors',
+        'Beauty',
+        'Other',
     ]
 
     // Check to see if the filter has been clicked
     const handleFilterClick = () => {
         console.log('Set filter')
         setFilterClick(!filterClick)
-        setCategory("")
+        setCategory('')
+    }
+
+    const selectFilter = (filter: string) => {
+        console.log('Selected', filter)
+        setCategory(filter)
     }
 
     // Check mobile size
@@ -46,15 +50,15 @@ export default function SearchBar({setSearch, setCategory} : Props) {
     // Lock scrolling when popup for mobile appears
     useEffect(() => {
         if (filterClick && isMobile) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'
         } else {
-            document.body.style.overflow = '';
+            document.body.style.overflow = ''
         }
 
         return () => {
-            document.body.style.overflow = '';
-        };
-        }, [filterClick, isMobile]);
+            document.body.style.overflow = ''
+        }
+    }, [filterClick, isMobile])
 
     return (
         <div className="flex flex-col items-center">
@@ -64,7 +68,7 @@ export default function SearchBar({setSearch, setCategory} : Props) {
                 <Input
                     className="pl-10 pr-10 rounded-lg h-auto w-full"
                     placeholder="Search ZotMarket"
-                    onChange={search => setSearch(search.target.value)}
+                    onChange={(search) => setSearch(search.target.value)}
                 />
                 <button
                     className="ml-2 text-gray-600"
@@ -108,6 +112,7 @@ export default function SearchBar({setSearch, setCategory} : Props) {
                             <button
                                 key={filter}
                                 className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded"
+                                onClick={() => selectFilter(filter)}
                             >
                                 {filter}
                             </button>

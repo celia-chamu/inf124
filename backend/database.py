@@ -249,7 +249,6 @@ def fetch_listings(search: str | None, category: str | None):
                 SELECT l.*, GROUP_CONCAT(i.item_picture ORDER BY i.item_picture SEPARATOR ', ') AS images
                 FROM listings l
                 LEFT JOIN itemPictures i ON l.id = i.listingid
-                GROUP BY l.id
     """
     if (search or category):
         statement += " WHERE "
@@ -257,6 +256,8 @@ def fetch_listings(search: str | None, category: str | None):
             statement += conditions["search"] + " AND " + conditions["category"]
         else:
             statement += conditions["search"] if search else conditions["category"]
+        
+    statement += "GROUP BY l.id"
 
     filters = tuple(clauses[x] for (x, y) in [("search", search), ("category", category)] if y)
 
