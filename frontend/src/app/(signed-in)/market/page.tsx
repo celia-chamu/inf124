@@ -33,7 +33,7 @@ export default function Page() {
                     >
                         <ListingCard
                             id={listing.id}
-                            image={listing.images}
+                            image={listing.images.split(', ')[0]}
                             title={listing.title}
                             price={listing.price}
                         />

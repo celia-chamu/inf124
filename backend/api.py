@@ -30,19 +30,20 @@ class User(BaseModel):
     profile_pic:str
 
 class Listing(BaseModel):
-    id: int
+    id: Optional[int]
     seller:str
     title:str
     price:float
     category:str
     item_condition:str
     item_description:str
-    images: str
+    images: Optional[str]
     created_at:datetime
 
 class ItemPicture(BaseModel):
     id:int
     item_picture:str
+    listingid: int
 
 class Message(BaseModel):
     message_id:int
@@ -59,9 +60,6 @@ class Conversation(BaseModel):
     started_at:datetime
     last_message_at:Optional[datetime]
     last_message_preview:Optional[str]
-
-class Image(BaseModel):
-    image: str
 
 @app.get("/")
 async def read_root():
@@ -94,7 +92,7 @@ def create_conversation(conversation:Conversation):
 @app.post("/add-picture")
 def add_picture(itemPicture: ItemPicture):
     print(itemPicture)
-    database.add_itemPictures(itemPicture.id, itemPicture.item_picture)
+    database.add_itemPictures(itemPicture.item_picture, itemPicture.listingid)
     return itemPicture
 
 @app.get("/check-user", response_model=User)
@@ -181,20 +179,28 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
         results = []
     return results
 
+@app.get("/fetch-listing", response_model=Listing)
+def fetch_listing(id: int):
+    listing = database.fetch_listing(id)
+    if listing:
+        results = Listing(
+            id = listing[0],
+            seller = listing[1],
+            title = listing[2],
+            price = listing[3],
+            category = listing[4],
+            item_condition = listing[5],
+            item_description = listing[6],
+            created_at = listing[7],
+            images = listing[8],
+        )
+    else:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    return results
+
 @app.delete("/delete-message/{conversation_id}/{message_id}", response_model=bool)
 def delete_message(conversation_id: int, message_id: int):
     success = database.delete_message(conversation_id, message_id)
     if not success:
         raise HTTPException(status_code=404, detail="Message not found in given conversation")
     return True
-
-@app.get("/fetch-images", response_model=list[Image])
-def fetch_images(listingid: int):
-    images = database.fetch_images(listingid)
-    if images:
-        results = [Image(
-            image = row[1],
-        ) for row in images]
-    else:
-        results = []
-    return results

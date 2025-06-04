@@ -23,7 +23,7 @@ function ListingCard({ id, image, title, price }: propTypes) {
 
 type propTypes = {
     id: string
-    image: string[]
+    image: string
     title: string
     price: number
 }

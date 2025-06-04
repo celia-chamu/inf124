@@ -4,7 +4,6 @@ import {
     CarouselContent,
     CarouselItem,
 } from '@/components/ui/carousel'
-import { image } from '@/mockDatabase'
 import { Dispatch, SetStateAction, useMemo } from 'react'
 
 //Modified from https://www.reddit.com/r/nextjs/comments/1cgktu9/shadcnui_image_carousel_with_thumbnail_images/
@@ -23,7 +22,7 @@ export default function ThumbnailCarousel({
 }: CarouselProps) {
     const thumbnailImages = useMemo(
         () =>
-            listingImages.map((image: image, index: number) => (
+            listingImages.map((image: string, index: number) => (
                 <CarouselItem
                     key={index}
                     className="relative basis-1/4 shrink"
@@ -36,7 +35,7 @@ export default function ThumbnailCarousel({
                                     ? 'border-2 h-full w-auto object-contain'
                                     : 'h-full w-auto object-contain'
                             }`}
-                            src={image.url}
+                            src={image}
                             alt={`Thumbnail ${index + 1}`}
                         />
                     </div>

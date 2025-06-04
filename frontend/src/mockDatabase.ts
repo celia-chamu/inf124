@@ -13,7 +13,7 @@ enum condition {
 
 export interface listingType {
     id: string
-    images: string[]
+    images: string
     title: string
     price: number
     owner: string
