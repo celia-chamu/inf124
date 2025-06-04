@@ -40,6 +40,15 @@ export default function InboxMessage() {
                     content: message,
                     sent_at: new Date(),
                     has_read: false,
+                    
+                })
+                await api.put('/update-last-message', {
+                    conversation_id: conversationID,
+                    seller: query.user + '@uci.edu',
+                    buyer: session?.user?.email,
+                    started_at: new Date(),
+                    last_message_at: new Date(),
+                    last_message_preview: message
                 })
                 await fetchMessages()
                 } catch (error: any) {
@@ -55,8 +64,6 @@ export default function InboxMessage() {
     // Initialize state to hold the messages for the current conversation
     useEffect(() => {
         const fetchConversationID = async () => {
-            console.log(query.user)
-            console.log(session?.user?.email)
             try {
                 const response = await api.get('/conversation-exist', {
                     params: {
@@ -64,7 +71,6 @@ export default function InboxMessage() {
                         buyer: session?.user?.email,
                     },
                 })
-                console.log(response.data[0][0])
                 setConversationId(response.data[0][0])
             } catch (error: any) {
                 if (error.response?.status === 404) {
@@ -87,7 +93,6 @@ export default function InboxMessage() {
 
     const fetchMessages = async () => {
         try {
-            console.log('THIS IS FETCH MESSAGES' + conversationID)
             const messages = await api.get('/fetch-messages', {
                 params: {
                     conversation_id: conversationID,
@@ -106,17 +111,22 @@ export default function InboxMessage() {
         }
         else{
             try {
-            console.log(conversationID)
-            console.log(query.user + '@uci.edu')
-            console.log(newMessage)
-            await api.post('/create-message', {
-                message_id: 0,
-                conversation_id: conversationID,
-                sender: session?.user?.email,
-                content: newMessage,
-                sent_at: new Date(),
-                has_read: false,
-            })
+                await api.post('/create-message', {
+                    message_id: 0,
+                    conversation_id: conversationID,
+                    sender: session?.user?.email,
+                    content: newMessage,
+                    sent_at: new Date(),
+                    has_read: false,
+                })
+                await api.put('/update-last-message', {
+                    conversation_id: conversationID,
+                    seller: query.user + '@uci.edu',
+                    buyer: session?.user?.email,
+                    started_at: new Date(),
+                    last_message_at: new Date(),
+                    last_message_preview: newMessage
+                })
             await fetchMessages()
             } catch (error: any) {
                 console.error('Message creation failed', error)
