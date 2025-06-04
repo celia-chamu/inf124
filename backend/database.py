@@ -237,10 +237,19 @@ def fetch_listings(search: str | None, category: str | None):
 
     conditions = {"search": "title LIKE %s", "category": "category = %s"}
     clauses = {"search": "%%%s%%" % (search), "category": category}
+
+    try:
+        cursor.execute("SET SESSION group_concat_max_len = 1000000;")
+        conn.commit()
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
     
     statement = """
-                SELECT *
-                FROM listings
+                SELECT l.*, GROUP_CONCAT(i.item_picture ORDER BY i.item_picture SEPARATOR ', ') AS images
+                FROM listings l
+                LEFT JOIN itemPictures i ON l.id = i.id
+                GROUP BY l.id
     """
     if (search or category):
         statement += " WHERE "
@@ -346,6 +355,26 @@ def update_lastMessage(convo_id:int, last_message:str, last_message_time: dateti
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return False
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_images(listingid: int):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        SELECT * from itemPictures
+        WHERE id = %s
+    """
+
+    try:
+        cursor.execute(statement, (listingid,)) 
+        listings = cursor.fetchall()
+        return listings
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
     finally:
         cursor.close()
         conn.close()

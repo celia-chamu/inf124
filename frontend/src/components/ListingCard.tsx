@@ -1,17 +1,21 @@
-function ListingCard({ id, imageUrl, title, price }: propTypes) {
+function ListingCard({ id, image, title, price }: propTypes) {
     return (
         <div
             // onClick={handleClick}
             className="cursor-pointer rounded-xl shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden inline-block w-full h-full bg-white"
         >
             <img
-                src={imageUrl}
+                src={image}
                 alt={title}
                 className="h-auto w-full object-cover"
             />
             <div className="flex flex-col m-2">
-                <p className="text-lg font-semibold line-clamp-2 text-center">{title}</p>
-                <p className="text-black mt-1 text-center">${price.toFixed(2)}</p>
+                <p className="text-lg font-semibold line-clamp-2 text-center">
+                    {title}
+                </p>
+                <p className="text-black mt-1 text-center">
+                    ${price.toFixed(2)}
+                </p>
             </div>
         </div>
     )
@@ -19,7 +23,7 @@ function ListingCard({ id, imageUrl, title, price }: propTypes) {
 
 type propTypes = {
     id: string
-    imageUrl: string
+    image: string[]
     title: string
     price: number
 }

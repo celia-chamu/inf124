@@ -30,12 +30,14 @@ class User(BaseModel):
     profile_pic:str
 
 class Listing(BaseModel):
+    id: int
     seller:str
     title:str
     price:float
     category:str
     item_condition:str
     item_description:str
+    images: str
     created_at:datetime
 
 class ItemPicture(BaseModel):
@@ -57,6 +59,9 @@ class Conversation(BaseModel):
     started_at:datetime
     last_message_at:Optional[datetime]
     last_message_preview:Optional[str]
+
+class Image(BaseModel):
+    image: str
 
 @app.get("/")
 async def read_root():
@@ -169,7 +174,8 @@ def fetch_listings(search: Optional[str] = Query(None), category: Optional[str] 
             category = row[4],
             item_condition = row[5],
             item_description = row[6],
-            created_at = row[7]
+            created_at = row[7],
+            images = row[8],
         ) for row in listings]
     else:
         results = []
@@ -182,3 +188,13 @@ def delete_message(conversation_id: int, message_id: int):
         raise HTTPException(status_code=404, detail="Message not found in given conversation")
     return True
 
+@app.get("/fetch-images", response_model=list[Image])
+def fetch_images(listingid: int):
+    images = database.fetch_images(listingid)
+    if images:
+        results = [Image(
+            image = row[1],
+        ) for row in images]
+    else:
+        results = []
+    return results
