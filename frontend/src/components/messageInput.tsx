@@ -39,6 +39,7 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
                     type="text"
                     value={text}
                     onChange={handleChange}
+                    onKeyDown={handleKeyEnter}
                     placeholder="Type your message..."
                     className="flex-1 border-2 border-(--primary) shadow-lg p-2 rounded-md"
                 />
