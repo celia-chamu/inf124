@@ -27,6 +27,7 @@ export default function InboxMessage() {
     const { data: session } = useSession()
     const isOnline = useOnlineStatus()
     const [sendCache, setSendCache] = useState(false)
+
     // Store messages into a array if user is offline
     useEffect(() => {
         const sendStoredMessages = async() => {
