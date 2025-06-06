@@ -198,6 +198,25 @@ def fetch_listing(id: int):
         raise HTTPException(status_code=404, detail="Listing not found")
     return results
 
+@app.get("/fetch-listings-sold-by", response_model=list[Listing])
+def fetch_listings_sold_by(seller: str): # categories:Optional[list[str]] = Query(None) For passing in categories
+    listings = database.fetch_listings_sold_by(seller)
+    if listings:
+        results = [Listing(
+            id = row[0],
+            seller = row[1],
+            title = row[2],
+            price = row[3],
+            category = row[4],
+            item_condition = row[5],
+            item_description = row[6],
+            created_at = row[7],
+            images = row[8],
+        ) for row in listings]
+    else:
+        results = []
+    return results
+
 @app.delete("/delete-message/{conversation_id}/{message_id}", response_model=bool)
 def delete_message(conversation_id: int, message_id: int):
     success = database.delete_message(conversation_id, message_id)

@@ -1,6 +1,6 @@
+'use client'
 import Link from 'next/link'
 import ListingCard from './ListingCard'
-import { fetchListingsByOwner, fetchOwnerByEmail } from '@/mockDatabase'
 
 import {
     Dialog,
@@ -12,10 +12,20 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
-
+import api from '@/app/api/api'
+import { listingType } from '@/mockDatabase'
+import { useEffect, useState } from 'react'
 
 interface SellerInfoProps {
     email: string
+}
+
+interface userType {
+    uci_net_id: string
+    reputation: number
+    join_date: string
+    full_name: string
+    profile_pic: string
 }
 
 export function formatMonthYear(dateString: string | undefined): string {
@@ -27,8 +37,22 @@ export function formatMonthYear(dateString: string | undefined): string {
 }
 
 export default function SellerInfo({ email }: SellerInfoProps) {
-    const sellerListings = fetchListingsByOwner(email)
-    const seller = fetchOwnerByEmail(email)
+    const [listings, setListings] = useState<listingType[]>([])
+    const [seller, setSeller] = useState<userType>()
+
+    useEffect(() => {
+        const fetchListings = async () => {
+            const listingResponse = await api.get('fetch-listings-sold-by', {
+                params: { seller: email },
+            })
+            setListings(listingResponse.data)
+            const sellerResponse = await api.get('check-user', {
+                params: { uci_net_id: email },
+            })
+            setSeller(sellerResponse.data)
+        }
+        fetchListings()
+    }, [])
 
     return (
         <Dialog>
@@ -47,17 +71,17 @@ export default function SellerInfo({ email }: SellerInfoProps) {
                             <div className="rounded-full w-25 h-25 border border-gray-300 overflow-hidden">
                                 <img
                                     className="w-full h-full object-cover inline-block"
-                                    src={seller?.images[0].url}
+                                    src={seller?.profile_pic}
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <p className=" text-2xl">{seller?.name}</p>
+                                <p className=" text-2xl">{seller?.full_name}</p>
                                 <p className="text-lg">
-                                    {formatMonthYear(seller?.joined)}
+                                    {formatMonthYear(seller?.join_date)}
                                 </p>
                                 <p className="text-md">
                                     {' '}
-                                    <b>Items Sold:</b> {sellerListings.length}
+                                    <b>Items Sold:</b> {listings.length}
                                 </p>
                             </div>
                         </div>
@@ -65,17 +89,17 @@ export default function SellerInfo({ email }: SellerInfoProps) {
                         <p className="text-2xl font-bold my-4">Other Posts</p>
 
                         <div className="grid md:grid-cols-6 gap-4 overflow-y-auto max-h-[50vh]">
-                            {sellerListings.map((sellerListings) => (
+                            {listings.map((listings) => (
                                 <Link
-                                    key={sellerListings.id}
-                                    href={`/market/${sellerListings.id}`}
+                                    key={listings.id}
+                                    href={`/market/${listings.id}`}
                                     className="hover:cursor-pointer"
                                 >
                                     <ListingCard
-                                        id={sellerListings.id}
-                                        imageUrl={sellerListings.images[0].url}
-                                        title={sellerListings.title}
-                                        price={sellerListings.price}
+                                        id={listings.id}
+                                        image={listings.images.split(', ')[0]}
+                                        title={listings.title}
+                                        price={listings.price}
                                     />
                                 </Link>
                             ))}

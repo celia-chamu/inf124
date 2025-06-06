@@ -1,7 +1,6 @@
 'use client'
 import Message from '@/components/Message'
 import { Button } from '@/components/ui/button'
-import { fetchBuyers, fetchSellers } from '@/mockDatabase'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'

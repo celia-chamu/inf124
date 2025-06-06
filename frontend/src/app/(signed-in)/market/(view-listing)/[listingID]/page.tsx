@@ -10,7 +10,18 @@ import ThumbnailCarousel from '@/components/ThumbnailCarousel'
 import { CarouselApi } from '@/components/ui/carousel'
 import api from '@/app/api/api'
 import { useSession } from 'next-auth/react'
-import { listingType } from '@/mockDatabase'
+
+interface listingType {
+    id: string
+    images: string
+    title: string
+    price: number
+    seller: string
+    category: string
+    item_condition: string
+    item_description: string
+    created_at: string
+}
 
 export default function Page() {
     const pageparams = useParams<{ listingID: string }>()
@@ -79,7 +90,7 @@ export default function Page() {
         try {
             const response = await api.get('/conversation-exist', {
                 params: {
-                    seller: listing?.owner,
+                    seller: listing?.seller,
                     buyer: session?.user?.email,
                 },
             })
@@ -90,7 +101,7 @@ export default function Page() {
                 try {
                     await api.post('/create-conversation', {
                         conversation_id: 0,
-                        seller: listing?.owner,
+                        seller: listing?.seller,
                         buyer: session?.user?.email,
                         started_at: new Date(),
                         last_message_at: null,
@@ -160,11 +171,11 @@ export default function Page() {
                             <b> Category: </b> {listing.category}
                         </p>
                         <p className="text-lg">
-                            <b> Condition: </b> {listing.condition}
+                            <b> Condition: </b> {listing.item_condition}
                         </p>
 
                         <div className="bg-white rounded-sm text-md pl-2 h-50 w-full mt-2 mb-2">
-                            {listing?.description}
+                            {listing?.item_description}
                         </div>
                         <Link href="/inbox">
                             <Button
@@ -179,9 +190,9 @@ export default function Page() {
                     <div className="pb-5 flex flex-col gap-5">
                         <div className="line"></div>
                         <p className="text-lg">
-                            <b> Seller: </b> {listing?.owner}
+                            <b> Seller: </b> {listing?.seller}
                         </p>
-                        {listing && <SellerInfo email={listing.owner} />}
+                        {listing && <SellerInfo email={listing.seller} />}
                     </div>
                 </div>
             </div>

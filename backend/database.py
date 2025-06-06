@@ -302,6 +302,36 @@ def fetch_listing(id: int):
         cursor.close()
         conn.close()
 
+def fetch_listings_sold_by(seller: str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SET SESSION group_concat_max_len = 100000000000;")
+        conn.commit()
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
+
+    statement = """
+                SELECT l.*, GROUP_CONCAT(i.item_picture ORDER BY i.item_picture SEPARATOR ', ') AS images
+                FROM listings l
+                LEFT JOIN itemPictures i ON l.id = i.listingid
+                WHERE l.seller = %s
+                GROUP BY l.id
+    """
+
+    try:
+        cursor.execute(statement, (seller, )) 
+        listings = cursor.fetchall()
+        return listings
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
 
 def delete_message(conversation_id: int, message_id: int):
     conn = db_connection()
