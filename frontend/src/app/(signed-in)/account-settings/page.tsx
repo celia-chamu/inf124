@@ -82,11 +82,11 @@ export default function AccountSettings() {
             <div className="flex flex-col gap-6 w-full max-w-xl">
 
                 <div className="flex items-center justify-between">
-                    <input value={session?.user?.name || ""} className="border-b-2 border-gray-400 text-lg w-full mr-4"></input>
+                    <p className="border-b-2 border-gray-400 text-lg w-full mr-4"> {session?.user?.name || ""} </p>
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <input value={session?.user?.email || ""} className="border-b-2 border-gray-400 text-lg w-full mr-4"></input>
+                    <p className="border-b-2 border-gray-400 text-lg w-full mr-4"> {session?.user?.email || ""} </p>
                 </div>
             </div>
 

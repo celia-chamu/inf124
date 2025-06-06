@@ -10,6 +10,13 @@ interface MessageInputProps {
 export default function MessageInput({ handleSendMessage }: MessageInputProps) {
     const [text, setText] = useState('')
 
+    const handleKeyEnter = (e: React.KeyboardEvent<HTMLInputElement>) =>  {
+        if (e.key === "Enter"){
+            e.preventDefault()
+            handleSend()
+        }
+    }
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value)
     }
@@ -32,6 +39,7 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
                     type="text"
                     value={text}
                     onChange={handleChange}
+                    onKeyDown={handleKeyEnter}
                     placeholder="Type your message..."
                     className="flex-1 border-2 border-(--primary) shadow-lg p-2 rounded-md"
                 />
