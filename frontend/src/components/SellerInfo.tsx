@@ -13,8 +13,19 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import api from '@/app/api/api'
-import { listingType } from '@/mockDatabase'
 import { useEffect, useState } from 'react'
+
+export interface listingType {
+    id: string
+    images: string
+    title: string
+    price: number
+    seller: string
+    category: string
+    item_condition: string
+    item_description: string
+    created_at: string
+}
 
 interface SellerInfoProps {
     email: string

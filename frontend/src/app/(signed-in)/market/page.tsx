@@ -4,7 +4,19 @@ import ListingCard from '@/components/ListingCard'
 import SearchBar from '@/components/searchbar'
 import { useState, useEffect } from 'react'
 import api from '@/app/api/api'
-import { listingType } from '@/mockDatabase'
+
+export interface listingType {
+    id: string
+    images: string
+    title: string
+    price: number
+    seller: string
+    category: string
+    item_condition: string
+    item_description: string
+    created_at: string
+}
+
 
 export default function Page() {
     const [category, setCategory] = useState('')
@@ -33,7 +45,7 @@ export default function Page() {
                     >
                         <ListingCard
                             id={listing.id}
-                            image={listing.images.split(', ')[0]}
+                            image={listing.images?.split(', ')[0] || "images/no-image.png"}
                             title={listing.title}
                             price={listing.price}
                         />
