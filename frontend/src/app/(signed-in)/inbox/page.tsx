@@ -35,7 +35,7 @@ function Inbox() {
                     })
                     setConversations(response.data.flat())
                 } catch (error) {
-                    console.error('Error fetching conversations:', error)
+                    console.log('Error fetching conversations:', error)
                     setConversations([])
                 }
             } else {
@@ -48,7 +48,7 @@ function Inbox() {
                     })
                     setConversations(response.data.flat())
                 } catch (error) {
-                    console.error('Error fetching conversations:', error)
+                    console.log('Error fetching conversations:', error)
                     setConversations([])
                 }
             }
