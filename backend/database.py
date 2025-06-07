@@ -322,13 +322,14 @@ def fetch_listings_sold_by(seller: str):
         conn.close()
         
 def fetch_item_pictures_by_listingid(listingid: int):
-    conn = db_connection
+    conn = db_connection()
     cursor = conn.cursor()
-    query = "SELECT id, item_picture, listingid FROM item_pictures WHERE listingid = %s"
+    query = "SELECT id, item_picture, listingid FROM itemPictures WHERE listingid = %s"
     cursor.execute(query, (listingid,))
     results = cursor.fetchall()
+    cursor.close()
     conn.close()
-    return [row[0] for row in results] if results else []
+    return results  
 
 
 def delete_message(conversation_id: int, message_id: int):
