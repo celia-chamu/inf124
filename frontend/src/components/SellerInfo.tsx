@@ -25,6 +25,7 @@ export interface listingType {
     item_condition: string
     item_description: string
     created_at: string
+    image?: string
 }
 
 interface SellerInfoProps {
@@ -53,17 +54,45 @@ export default function SellerInfo({ email }: SellerInfoProps) {
 
     useEffect(() => {
         const fetchListings = async () => {
-            const listingResponse = await api.get('fetch-listings-sold-by', {
-                params: { seller: email },
-            })
-            setListings(listingResponse.data)
-            const sellerResponse = await api.get('check-user', {
-                params: { uci_net_id: email },
-            })
-            setSeller(sellerResponse.data)
+            try {
+                const listingResponse = await api.get(
+                    'fetch-listings-sold-by',
+                    {
+                        params: { seller: email },
+                    }
+                )
+
+                const rawListings = listingResponse.data
+
+                const listingsWithImages = await Promise.all(
+                    rawListings.map(async (listing: listingType) => {
+                        try {
+                            const imageRes = await api.get('/fetch-pictures', {
+                                params: { listingid: listing.id },
+                            })
+                            listing.image =
+                                imageRes.data?.[0]?.item_picture ||
+                                'images/no-image.png'
+                        } catch {
+                            listing.image = 'images/no-image.png'
+                        }
+                        return listing
+                    })
+                )
+
+                setListings(listingsWithImages)
+
+                const sellerResponse = await api.get('check-user', {
+                    params: { uci_net_id: email },
+                })
+                setSeller(sellerResponse.data)
+            } catch (error) {
+                console.error('Failed to fetch seller info or listings:', error)
+            }
         }
+
         fetchListings()
-    }, [])
+    }, [email])
 
     return (
         <Dialog>
@@ -108,7 +137,17 @@ export default function SellerInfo({ email }: SellerInfoProps) {
                                 >
                                     <ListingCard
                                         id={listings.id}
-                                        image={listings.images.split(', ')[0]}
+                                        image={
+                                            listings.image ??
+                                            (listings.images
+                                                ? listings.images
+                                                      .split(',')
+                                                      .map((img) =>
+                                                          img.trim()
+                                                      )[0] ||
+                                                  'images/no-image.png'
+                                                : 'images/no-image.png')
+                                        }
                                         title={listings.title}
                                         price={listings.price}
                                     />

@@ -27,9 +27,11 @@ export default function AccountSettings() {
                         uci_net_id: session?.user?.email,
                     },
                 })
-                setPreview(response.data)
+                const imgData = response.data
+                setPreview(imgData && imgData !== '' ? imgData : '/default.png')
             } catch (err: any) {
                 console.log('Error fetching image')
+                setPreview('/default.png')
             }
         }
         const fetchUser = async () => {
@@ -53,12 +55,13 @@ export default function AccountSettings() {
                 try {
                     await api.put('/update-profileImage', {
                         uci_net_id: session?.user?.email,
-                        image: base64Image, // ✅ send base64 string to backend
+                        image: base64Image,
                     })
                 } catch (err: any) {
                     console.log('Error changing image', err)
                 }
             }
+            alert('Profile Picture Changed Successfully')
             reader.readAsDataURL(file)
         }
     }
@@ -68,7 +71,7 @@ export default function AccountSettings() {
                 <div className="flex items-center gap-6 mb-8">
                     <div className="w-50 h-50 rounded-full overflow-hidden bg-gray-200 border border-gray-300 flex items-center justify-center">
                         <img
-                            src={preview ?? '/no_photo.png'}
+                            src={preview || '/default.png'}
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
@@ -104,22 +107,6 @@ export default function AccountSettings() {
                         {' '}
                         {session?.user?.email || ''}{' '}
                     </p>
-                </div>
-            </div>
-
-            <h1 className="text-2xl font-bold pt-8 mb-8">Notifications</h1>
-
-            <div className="flex">
-                <div className=" h-40 inline-block w-2xs xs:w-sm sm:w-sm xl:w-xl lg:w-lg md:w-md">
-                    <p className="text-lg">Notification Preference</p>
-                    <div className="bg-gray-400 h-1" />
-                </div>
-
-                <div className=" h-40 inline-block w-[2vw]">
-                    <button className="text-lg font-bold cursor-pointer">
-                        Edit
-                    </button>
-                    <div className="bg-gray-400 h-1" />
                 </div>
             </div>
         </div>

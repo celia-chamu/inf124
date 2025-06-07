@@ -1,9 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import GoogleSignIn from '@/components/google/GoogleSignIn'
-import { useEffect } from 'react'
 import { Button } from './ui/button'
 import { signOut, useSession } from 'next-auth/react'
 
