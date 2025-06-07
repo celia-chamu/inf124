@@ -15,8 +15,8 @@ export interface listingType {
     item_condition: string
     item_description: string
     created_at: string
+    image?: string
 }
-
 
 export default function Page() {
     const [category, setCategory] = useState('')
@@ -25,11 +25,31 @@ export default function Page() {
 
     useEffect(() => {
         const fetchListings = async () => {
-            const response = await api.get('fetch-listings', {
+            const res = await api.get('fetch-listings', {
                 params: { search: search, category: category },
             })
-            setListings(response.data)
+            const listingsData = res.data
+
+            // fetch images for each listing
+            const listingsWithImages = await Promise.all(
+                listingsData.map(async (listing: listingType) => {
+                    try {
+                        const imageRes = await api.get('/fetch-pictures', {
+                            params: { listingid: listing.id },
+                        })
+                        listing.image =
+                            imageRes.data?.[0]?.item_picture ||
+                            'images/no-image.png'
+                    } catch {
+                        listing.image = 'images/no-image.png'
+                    }
+                    return listing
+                })
+            )
+
+            setListings(listingsWithImages)
         }
+
         fetchListings()
     }, [category, search])
 
@@ -45,7 +65,10 @@ export default function Page() {
                     >
                         <ListingCard
                             id={listing.id}
-                            image={listing.images?.split(', ')[0] || "images/no-image.png"}
+                            image={
+                                listing.images?.split(', ')[0] ||
+                                'images/no-image.png'
+                            }
                             title={listing.title}
                             price={listing.price}
                         />

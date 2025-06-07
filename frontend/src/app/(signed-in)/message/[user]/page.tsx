@@ -3,7 +3,6 @@
 
 import { useState, useEffect, cache, useRef } from 'react'
 import { useParams } from 'next/navigation'
-import { fetchMessages, addToMessages } from '@/mockDatabase'
 import Message from '@/components/Message'
 import MessageInput from '@/components/messageInput'
 import { useSession } from 'next-auth/react'

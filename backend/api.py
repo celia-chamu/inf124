@@ -77,6 +77,12 @@ def create_listing(listing:Listing):
     database.add_listing(listing.seller, listing.title, listing.price, listing.category, listing.item_condition, listing.item_description, listing.created_at)
     return listing
 
+@app.post("/add-picture")
+def add_picture(itemPicture: ItemPicture):
+    print(itemPicture)
+    database.add_itemPictures(itemPicture.item_picture, itemPicture.listingid)
+    return itemPicture
+
 @app.post("/create-message", response_model=Message)
 def create_message(message:Message):
     print(message)
@@ -88,12 +94,6 @@ def create_conversation(conversation:Conversation):
     print(conversation)
     database.add_conversation(conversation.seller, conversation.buyer, conversation.started_at, conversation.last_message_at, conversation.last_message_preview)
     return conversation
-
-@app.post("/add-picture")
-def add_picture(itemPicture: ItemPicture):
-    print(itemPicture)
-    database.add_itemPictures(itemPicture.item_picture, itemPicture.listingid)
-    return itemPicture
 
 @app.get("/check-user", response_model=User)
 def read_user(uci_net_id:str):
@@ -217,6 +217,20 @@ def fetch_listings_sold_by(seller: str): # categories:Optional[list[str]] = Quer
         results = []
     return results
 
+@app.get("/fetch-pictures")
+def fetch_pictures(listingid: int):
+    try:
+        images = database.fetch_item_pictures_by_listingid(listingid)
+        if not images:
+            return []
+        return [
+            {"id": row[0], "item_picture": row[1], "listingid": row[2]}
+            for row in images
+        ]
+    except Exception as e:
+        print(f"Error fetching pictures for listing {listingid}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch images")
+    
 @app.delete("/delete-message/{conversation_id}/{message_id}", response_model=bool)
 def delete_message(conversation_id: int, message_id: int):
     success = database.delete_message(conversation_id, message_id)
