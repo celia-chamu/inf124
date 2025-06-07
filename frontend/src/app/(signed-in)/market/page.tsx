@@ -29,8 +29,7 @@ export default function Page() {
                 params: { search: search, category: category },
             })
             const listingsData = res.data
-
-            // fetch images for each listing
+            console.log('LISTING FETCHED', listingsData)
             const listingsWithImages = await Promise.all(
                 listingsData.map(async (listing: listingType) => {
                     try {
@@ -46,7 +45,6 @@ export default function Page() {
                     return listing
                 })
             )
-
             setListings(listingsWithImages)
         }
 

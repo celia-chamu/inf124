@@ -11,7 +11,6 @@ def db_connection():
         allow_local_infile=True
     )
 
-
 def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full_name:str, profile_pic:str) -> bool:
     #Connect to database
     conn = db_connection()
@@ -22,7 +21,6 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full
         INSERT INTO users(uci_net_id, reputation, join_date, full_name, profile_pic)
         VALUES (%s, %s, %s, %s, %s)
     """
-
     values = (
         uci_net_id,
         reputation,
@@ -30,7 +28,6 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full
         full_name,
         profile_pic
     )
-
     try:
         #Execute statements and commit changes
         cursor.execute(statement, values)
@@ -43,9 +40,6 @@ def add_user(uci_net_id:str, reputation:float, join_date:datetime.datetime, full
         #Close connection to database
         cursor.close()
         conn.close()
-
-
-        
 
 def add_itemPictures(item_picture:str, id:int):
     conn = db_connection()
@@ -80,14 +74,13 @@ def add_listing(seller:str, title:str, price:float, category:str, item_condition
     try:
         cursor.execute(statement, values)
         conn.commit()
-        return True
+        return cursor.lastrowid 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         return False
     finally:
         cursor.close()
         conn.close()
-
 
 def add_message(conversation_id:int, sender:str, content:str, sent_at:datetime, has_read:bool) -> bool:
     conn = db_connection()
@@ -152,7 +145,6 @@ def add_conversation(seller:str, buyer:str, started_at:datetime, last_message_at
         cursor.close()
         conn.close()
 
-
 def find_all_conversation(user:str, type:str):
     conn = db_connection()
     cursor = conn.cursor()
@@ -184,7 +176,6 @@ def find_all_conversation(user:str, type:str):
         cursor.close()
         conn.close()
 
-
 def get_conversation(seller:str, buyer:str):
     conn = db_connection()
     cursor = conn.cursor()
@@ -208,7 +199,6 @@ def get_conversation(seller:str, buyer:str):
         cursor.close()
         conn.close()
 
-
 def get_user(uci_net_id:str):
     conn = db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -229,7 +219,6 @@ def get_user(uci_net_id:str):
     finally:
         cursor.close()
         conn.close()
-
 
 def fetch_listings(search: str | None, category: str | None):
     conn = db_connection()
@@ -339,7 +328,7 @@ def fetch_item_pictures_by_listingid(listingid: int):
     cursor.execute(query, (listingid,))
     results = cursor.fetchall()
     conn.close()
-    return results
+    return [row[0] for row in results] if results else []
 
 
 def delete_message(conversation_id: int, message_id: int):

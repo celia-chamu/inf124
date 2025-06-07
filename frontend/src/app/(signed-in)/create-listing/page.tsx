@@ -1,11 +1,11 @@
 'use client'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { use, useState } from 'react'
+import { useState } from 'react'
 import api from '@/app/api/api'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
-//https://stackoverflow.com/questions/55831213/uploading-multiple-images-with-react
+// Modified code from: https://stackoverflow.com/questions/55831213/uploading-multiple-images-with-react
 
 function CreateListing() {
     const [preview, setPreview] = useState<string | null>(null)
@@ -15,7 +15,7 @@ function CreateListing() {
     const [condition, setCondition] = useState('')
     const [description, setDescription] = useState('')
     const { data: session } = useSession()
-    const [listingId, setListingId] = useState<number | null>(null)
+    const router = useRouter()
 
     type Upload = {
         file: File
@@ -24,6 +24,7 @@ function CreateListing() {
         sizeMB: string
         status: string
     }
+
     const [uploads, setUploads] = useState<Upload[]>([])
     const MAX_MB = 10
 
@@ -49,7 +50,6 @@ function CreateListing() {
             reader.onloadend = () => setPreview(reader.result as string)
             reader.readAsDataURL(firstValidImage)
         }
-
         setUploads((prev) => [...prev, ...uploadsInit])
     }
 
@@ -75,8 +75,6 @@ function CreateListing() {
             }
             const listingRes = await api.post('/create-listing', listing)
             const newListingId = listingRes.data.id || 0
-            setListingId(newListingId)
-
             const imageUploads = uploads.filter((img) => img.status !== 'error')
             for (const upload of imageUploads) {
                 const reader = new FileReader()
@@ -108,15 +106,9 @@ function CreateListing() {
                 reader.readAsDataURL(upload.file)
             }
             alert('Listing Created successfully!')
+            router.push('/market')
         } catch (err: any) {
             console.error('Upload failed:', err)
-            if (err.response) {
-                console.error('Server responded with:', err.response.data)
-            } else if (err.request) {
-                console.error('Request was made but no response:', err.request)
-            } else {
-                console.error('Error setting up request:', err.message)
-            }
             alert('There was an error creating the listing.')
         }
     }
@@ -155,23 +147,11 @@ function CreateListing() {
                                 {uploads.map((upload, idx) => (
                                     <div
                                         key={idx}
-                                        className={`rounded border px-2 py-1 mb-2 ${
-                                            upload.status === 'error'
-                                                ? 'border-red-500 text-red-600'
-                                                : upload.status === 'done'
-                                                ? 'border-green-500 text-green-600'
-                                                : 'border-gray-300'
-                                        }`}
+                                        className={`rounded border border-white px-2 py-1 mb-2 `}
                                     >
                                         <div className="flex justify-between text-sm">
                                             <span>{upload.name}</span>
-                                            <span>
-                                                {upload.status === 'error'
-                                                    ? 'Failed to upload'
-                                                    : upload.status === 'done'
-                                                    ? 'Uploaded'
-                                                    : 'Pending'}
-                                            </span>
+                                            <span>{upload.sizeMB} MB</span>
                                         </div>
                                     </div>
                                 ))}
@@ -237,15 +217,17 @@ function CreateListing() {
                         className="bg-white rounded-lg border border-gray-400 text-xl md:text-xl pl-2 mt-8 w-full h-[20vw] md:h-[10vw]"
                     />
                     <div className="flex justify-center lg:justify-end">
-                        <Link href="/market">
-                            <Button
-                                variant="ListingZot"
-                                className="mt-4 sm:mt-5 md:mt-4"
-                                onClick={handleCreateListing}
-                            >
-                                Create New Listing
-                            </Button>
-                        </Link>
+                        <Button
+                            variant="ListingZot"
+                            className="mt-4 sm:mt-5 md:mt-4"
+                            onClick={handleCreateListing}
+                            disabled={
+                                uploads.filter((u) => u.status !== 'error')
+                                    .length === 0
+                            }
+                        >
+                            Create New Listing
+                        </Button>
                     </div>
                 </div>
             </div>

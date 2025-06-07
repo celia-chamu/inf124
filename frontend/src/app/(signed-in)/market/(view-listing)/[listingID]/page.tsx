@@ -135,26 +135,6 @@ export default function Page() {
                             setApi={setThumbnailApi}
                         />
                     </div>
-                    <div className="p-5 flex gap-5">
-                        <Button
-                            variant="ListingZot"
-                            className="lg:w-[8vw] w-[24vw]"
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            variant="ListingZot"
-                            className="lg:w-[8vw] w-[24vw]"
-                        >
-                            Report
-                        </Button>
-                        <Button
-                            variant="ListingZot"
-                            className="lg:w-[8vw] w-[24vw]"
-                        >
-                            Share
-                        </Button>
-                    </div>
                 </div>
 
                 <div className="bg-(--sidebar-button-background) rounded-sm p-10 pb-25 h-full lg:w-4/10 w-full flex flex-col gap-2">

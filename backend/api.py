@@ -16,8 +16,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 class ProfileImageUpdate(BaseModel):
     uci_net_id: str
     image: str
@@ -72,10 +70,28 @@ def create_user(user:User):
     return user
 
 @app.post("/create-listing", response_model=Listing)
-def create_listing(listing:Listing):
+def create_listing(listing: Listing):
     print(listing)
-    database.add_listing(listing.seller, listing.title, listing.price, listing.category, listing.item_condition, listing.item_description, listing.created_at)
-    return listing
+    new_id = database.add_listing(
+        listing.seller,
+        listing.title,
+        listing.price,
+        listing.category,
+        listing.item_condition,
+        listing.item_description,
+        listing.created_at
+    )
+    return Listing(
+        id=new_id,
+        seller=listing.seller,
+        title=listing.title,
+        price=listing.price,
+        category=listing.category,
+        item_condition=listing.item_condition,
+        item_description=listing.item_description,
+        created_at=listing.created_at,
+        images=listing.images
+    )
 
 @app.post("/add-picture")
 def add_picture(itemPicture: ItemPicture):
