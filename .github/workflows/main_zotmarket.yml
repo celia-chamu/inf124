@@ -103,6 +103,7 @@ jobs:
 
       - name: Install frontend dependencies & build Next.js
         run: |
+          npm install
           cd frontend
           npm install
           NEXT_IGNORE_ESLINT=true next build
