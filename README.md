@@ -25,11 +25,15 @@ ZotMarket is an online marketplace designed specifically for UC Irvine students 
 ## 🚀 Getting Started
 
 ### Backend Setup
+```
 cd backend
 pip install -r requirements.txt
 fastapi dev api.py
+```
 
 ### Frontend Setup
+```
 cd frontend
 npm install
 npm run dev
+```
