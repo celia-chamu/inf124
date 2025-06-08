@@ -4,13 +4,11 @@ function ListingCard({ id, image, title, price }: propTypes) {
             // onClick={handleClick}
             className="cursor-pointer rounded-xl shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden inline-block w-full h-full bg-white"
         >
-            <div className="h-50 w-full">
-                <img
-                    src={image}
-                    alt={title}
-                    className="h-full w-full object-cover"
-                />
-            </div>
+            <img
+                src={image}
+                alt={title}
+                className="h-auto w-full object-cover"
+            />
             <div className="flex flex-col m-2">
                 <p className="text-lg font-semibold line-clamp-2 text-center">
                     {title}

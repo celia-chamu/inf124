@@ -258,10 +258,3 @@ def delete_message(conversation_id: int, message_id: int):
     if not success:
         raise HTTPException(status_code=404, detail="Message not found in given conversation")
     return True
-
-@app.delete("/delete-listing/{listing_id}", response_model=bool)
-def delete_listing(listing_id: int):
-    success = database.delete_listing(listing_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Listing not found")
-    return True

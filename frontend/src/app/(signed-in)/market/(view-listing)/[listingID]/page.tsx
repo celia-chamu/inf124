@@ -113,20 +113,10 @@ export default function Page() {
             }
         }
     }
-    
     if (!listing) {
         return <></>
     } else {
         console.log(listing)
-    }
-
-    const handleDelete = async () => {
-        try {
-            await api.delete(`/delete-listing/${listing.id}`)
-            console.log('Listing deleted successfully')
-        } catch (error) {
-            console.error('Error deleting listing:', error)
-        }
     }
 
     return (
@@ -167,27 +157,15 @@ export default function Page() {
                         <div className="bg-white rounded-sm text-md pl-2 h-50 w-full mt-2 mb-2">
                             {listing?.item_description}
                         </div>
-                        {session?.user?.email === listing?.seller ? (
-                            <Link href="/market">
-                                <Button
-                                    variant="ListingZot"
-                                    className="w-full"
-                                    onClick={handleDelete}
-                                >
-                                Delete Listing
-                                </Button>
-                            </Link>
-                        ):(
-                            <Link href="/inbox">
-                                <Button
-                                    variant="ListingZot"
-                                    className="w-full"
-                                    onClick={handleCheck}
-                                >
-                                    Message
-                                </Button>
-                            </Link>
-                        )}
+                        <Link href="/inbox">
+                            <Button
+                                variant="ListingZot"
+                                className="w-full"
+                                onClick={handleCheck}
+                            >
+                                Message
+                            </Button>
+                        </Link>
                     </div>
                     <div className="pb-5 flex flex-col gap-5">
                         <div className="line"></div>
