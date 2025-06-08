@@ -152,7 +152,7 @@ export default function Page() {
                         <h1 className="text-2xl font-bold">{listing.title}</h1>
                         <p className="text-xl">${listing.price}</p>
                         <p className="text-md">
-                            Posted On ${listing.created_at}
+                            Posted On {new Date(listing.created_at).toLocaleString()}
                         </p>
                     </div>
 
