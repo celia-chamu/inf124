@@ -33,32 +33,6 @@ jobs:
         run: |
             cd backend
             pip install -r requirements.txt
-
-      - name: Set up Node.js (for Next.js frontend)
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install frontend dependencies & build Next.js
-        run: |
-          npm install
-          cd frontend
-          npm install
-          NEXT_IGNORE_ESLINT=true npm run build
-          cd ..
-
-      - name: Set up Python (for backend)
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Copy frontend build into backend (so it all deploys together)
-        run: |
-          mkdir -p backend/frontend
-          cp -r frontend/.next backend/frontend/
-          cp -r frontend/public backend/frontend/
-          cp -r frontend/node_modules backend/frontend/
-          cp frontend/package.json backend/frontend/
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
