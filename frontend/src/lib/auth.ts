@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-const handler = (req: Request) => NextAuth({ req, options: authOptions });
+const handler = (req: Request) => NextAuth({ request: req, ...authOptions });
 
 export async function GET(request: Request) {
   return handler(request);
