@@ -30,22 +30,7 @@ export default function Page() {
             })
             const listingsData = res.data
             console.log('LISTING FETCHED', listingsData)
-            const listingsWithImages = await Promise.all(
-                listingsData.map(async (listing: listingType) => {
-                    try {
-                        const imageRes = await api.get('/fetch-pictures', {
-                            params: { listingid: listing.id },
-                        })
-                        listing.image =
-                            imageRes.data?.[0]?.item_picture ||
-                            'images/no-image.png'
-                    } catch {
-                        listing.image = 'images/no-image.png'
-                    }
-                    return listing
-                })
-            )
-            setListings(listingsWithImages)
+            setListings(listingsData)
         }
 
         fetchListings()
