@@ -16,7 +16,6 @@ export default function SearchBar({ setSearch, setCategory }: Props) {
     const [filterClick, setFilterClick] = useState(false)
 
     const filters = [
-        'Category',
         'Furniture',
         'Clothing',
         'Shoes',

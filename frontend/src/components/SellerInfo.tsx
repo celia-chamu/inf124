@@ -121,7 +121,7 @@ export default function SellerInfo({ email }: SellerInfoProps) {
                                 </p>
                                 <p className="text-md">
                                     {' '}
-                                    <b>Items Sold:</b> {listings.length}
+                                    <b>Items Posted:</b> {listings.length}
                                 </p>
                             </div>
                         </div>

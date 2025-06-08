@@ -182,7 +182,6 @@ function CreateListing() {
                                 required
                                 className="bg-white rounded-md shadow-lg border-1 border-gray-400 w-[50vw] md:w-[18vw] lg:w-full text-xl md:text-xl pl-2"
                             >
-                                <option value="Category">Category</option>
                                 <option value="Furniture">Furniture</option>
                                 <option value="Clothing">Clothing</option>
                                 <option value="Shoes">Shoes</option>

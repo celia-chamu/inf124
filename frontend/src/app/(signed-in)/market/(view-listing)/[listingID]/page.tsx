@@ -113,7 +113,7 @@ export default function Page() {
             }
         }
     }
-    
+
     if (!listing) {
         return <></>
     } else {
@@ -151,7 +151,9 @@ export default function Page() {
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">{listing.title}</h1>
                         <p className="text-xl">${listing.price}</p>
-                        <p className="text-md">Posted 1 hr ago</p>
+                        <p className="text-md">
+                            Posted On ${listing.created_at}
+                        </p>
                     </div>
 
                     <div className="flex flex-col gap-2 mb-5">
@@ -174,10 +176,10 @@ export default function Page() {
                                     className="w-full"
                                     onClick={handleDelete}
                                 >
-                                Delete Listing
+                                    Delete Listing
                                 </Button>
                             </Link>
-                        ):(
+                        ) : (
                             <Link href="/inbox">
                                 <Button
                                     variant="ListingZot"
