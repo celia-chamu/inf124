@@ -1,34 +1,7 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { NextAuthOptions } from 'next-auth';
+import { signIn, signOut } from "next-auth/react";
 
-export const authOptions: NextAuthOptions = {
-  secret: process.env.AUTH_SECRET,
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-  ],
-  callbacks: {
-    async signIn({ profile, account }) {
-      if (account?.provider === 'google') {
-        if (!profile?.email?.endsWith('@uci.edu')) {
-          return false;
-        }
-        return true;
-      }
-      return '/unauthorized';
-    },
-  },
-};
+// Function to sign in using Google and redirect to /market after successful login
+export const handleSignIn = () => signIn("google", { callbackUrl: "/market" });
 
-const handler = (req: Request) => NextAuth({ request: req, ...authOptions });
-
-export async function GET(request: Request) {
-  return handler(request);
-}
-
-export async function POST(request: Request) {
-  return handler(request);
-}
+// Function to sign out the user
+export const handleSignOut = () => signOut();
