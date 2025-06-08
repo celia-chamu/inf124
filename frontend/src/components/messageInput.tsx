@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Button } from './ui/button'
-import api from '@/app/api/api'
 interface MessageInputProps {
     handleSendMessage: (newMessage: string) => void
 }
