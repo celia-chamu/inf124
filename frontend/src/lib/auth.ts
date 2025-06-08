@@ -16,7 +16,6 @@ export const authOptions: NextAuthOptions = {
         if (!profile?.email?.endsWith('@uci.edu')) {
           return false;
         }
-        // your other logic here...
         return true;
       }
       return '/unauthorized';
@@ -24,6 +23,12 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-const handler = NextAuth(authOptions);
+const handler = (req: Request) => NextAuth({ req, options: authOptions });
 
-export { handler as GET, handler as POST };
+export async function GET(request: Request) {
+  return handler(request);
+}
+
+export async function POST(request: Request) {
+  return handler(request);
+}
