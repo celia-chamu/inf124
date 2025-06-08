@@ -436,3 +436,23 @@ def update_lastMessage(convo_id:int, last_message:str, last_message_time: dateti
     finally:
         cursor.close()
         conn.close()
+
+def delete_listing(listing_id: int):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        DELETE FROM listings
+        WHERE id = %s
+    """
+
+    try:
+        cursor.execute(statement, (listing_id,))
+        conn.commit()
+        return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
