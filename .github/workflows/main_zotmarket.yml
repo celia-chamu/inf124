@@ -106,8 +106,7 @@ jobs:
           npm install
           cd frontend
           npm install
-          NEXT_IGNORE_ESLINT=true next build
-          npm run build
+          NEXT_IGNORE_ESLINT=true npm run build
           cd ..
 
       - name: Set up Python (for backend)
