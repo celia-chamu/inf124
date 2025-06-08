@@ -1,83 +1,137 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
+# # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# # More GitHub Actions for Azure: https://github.com/Azure/actions
+# # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - ZotMarket
+# name: Build and deploy Python app to Azure Web App - ZotMarket
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read #This is required for actions/checkout
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Set up Python version
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.13'
+
+#       - name: Create and start virtual environment
+#         run: |
+#           python -m venv venv
+#           source venv/bin/activate
+      
+#       - name: Install dependencies
+#         run: |
+#             cd backend
+#             pip install -r requirements.txt
+        
+#       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+
+#       - name: Zip artifact for deployment
+#         run: zip release.zip ./* -r
+
+#       - name: Upload artifact for deployment jobs
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: python-app
+#           path: |
+#             release.zip
+#             !venv/
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     needs: build
+#     environment:
+#       name: 'Production'
+#       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+#     permissions:
+#       id-token: write #This is required for requesting the JWT
+#       contents: read #This is required for actions/checkout
+
+#     steps:
+#       - name: Download artifact from build job
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: python-app
+
+#       - name: Unzip artifact for deployment
+#         run: unzip release.zip
+
+      
+#       - name: Login to Azure
+#         uses: azure/login@v2
+#         with:
+#           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_02D59D03623D496E95308909F7E5AE4E }}
+#           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_126C516F2897489A803652CA0465BFFD }}
+#           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1C9A05CD04284C2FA2EFC5DE9CA33565 }}
+
+#       - name: 'Deploy to Azure Web App'
+#         uses: azure/webapps-deploy@v3
+#         id: deploy-to-webapp
+#         with:
+#           app-name: 'ZotMarket'
+#           slot-name: 'Production'
+
+name: Build and deploy fullstack app to Azure Web App
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Set up Python version
-        uses: actions/setup-python@v5
+      - name: Set up Node.js (for Next.js frontend)
+        uses: actions/setup-node@v3
         with:
-          python-version: '3.13'
+          node-version: '18'
 
-      - name: Create and start virtual environment
+      - name: Install frontend dependencies & build Next.js
         run: |
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Install dependencies
+          cd frontend
+          npm install
+          npm run build
+          cd ..
+
+      - name: Set up Python (for backend)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install backend dependencies
         run: |
-            cd backend
-            pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+          cd backend
+          pip install -r requirements.txt
+          cd ..
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Copy frontend build into backend (so it all deploys together)
+        run: |
+          mkdir -p backend/frontend
+          cp -r frontend/.next backend/frontend/
+          cp -r frontend/public backend/frontend/
+          cp -r frontend/node_modules backend/frontend/
+          cp frontend/package.json backend/frontend/
 
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v4
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
         with:
-          name: python-app
-          path: |
-            release.zip
-            !venv/
+          app-name: YOUR_APP_SERVICE_NAME
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: backend
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_02D59D03623D496E95308909F7E5AE4E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_126C516F2897489A803652CA0465BFFD }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1C9A05CD04284C2FA2EFC5DE9CA33565 }}
-
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
-        with:
-          app-name: 'ZotMarket'
-          slot-name: 'Production'
           
