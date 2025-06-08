@@ -108,7 +108,7 @@ function NavMenu() {
                                                         onClick={() =>
                                                             signOut({
                                                                 callbackUrl:
-                                                                    'http://localhost:3000',
+                                                                    '/',
                                                             })
                                                         }
                                                     >

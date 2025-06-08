@@ -29,7 +29,7 @@ export default function Header() {
                             variant="zot"
                             onClick={() =>
                                 signOut({
-                                    callbackUrl: 'http://localhost:3000',
+                                    callbackUrl: '/',
                                 })
                             }
                         >
