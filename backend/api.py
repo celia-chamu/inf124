@@ -119,6 +119,11 @@ def read_user(uci_net_id:str):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@app.get("/fetch-profileImage")
+def fetch_profileImage(uci_net_id:str):
+    profileImage = database.fetch_profileImage(uci_net_id)
+    return profileImage
+
 @app.put("/update-profileImage")
 def update_profileImage(update: ProfileImageUpdate):
     success = database.update_profileImage(update.uci_net_id, update.image)

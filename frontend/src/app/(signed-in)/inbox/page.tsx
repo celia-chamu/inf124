@@ -1,5 +1,6 @@
 'use client'
 import Message from '@/components/Message'
+import { MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo, useState } from 'react'
@@ -20,7 +21,45 @@ function Inbox() {
     const { data: session } = useSession()
     const [conversations, setConversations] = useState<Conversation[]>([])
     const [loading, setLoading] = useState(true)
+    const [profilePictures, setProfilePictures] = useState<
+        Record<string, string>
+    >({})
 
+    const fetchProfilePicture = async (id: string) => {
+        const response = await api.get('/fetch-profileImage', {
+            params: {
+                uci_net_id: id,
+            },
+        })
+
+        return response.data
+    }
+    useEffect(() => {
+        const loadProfilePictures = async () => {
+            const newPics: Record<string, string> = {}
+
+            await Promise.all(
+                conversations.map(async (convo) => {
+                    const id = view === 'buyers' ? convo.seller : convo.buyer
+
+                    if (!profilePictures[id]) {
+                        try {
+                            const url = await fetchProfilePicture(id)
+                            newPics[id] = url
+                        } catch {
+                            newPics[id] = ''
+                        }
+                    }
+                })
+            )
+
+            setProfilePictures((prev) => ({ ...prev, ...newPics }))
+        }
+
+        if (conversations.length > 0) {
+            loadProfilePictures()
+        }
+    }, [conversations, view])
     useEffect(() => {
         const fetchConversations = async () => {
             setLoading(true)
@@ -59,36 +98,24 @@ function Inbox() {
     }, [view, session?.user?.email])
 
     const messages = useMemo(() => {
-        return conversations.map((convo) =>
-            view === 'buyers' ? (
+        return conversations.map((convo) => {
+            const id = view === 'buyers' ? convo.seller : convo.buyer
+            const profileImage = profilePictures[id] ?? ''
+
+            return (
                 <Link
                     key={convo.conversation_id}
-                    href={`/message/${convo.seller.split('@')[0]}`}
+                    href={`/message/${id.split('@')[0]}`}
                 >
                     <Message
-                        key={convo.seller}
-                        username={
-                            view === 'buyers' ? convo.seller : convo.buyer
-                        }
+                        username={id}
                         textMessage={convo.last_message_preview ?? ''}
-                    />
-                </Link>
-            ) : (
-                <Link
-                    key={convo.conversation_id}
-                    href={`/message/${convo.buyer.split('@')[0]}`}
-                >
-                    <Message
-                        key={convo.seller}
-                        username={
-                            view === 'buyers' ? convo.seller : convo.buyer
-                        }
-                        textMessage={convo.last_message_preview ?? ''}
+                        profilePicture={profileImage}
                     />
                 </Link>
             )
-        )
-    }, [conversations, view])
+        })
+    }, [conversations, view, profilePictures])
 
     return (
         <div className="flex flex-col w-full">
@@ -110,7 +137,14 @@ function Inbox() {
             </div>
             {!loading ? (
                 <div className="bg-(--sidebar-button-background) rounded-sm mt-4 p-8 h-180">
-                    {messages}
+                    {messages.length > 0 ? (
+                        messages
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-full">
+                            <MessageCircle className="h-32 w-32 sm:h-64 sm:w-64" />
+                            <p className="text-2xl"> Inbox is empty ...</p>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className="bg-(--sidebar-button-background) rounded-sm mt-4 p-8 h-180">

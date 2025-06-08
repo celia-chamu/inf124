@@ -331,6 +331,24 @@ def fetch_item_pictures_by_listingid(listingid: int):
     conn.close()
     return results  
 
+def fetch_profileImage(uci_net_id:str):
+    conn = db_connection()
+    cursor = conn.cursor()
+
+    statement = """
+        SELECT profile_pic from users WHERE uci_net_id = %s
+    """
+    values = (uci_net_id, )
+    try:
+        cursor.execute(statement,values)
+        image = cursor.fetchall()
+        return image
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    finally:
+        cursor.close()
+        conn.close()
 
 def delete_message(conversation_id: int, message_id: int):
     conn = db_connection()
@@ -347,7 +365,7 @@ def delete_message(conversation_id: int, message_id: int):
         return cursor.rowcount > 0 # True if something was deleted
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        return False
+        return None
     finally:
         cursor.close()
         conn.close()
