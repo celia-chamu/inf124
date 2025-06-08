@@ -1,15 +1,12 @@
-// src/lib/authOptions.ts
-import GoogleProvider from 'next-auth/providers/google';
-import { NextAuthOptions } from 'next-auth';
-import api from '@/app/api/api';// Adjust the import path if needed
-import axios from 'axios';
+import GoogleProvider from "next-auth/providers/google";
+import type { NextAuthOptions } from "next-auth";
+import api from "@/app/api/api";
+import axios from "axios";
 
 async function getBase64FromUrl(imageUrl: string): Promise<string> {
-  const response = await axios.get(imageUrl, {
-    responseType: 'arraybuffer',
-  });
-  const base64 = Buffer.from(response.data, 'binary').toString('base64');
-  const contentType = response.headers['content-type'];
+  const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+  const base64 = Buffer.from(response.data, "binary").toString("base64");
+  const contentType = response.headers["content-type"];
   return `data:${contentType};base64,${base64}`;
 }
 
@@ -23,42 +20,38 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ profile, account }) {
-      if (account?.provider === 'google') {
-        if (!profile?.email?.endsWith('@uci.edu')) {
-          return false;
-        }
+      if (account?.provider === "google") {
+        if (!profile?.email?.endsWith("@uci.edu")) return false;
+
         try {
-          await api.get('/check-user', {
-            params: { uci_net_id: profile.email },
-          });
+          await api.get("/check-user", { params: { uci_net_id: profile.email } });
         } catch (error: any) {
           if (error.response?.status === 404) {
             try {
               let base64Image = "";
               try {
                 base64Image = await getBase64FromUrl(profile.image || "");
-              } catch (err) {
-                console.warn("Could not fetch base64 image:", err);
+              } catch {
+                base64Image = "";
               }
-              await api.post('/create-user', {
+              await api.post("/create-user", {
                 uci_net_id: profile.email,
                 reputation: 0.0,
                 join_date: new Date(),
                 full_name: profile.name,
                 profile_pic: base64Image,
               });
-            } catch (creationError) {
-              console.error('User creation failed:', creationError);
+            } catch {
               return false;
             }
           } else {
-            console.error('Unexpected error checking user:', error);
             return false;
           }
         }
+
         return true;
       }
-      return '/unauthorized';
+      return "/unauthorized";
     },
   },
 };
