@@ -87,10 +87,14 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+        id-token: write
+        contents: read
 
     steps:
       - name: Checkout code
@@ -128,11 +132,17 @@ jobs:
           cp -r frontend/node_modules backend/frontend/
           cp frontend/package.json backend/frontend/
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
+      - name: Login to Azure
+        uses: azure/login@v2
         with:
-          app-name: YOUR_APP_SERVICE_NAME
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: backend
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_02D59D03623D496E95308909F7E5AE4E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_126C516F2897489A803652CA0465BFFD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1C9A05CD04284C2FA2EFC5DE9CA33565 }}
 
-          
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'ZotMarket'
+          slot-name: 'production'
+          package: 'backend'
+
