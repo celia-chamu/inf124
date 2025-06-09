@@ -39,7 +39,7 @@ const items = [
 function NavMenu() {
     return (
         <div>
-            <nav className="hidden p-4 md:flex h-screen flex-col gap-4 bg-(--sidebar-background) items-center">
+            <nav className="hidden p-4 md:flex h-full min-h-screen flex-col gap-4 bg-(--sidebar-background) items-center">
                 <Link className="w-full" href="/market">
                     <Button
                         variant="Menuzot"

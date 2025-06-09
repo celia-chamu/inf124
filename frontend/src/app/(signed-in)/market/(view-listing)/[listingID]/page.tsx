@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { redirect, useParams } from 'next/navigation'
 import ListingCarousel from '@/components/ListingCarousel'
 import SellerInfo from '@/components/SellerInfo'
 import ThumbnailCarousel from '@/components/ThumbnailCarousel'
@@ -112,6 +112,7 @@ export default function Page() {
                 }
             }
         }
+        redirect('/inbox')
     }
 
     if (!listing) {
@@ -152,7 +153,8 @@ export default function Page() {
                         <h1 className="text-2xl font-bold">{listing.title}</h1>
                         <p className="text-xl">${listing.price}</p>
                         <p className="text-md">
-                            Posted On {new Date(listing.created_at).toLocaleString()}
+                            Posted On{' '}
+                            {new Date(listing.created_at).toLocaleString()}
                         </p>
                     </div>
 
@@ -180,15 +182,13 @@ export default function Page() {
                                 </Button>
                             </Link>
                         ) : (
-                            <Link href="/inbox">
-                                <Button
-                                    variant="ListingZot"
-                                    className="w-full"
-                                    onClick={handleCheck}
-                                >
-                                    Message
-                                </Button>
-                            </Link>
+                            <Button
+                                variant="ListingZot"
+                                className="w-full"
+                                onClick={handleCheck}
+                            >
+                                Message
+                            </Button>
                         )}
                     </div>
                     <div className="pb-5 flex flex-col gap-5">
