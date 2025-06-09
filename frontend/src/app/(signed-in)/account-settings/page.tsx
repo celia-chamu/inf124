@@ -28,10 +28,12 @@ export default function AccountSettings() {
                     },
                 })
                 const imgData = response.data
-                setPreview(imgData && imgData !== '' ? imgData : '/default.png')
+                console.log(imgData[0])
+                setPreview(imgData && imgData[0][0] !== "" ? imgData : "https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg")
+                console.log("PREVIEW" + preview)
             } catch (err: any) {
                 console.log('Error fetching image')
-                setPreview('/default.png')
+                setPreview('https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg')
             }
         }
         const fetchUser = async () => {
@@ -71,7 +73,7 @@ export default function AccountSettings() {
                 <div className="flex items-center gap-6 mb-8">
                     <div className="w-50 h-50 rounded-full overflow-hidden bg-gray-200 border border-gray-300 flex items-center justify-center">
                         <img
-                            src={preview || '/default.png'}
+                            src={preview || 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg'}
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
