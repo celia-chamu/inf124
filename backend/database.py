@@ -149,7 +149,7 @@ def find_all_conversation(user:str, type:str):
     conn = db_connection()
     cursor = conn.cursor()
 
-    if type == "buyer":
+    if type == "buyers":
         statement = """
                     SELECT *
                     FROM conversations
@@ -179,15 +179,12 @@ def find_all_conversation(user:str, type:str):
 def get_conversation(seller:str, buyer:str):
     conn = db_connection()
     cursor = conn.cursor()
-
     statement = """
-                SELECT *
-                FROM conversations
-                WHERE ((seller = %s and buyer = %s)
-                OR (seller = %s and buyer = %s))
-    """
-
-    values = (seller, buyer, buyer, seller)
+                    SELECT *
+                    FROM conversations
+                    WHERE (seller = %s and buyer = %s)
+        """
+    values = (seller, buyer)
     try:
         cursor.execute(statement, values)
         conversation = cursor.fetchall()

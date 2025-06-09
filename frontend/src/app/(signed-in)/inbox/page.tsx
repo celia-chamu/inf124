@@ -69,7 +69,7 @@ function Inbox() {
                     const response = await api.get('/fetch-conversations', {
                         params: {
                             user: session.user?.email,
-                            type: 'buyer',
+                            type: 'buyers',
                         },
                     })
                     setConversations(response.data.flat())
@@ -82,7 +82,7 @@ function Inbox() {
                     const response = await api.get('/fetch-conversations', {
                         params: {
                             user: session.user?.email,
-                            type: 'seller',
+                            type: 'sellers',
                         },
                     })
                     setConversations(response.data.flat())
@@ -100,15 +100,15 @@ function Inbox() {
     const messages = useMemo(() => {
         return conversations.map((convo) => {
             const id = view === 'buyers' ? convo.seller : convo.buyer
-            const profileImage = (profilePictures[id] != "" ? profilePictures[id]:'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg')
+            const profileImage = (profilePictures[convo.buyer == session?.user?.email ? convo.seller: convo.buyer] != "" ? profilePictures[convo.buyer == session?.user?.email ? convo.seller: convo.buyer]:'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg')
 
             return (
                 <Link
                     key={convo.conversation_id}
-                    href={`/message/${id.split('@')[0]}`}
+                    href={`/message/${view}/${id.split('@')[0]}`}
                 >
                     <Message
-                        username={id}
+                        username={convo.buyer == session?.user?.email ? convo.seller: convo.buyer}
                         textMessage={convo.last_message_preview ?? ''}
                         profilePicture={profileImage}
                     />

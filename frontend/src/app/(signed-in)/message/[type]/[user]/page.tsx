@@ -20,6 +20,7 @@ export interface Message {
 
 export default function InboxMessage() {
     const query = useParams()
+    const type = query.type
     const cacheMessageList = useRef<string[]>([])
     const [messages, setMessages] = useState<Message[]>([])
     const [conversationID, setConversationId] = useState(0)
@@ -44,8 +45,6 @@ export default function InboxMessage() {
             const user_response = await fetchProfilePicture(session?.user?.email || "")
             const other_response = await fetchProfilePicture(query.user + '@uci.edu'|| "")
 
-            console.log("USERS " + user_response)
-            console.log("OTHER " + other_response)
              setProfilePicUser(user_response)
              setProfilePicOther(other_response)
         }
@@ -89,7 +88,8 @@ export default function InboxMessage() {
     // Initialize state to hold the messages for the current conversation
     useEffect(() => {
         const fetchConversationID = async () => {
-            try {
+            if (type == "buyers"){
+                try {
                 const response = await api.get('/conversation-exist', {
                     params: {
                         seller: query.user + '@uci.edu',
@@ -103,6 +103,24 @@ export default function InboxMessage() {
                 } else {
                     console.error('Failed to fetch conversation ID:', error)
                 }
+            }
+            }
+            else{
+                try {
+                const response = await api.get('/conversation-exist', {
+                    params: {
+                        seller: session?.user?.email,
+                        buyer: query.user + '@uci.edu',
+                    },
+                })
+                setConversationId(response.data[0][0])
+            } catch (error: any) {
+                if (error.response?.status === 404) {
+                    return -1
+                } else {
+                    console.error('Failed to fetch conversation ID:', error)
+                }
+            }
             }
         }
 
