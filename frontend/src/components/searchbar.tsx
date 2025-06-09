@@ -14,6 +14,7 @@ interface Props {
 
 export default function SearchBar({ setSearch, setCategory }: Props) {
     const [filterClick, setFilterClick] = useState(false)
+    const [searchText, setSearchText] = useState('')
 
     const filters = [
         'Furniture',
@@ -43,6 +44,13 @@ export default function SearchBar({ setSearch, setCategory }: Props) {
         setCategory(filter)
     }
 
+    const handleEnter = (event: any) => {
+        if (event.key === 'Enter') {
+            console.log('Entered Search')
+            setSearch(searchText)
+        }
+    }
+
     // Check mobile size
     const isMobile = useIsMobile()
 
@@ -67,7 +75,8 @@ export default function SearchBar({ setSearch, setCategory }: Props) {
                 <Input
                     className="pl-10 pr-10 rounded-lg h-auto w-full"
                     placeholder="Search ZotMarket"
-                    onChange={(search) => setSearch(search.target.value)}
+                    onChange={(search) => setSearchText(search.target.value)}
+                    onKeyDown={handleEnter}
                 />
                 <button
                     className="ml-2 text-gray-600"
