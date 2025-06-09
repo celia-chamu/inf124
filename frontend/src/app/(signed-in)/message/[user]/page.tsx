@@ -26,7 +26,32 @@ export default function InboxMessage() {
     const { data: session } = useSession()
     const isOnline = useOnlineStatus()
     const [sendCache, setSendCache] = useState(false)
+    const [profilePicUser, setProfilePicUser] = useState("")
+    const [profilePicOther, setProfilePicOther] = useState("")
 
+    const fetchProfilePicture = async (id: string) => {
+        const response = await api.get('/fetch-profileImage', {
+            params: {
+                uci_net_id: id,
+            },
+        })
+
+        return response.data
+    }
+    
+    useEffect(() => {
+        const getProfilePictures = async() =>{
+            const user_response = await fetchProfilePicture(session?.user?.email || "")
+            const other_response = await fetchProfilePicture(query.user + '@uci.edu'|| "")
+
+            console.log("USERS " + user_response)
+            console.log("OTHER " + other_response)
+             setProfilePicUser(user_response)
+             setProfilePicOther(other_response)
+        }
+        getProfilePictures()
+    }, []
+    )
     // Store messages into a array if user is offline
     useEffect(() => {
         const sendStoredMessages = async() => {
@@ -151,6 +176,11 @@ export default function InboxMessage() {
                             key={index}
                             username={message.sender}
                             textMessage={message.content}
+                            profilePicture={
+                                message.sender != session?.user?.email
+                                    ? (profilePicOther != "" ? profilePicOther : 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg')
+                                    : (profilePicUser != "" ? profilePicUser : 'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg')
+                                }
                         />
                     </div>
                 ))}
