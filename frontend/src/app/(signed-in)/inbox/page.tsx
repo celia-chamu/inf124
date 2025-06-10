@@ -64,7 +64,7 @@ function Inbox() {
             setLoading(true)
             if (!session?.user?.email) return
 
-            if (view === 'buyers') {
+            if (view === 'buyingFrom') {
                 try {
                     const response = await api.get('/fetch-conversations', {
                         params: {
@@ -101,7 +101,7 @@ function Inbox() {
     const messages = useMemo(() => {
         return conversations.map((convo) => {
 
-            const id = view === 'buyers' ? convo.seller : convo.buyer
+            const id = view === 'buyingFrom' ? convo.seller : convo.buyer
             const profileImage = (profilePictures[convo.buyer == session?.user?.email ? convo.seller: convo.buyer] != "" ? profilePictures[convo.buyer == session?.user?.email ? convo.seller: convo.buyer]:'https://i.fbcd.co/products/original/l010e-6-e02-mainpreview-3720591835ee8456a0067e9828c79295abd5810e798a532e1c013a3114580b44.jpg')
 
 

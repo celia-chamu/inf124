@@ -88,7 +88,7 @@ export default function InboxMessage() {
     // Initialize state to hold the messages for the current conversation
     useEffect(() => {
         const fetchConversationID = async () => {
-            if (type == "buyers"){
+            if (type == "buyingFrom"){
                 try {
                 const response = await api.get('/conversation-exist', {
                     params: {
