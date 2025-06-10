@@ -24,16 +24,31 @@ export default function Page() {
     const [listings, setListings] = useState<listingType[]>([])
 
     useEffect(() => {
+        const abortController = new AbortController()
+
         const fetchListings = async () => {
-            const res = await api.get('fetch-listings', {
-                params: { search: search, category: category },
-            })
-            const listingsData = res.data
-            console.log('LISTING FETCHED', listingsData)
-            setListings(listingsData)
+            try {
+                const res = await api.get('fetch-listings', {
+                    params: { search: search, category: category },
+                    signal: abortController.signal
+                })
+                const listingsData = res.data
+                console.log('LISTING FETCHED', listingsData)
+                setListings(listingsData)
+            } catch (error: any) {
+                if (error.name === 'CanceledError') {
+                    // Request was canceled, do nothing
+                    return
+                }
+                console.error('Error fetching listings:', error)
+            }
         }
 
         fetchListings()
+
+        return () => {
+            abortController.abort()
+        }
     }, [category, search])
 
     return (
